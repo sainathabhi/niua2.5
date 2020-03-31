@@ -20,6 +20,7 @@
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
+    "DISCUSSION_PREFIX": "/discussions/v1/",
     "RESOURCEBUNDLES": {
       "ENG": "/read"
     },
@@ -44,7 +45,8 @@
       "LOCATION_SEARCH": "data/v1/location/search",
       "TYPE": "user/v1/type/list",
       "VALIDATE_CERTIFICATE": "user/v1/certs/validate",
-      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download"      
+      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download",
+      "READ": "user/v1/read"      
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
@@ -65,7 +67,14 @@
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
       "UNENROLL_USER_COURSE":"course/v1/unenrol",
-      "GET_QR_CODE_FILE":"course/v1/qrcode/download"
+      "GET_QR_CODE_FILE":"course/v1/qrcode/download",
+      "COURSE_DISCUSSIONS_POST":"thread/create",
+      "RETRIEVE_DISCUSSION":"list",
+      "REPLY_TO_THREAD":"thread/reply",
+      "RETRIEVE_REPLIES":"thread/",
+      "LIKE_POST":  "thread/vote",
+      "UPLOAD_FILE": "files/service"
+
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -117,7 +126,7 @@
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
       "BULK": {
-        "USERS_UPLOAD": "user/v2/upload",
+        "USERS_UPLOAD": "user/v1/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
         "STATUS": "data/v1/upload/status",
         "USER_UPLOAD_SHADOW": "user/v2/bulk/upload"
@@ -151,7 +160,8 @@
       "INFO": "/info"
     },
     "CHANNEL": {
-      "READ": "channel/v1/read"
+      "READ": "channel/v1/read",
+      "LIST": "channel/v1/list"
     },
     "FRAMEWORK": {
       "READ": "framework/v1/read"
@@ -171,6 +181,9 @@
     "OTP": {
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify"
+    },
+    "ORGANIZATION": {
+      "READ":"org/v1/read"
     },
     "OFFLINE": {
       "DOWNLOAD": "content/v1/download",

@@ -9,7 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedFeatureModule } from '@sunbird/shared-feature';
+import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { DiscussionModule } from './../discussion/discussion.module';
+import { CourseDiscussService } from './../discussion/services/course-discuss/course-discuss.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,10 +21,12 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     SlickModule,
     FormsModule,
     CoreModule,
+    DiscussionModule,
     TelemetryModule,
     NgInviewModule,
     SharedFeatureModule
   ],
+  providers: [CourseDiscussService],
   declarations: [ResourceComponent]
 })
 export class ResourceModule {

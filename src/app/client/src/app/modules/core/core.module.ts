@@ -9,8 +9,11 @@ import {
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
+import { 
+DiscussionService
+} from './services';
 import {
-  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent,
+  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent,
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
   LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
 } from './components';
@@ -40,7 +43,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
-  providers: [CacheService, AuthGuard]
+  providers: [CacheService, AuthGuard, DiscussionService]
 })
 export class CoreModule {
 }

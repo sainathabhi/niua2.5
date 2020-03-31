@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html'
-})
+  })
 export class CardComponent {
   /**
   * content is used to render IContents value on the view

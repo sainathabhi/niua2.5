@@ -1,18 +1,21 @@
 // Angular modules
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
 import { ChartsModule } from 'ng2-charts';
+import { ChartModule } from 'primeng/chart';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { DiscussionModule } from './../discussion/discussion.module';
 // Custome component(s) and services
 import {
   CourseConsumptionService, DashboardUtilsService, OrganisationService,
   RendererService, LineChartService, DownloadService, CourseProgressService,
   UsageService
 } from './services';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent } from './components';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   DataTableComponent, DataChartComponent
@@ -22,7 +25,11 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
-
+// Imported Primeng Calendar Module
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { PermissionDirective } from './directives';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,21 +37,26 @@ import { OrderModule } from 'ngx-order-pipe';
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
+    ChartModule,
     SuiModule,
     SharedModule,
     OrderModule,
     TelemetryModule,
-    NgxDaterangepickerMd.forRoot()
+    NgxDaterangepickerMd.forRoot(),
+    DiscussionModule,
+    CalendarModule,
+    TableModule,
+    DropdownModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent],
-  exports: [CourseProgressComponent, DataTableComponent],
+    DataTableComponent, DataChartComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, PermissionDirective],
+  exports: [CourseProgressComponent, DataTableComponent, PermissionDirective],
   providers: [
     RendererService,
     DashboardUtilsService,
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService, UsageService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService, DatePipe]
 })
 export class DashboardModule { }

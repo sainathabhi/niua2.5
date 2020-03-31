@@ -4,7 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService } from '@sunbird/core';
+import { UserService, DiscussionService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService
@@ -13,6 +13,8 @@ import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
+import { CourseDiscussService } from './../../../discussion/services/course-discuss/course-discuss.service';
+import { DiscussionModule } from './../../../discussion/discussion.module';
 /**
  * This component shows the course progress dashboard
  */
@@ -159,6 +161,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
+  showDiscussion: Boolean = false;
+  optionChanged: Boolean = false;
   /**
 	 * Constructor to create injected service(s) object
 	 *
@@ -221,11 +225,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.selectedOption = this.queryParams.batchIdentifier;
           this.currentBatch = isBatchExist;
           this.populateCourseDashboardData(isBatchExist);
+          this.changeDiscussions();
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
           this.populateCourseDashboardData(this.batchlist[0]);
+          this.changeDiscussions();
         } else {
           this.showWarningDiv = true;
         }
@@ -248,8 +254,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchText = '';
     this.currentBatch = batch;
     this.populateCourseDashboardData(batch);
+    this.changeDiscussions();
   }
 
+changeDiscussions(){
+  this.optionChanged = false
+      this.showDiscussion = true;
+   setTimeout(() => {
+     this.optionChanged = true
+   }, 10);
+}
   /**
   * To method helps to set time period and calls the populateCourseDashboardData
   *

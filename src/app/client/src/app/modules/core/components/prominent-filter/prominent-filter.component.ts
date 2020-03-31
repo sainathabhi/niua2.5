@@ -13,12 +13,28 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
-  templateUrl: './prominent-filter.component.html'
+  templateUrl: './prominent-filter.component.html',
+  styles: [`
+     >>> .ui.dropdown:not(.button)>.default.text {
+      color:#4a4a4a;
+      font-size:13px;
+       }
+     >>> .ui.dropdown>.dropdown.icon {
+        float:right;
+        margin-right:10px;
+       }
+     >>> .ui.dropdown .menu>.item {
+        font-size:13px;
+     }
+   `]
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
+  allContentTypes: any = [];
+  selectedContentType: any;
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
+  @Input() isShowContentTypeFilter: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
@@ -111,6 +127,16 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.permissionService = permissionService;
     this.formInputData = {};
     this.router.onSameUrlNavigation = 'reload';
+    this.allContentTypes = [
+      {
+        id: "Collection",
+        name: "Collection"
+      },
+      {
+        id: "Content",
+        name: "Content"
+      }
+    ]
   }
 
   ngOnInit() {
@@ -257,6 +283,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   resetFilters() {
+    this.selectedContentType = null;
     if (!_.isEmpty(this.ignoreQuery)) {
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     } else {
@@ -292,7 +319,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           queryParams[key] = this.populateChannelData(formatedValue);
         }
       });
-      if (!_.isEmpty(queryParams)) {
+      if (!_.isEmpty(queryParams) || !_.isEmpty(this.selectedContentType)) {
+        if (!_.isEmpty(this.selectedContentType)) {
+          queryParams['contentType'] = (this.selectedContentType == "Content") ? "Resource" : this.selectedContentType;
+        }
         queryParams['appliedFilters'] = true;
         this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });
       }

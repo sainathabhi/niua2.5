@@ -18,6 +18,11 @@ declare var jQuery: any;
   styleUrls: ['./main-menu.component.scss']
 })
 export class MainMenuComponent implements OnInit {
+  isUpforReview: boolean = false;
+  /**
+  * upForReviewRole  access roles
+  */
+  upForReviewRole: Array<string>;
   /**
    * Workspace access roles
    */
@@ -87,6 +92,16 @@ export class MainMenuComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+        }
+      });
+    //Make upfor review as default menu is user has upfor review permission
+    this.upForReviewRole = this.config.rolesConfig.workSpaceRole.upForReviewRole;
+    this.permissionService.permissionAvailable$.subscribe(
+      (permissionAvailable: string) => {
+        if (permissionAvailable && permissionAvailable === 'success') {
+          this.isUpforReview = this.permissionService.checkRolesPermissions(this.upForReviewRole);
+        } else if (permissionAvailable && permissionAvailable === 'error') {
+          this.isUpforReview = false;
         }
       });
   }
@@ -185,7 +200,12 @@ export class MainMenuComponent implements OnInit {
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
-      return authroles.url;
+      if (!this.isUpforReview) {
+        return authroles.url;
+      }
+      else {
+        return 'workspace/content/upForReview/1';
+      }
     }
   }
 }

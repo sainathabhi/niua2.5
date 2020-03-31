@@ -5,19 +5,31 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, CertificateDownloadService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
-  ExternalUrlPreviewService
+  ExternalUrlPreviewService, IUserProfile, IUserData
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
+import { UserService } from './../../../../core/services/user/user.service';
+import { CourseBatchService } from './../../../services/course-batch/course-batch.service';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
   styleUrls: ['./course-consumption-header.component.scss']
 })
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+  userDataSubscription: Subscription;
+  userProfile: IUserProfile;
+  fullName:any
+  userName: string;
+  title:string = ""
+  userId: string;
+  fileUrl: any;
+  showCertificateBtn:Boolean; 
 
   sharelinkModal: boolean;
   /**
@@ -54,8 +66,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
-
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, 
+    public userService: UserService, private certificateDownloadService: CertificateDownloadService,
+     public courseBatchService: CourseBatchService) {
+    this.userName = this.userService.userProfile.userName;
+    this.userId = this.userService.userid;
   }
 
   ngOnInit() {
@@ -84,6 +99,14 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
         }
       });
+      this.userDataSubscription = this.userService.userData$.subscribe(
+      (user: IUserData) => {
+        if (user && !user.err) {
+          this.userProfile = user.userProfile;
+          this.fullName = this.userProfile.firstName + " " + this.userProfile.lastName;
+          console.log(this.fullName)
+        }
+      });
       this.interval = setInterval(() => {
         if (document.getElementById('closebutton')) {
           this.showResumeCourse = true;
@@ -97,8 +120,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+        this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+        if (this.batchId && this.progress === 100) {
+          this.showCertificateBtn = true;
+        }
+        this.showCertificateBtn = (this.progress === 100);
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
           this.onPageLoadResume = false;
@@ -168,5 +195,17 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (this.enrolledBatchInfo.status === 2 && this.progress < 100);
+  }
+  downloadCertificate() {
+    const marks = {
+      'scoredMarks': localStorage.getItem('totalScore'),
+      'maxMarks': localStorage.getItem('maxScore')
+    };
+    this.certificateDownloadService.downloadAsPdf(this.title, this.fullName, this.userId, this.courseId, this.courseHierarchy.name, marks)
+      .subscribe((res: Response) => {
+        this.fileUrl = res['result']['fileUrl'];
+        console.log(this.fileUrl);
+        window.open(this.fileUrl, '_blank');
+      });
   }
 }

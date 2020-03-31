@@ -16,6 +16,7 @@ import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import {DiscussionModule} from '../app/modules/discussion/discussion.module';
 import { PluginModules } from './framework.config';
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { PluginModules } from './framework.config';
     BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
     CoreModule,
     CommonModule,
+    DiscussionModule,
     HttpClientModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,

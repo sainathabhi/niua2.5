@@ -12,9 +12,11 @@ import {
   CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
   UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
+import { CourseDiscussService } from './../discussion/services/course-discuss/course-discuss.service';
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
+import { DiscussionModule } from '@sunbird/discussion';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 
@@ -31,11 +33,12 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,
+    DiscussionModule, 
     NgInviewModule,
     SharedFeatureModule,
     PlayerHelperModule
   ],
-  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
+  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService, CourseDiscussService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
     UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent]

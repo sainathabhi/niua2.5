@@ -80,6 +80,7 @@ export interface TelemetryObject {
   'id': string;
   'type': string;
   'ver'?: string;
+  'name'?: string;
   'rollup': {};
 }
 export interface TelemetryEventOptions {
@@ -131,6 +132,7 @@ export interface IImpressionEventInput {
     'id': string;
     'type': string;
     'ver'?: string;
+    'name'?: string;
     'section'?: string;
     'rollup'?: {};
   };
@@ -252,3 +254,22 @@ export interface ITelemetryContext {
   'config': ITelemetry;
   'userOrgDetails': IUserOrgDetails;
 }
+
+export interface IFeedbackObject {
+  'id'?: string;
+  'type'?: string;
+  'ver'?: string;
+  'rollup'?: {};
+}
+export interface IFeedbackEdata {   
+  'rating'?: Number;
+  'comments'?: string;  
+}
+
+ export interface IFeedbackEventInput {
+  'context': {
+    'env': string;
+  };
+  'object': IFeedbackObject;
+  'edata': IFeedbackEdata;
+} 

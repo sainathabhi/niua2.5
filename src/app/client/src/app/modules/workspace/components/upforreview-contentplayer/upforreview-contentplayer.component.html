@@ -81,8 +81,16 @@
 </div>
 <!-- publish warning modal -->
 
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll *ngIf="showPublishWarningModal" #publishWarningModal>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal"
+  appBodyScroll
+  *ngIf="showPublishWarningModal" 
+  #publishWarningModal
+  >
   <!--Header-->
   <i class="icon close" (click)="showPublishWarningModal = false" tabindex="0"></i>
   <div class="sb-modal-header">

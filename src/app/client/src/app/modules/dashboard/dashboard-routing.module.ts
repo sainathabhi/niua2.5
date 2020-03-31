@@ -5,6 +5,14 @@ import { AuthGuard } from '../core/guard/auth-gard.service';
 
 const routes: Routes = [
   {
+    path: 'allDashboard', component: AllReportsComponent,
+    data: {
+      roles: 'allDashboard',
+      telemetry: { env: 'allDashboard', pageid: 'allDashboard', type: 'view' },
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'All Dashboard', url: '' }]
+    }
+  },
+  {
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
       telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },

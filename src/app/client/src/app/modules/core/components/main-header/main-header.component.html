@@ -38,10 +38,13 @@
                             <a class="item" routerLink="profile">
                                 {{resourceService.frmelmnts?.lnk?.profile}}
                             </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                                [permission]='adminDashboard' routerLink="dashBoard/organization">
-                                {{resourceService.frmelmnts?.lnk?.dashboard}}
-                            </a>
+                    <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                        [permission]='adminDashboard' routerLink="orgDashboard">
+                        {{resourceService.frmelmnts?.lnk?.dashboard}}
+                    </a> -->
+                    <a class="item" routerLink="allDashboard">
+                        {{resourceService.frmelmnts?.lnk?.dashboard}}
+                    </a>
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='announcementRole' routerLink="announcement/outbox/1">
                                 {{resourceService.frmelmnts?.lnk?.announcement}}
