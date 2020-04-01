@@ -15,11 +15,7 @@ import {
   RendererService, LineChartService, DownloadService, CourseProgressService,
   UsageService
 } from './services';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent } from './components';
-import {
-  OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  DataTableComponent, DataChartComponent
-} from './components';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, DataTableComponent, DataChartComponent } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { SearchService } from '@sunbird/core';

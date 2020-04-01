@@ -13,7 +13,7 @@ import {
 DiscussionService
 } from './services';
 import {
-  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, ConceptPickerComponent,
+  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent,
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
   LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
 } from './components';

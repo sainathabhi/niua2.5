@@ -266,10 +266,10 @@ export interface IFeedbackEdata {
   'comments'?: string;  
 }
 
- export interface IFeedbackEventInput {
-  'context': {
-    'env': string;
-  };
-  'object': IFeedbackObject;
-  'edata': IFeedbackEdata;
-} 
+//  export interface IFeedbackEventInput {
+//   'context': {
+//     'env': string;
+//   };
+//   'object': IFeedbackObject;
+//   'edata': IFeedbackEdata;
+// } 

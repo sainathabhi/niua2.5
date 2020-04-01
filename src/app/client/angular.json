@@ -42,7 +42,7 @@
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic.min.js",
-              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.min.js",
               "node_modules/chart.js/dist/Chart.js"
             ]
