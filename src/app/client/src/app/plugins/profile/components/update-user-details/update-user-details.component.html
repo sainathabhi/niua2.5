@@ -33,7 +33,7 @@
         <label class="ui basic blue error label p-0" *ngIf="userDetailsForm?.controls.lastName.touched && userDetailsForm?.controls['lastName'].errors && userDetailsForm?.controls['lastName'].errors.required">{{resourceService?.frmelmnts?.lbl?.lastNameRequired}}</label>
         <label class="ui basic blue error label p-0" *ngIf="userDetailsForm?.controls.lastName.touched && userDetailsForm?.controls['lastName'].errors && userDetailsForm?.controls['lastName'].errors.pattern">{{resourceService?.frmelmnts?.lbl?.enterValidName}}</label>
       </div>
-      <div class="field">
+      <!-- <div class="field">
         <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
         <div class="field">
           <div class="ui segment" *ngIf="showDistrictDivLoader">
@@ -47,7 +47,7 @@
             <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
           </sui-select>
         </div>
-      </div>
+      </div> -->
     </form>
   </div>
   <!--/Content-->
