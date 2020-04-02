@@ -16,6 +16,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   */
   @ViewChild('modal') modal;
   @Input() contentData?: any;
+  @Input() feedbackObject?: any;
   public showContentRatingModal = true;
   public resourceService: ResourceService;
   /**
