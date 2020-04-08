@@ -117,7 +117,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: _.get(this.queryParams, 'appliedFilters') ?  filters : _.get(manipulatedData, 'filters'),
+      filters: _.get(this.queryParams, 'appliedFilters') ?  _.assign(_.omit(this.frameworkData,'id'),{contentType:[_.get(this.queryParams, 'contentType')]}) : _.get(manipulatedData, 'filters'),
       mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
@@ -139,6 +139,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
           this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
         } else if (this.carouselMasterData.length >= 1) {
           this.pageSections = [this.carouselMasterData[0]];
+        }
+        if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
+          this.pageSections[0].contents = _.filter(_.cloneDeep(this.pageSections[0].contents), { contentType: _.get(this.queryParams, 'contentType') });
+          this.pageSections[0].count = this.pageSections[0].contents.length;
         }
         this.cdr.detectChanges();
       }, err => {

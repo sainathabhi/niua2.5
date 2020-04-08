@@ -34,7 +34,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
-  @Input() isShowContentTypeFilter: boolean;
+  @Input() isShowContentTypeFilter?: boolean;
   @Input() hashTagId = '';
   @Input() ignoreQuery = [];
   @Input() showSearchedParam = true;
@@ -133,8 +133,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         name: "Collection"
       },
       {
-        id: "Content",
-        name: "Content"
+        id: "Resource",
+        name: "Learn"
       }
     ]
   }
@@ -321,7 +321,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       });
       if (!_.isEmpty(queryParams) || !_.isEmpty(this.selectedContentType)) {
         if (!_.isEmpty(this.selectedContentType)) {
-          queryParams['contentType'] = (this.selectedContentType == "Content") ? "Resource" : this.selectedContentType;
+          queryParams['contentType'] = this.selectedContentType;
         }
         queryParams['appliedFilters'] = true;
         this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: queryParams });

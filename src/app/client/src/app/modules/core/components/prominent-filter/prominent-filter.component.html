@@ -25,7 +25,20 @@
           <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
         </ng-container>
       </div>
-
+      <div class="sb-prominent-filter-field">
+        <ng-container *ngIf="isShowContentTypeFilter">
+          <div class="field">
+            <label class="mb-10">{{resourceService?.frmelmnts?.lbl?.resourcetype}}</label>
+            <sui-select [(ngModel)]="selectedContentType"
+              style="border:1px solid #e1e1e1;border-radius:5px;padding: 8px 0 8px 13px;width: 100%"
+              [options]="allContentTypes" labelField="name" valueField="id" name="contentType"
+              placeholder="{{resourceService?.frmelmnts?.lbl?.selectContentType}}">
+              <sui-select-option *ngFor="let contentType of allContentTypes" [value]="contentType">
+              </sui-select-option>
+            </sui-select>
+          </div>
+        </ng-container>
+      </div>
       <div class="sb-prominent-filter-field">
         <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata" (click)="resetFilters()">
           {{resourceService.frmelmnts?.btn?.reset}}
