@@ -118,7 +118,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       source: 'web',
       name: 'Resource',
       filters: _.get(this.queryParams, 'appliedFilters') ?  _.assign(_.omit(this.frameworkData,'id'),{contentType:[_.get(this.queryParams, 'contentType')]}) : _.get(manipulatedData, 'filters'),
-      mode: _.get(manipulatedData, 'mode'),
+      // mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
