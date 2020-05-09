@@ -127,6 +127,8 @@ function getLocals(req) {
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   locals.userUploadRefLink = envHelper.sunbird_portal_user_upload_ref_link
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
+  locals.certificateUrl = envHelper.AZURE_STORAGE_URL
+  locals.certificateContainerName = envHelper.CERTIFICATE_STORE_CONTAINER_NAME
   locals.deviceApi = envHelper.sunbird_device_api
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size

@@ -18,6 +18,7 @@ export class AllReportsComponent implements OnInit {
   /**
 * Admin Dashboard access roles
 */
+  azureUrl: string;
   adminDashboard: Array<string>;
   reportMetaData: any;
   donutChartData: any = [];
@@ -43,6 +44,7 @@ export class AllReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.azureUrl = (<HTMLInputElement>document.getElementById('certificateUrl')).value + (<HTMLInputElement>document.getElementById('certificateContainerName')).value + '/course_certificate/';
     this.setTelemetryImpression();
     this.getEnrolledCourses();
     this.adminDashboard = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
@@ -64,6 +66,7 @@ export class AllReportsComponent implements OnInit {
             obj.completedOn = self.datePipe.transform(obj.completedOn, 'dd-MMM-yyyy');
             obj.statusName = (obj.progress === 0) ? 'Not-Started' : ((obj.progress === obj.leafNodesCount || obj.progress > obj.leafNodesCount) ? 'Completed' : 'In-Progress');
             obj.statusName = (obj.statusName != 'Completed' && (new Date(obj.batch.endDate) < new Date())) ? 'Expired' : obj.statusName;
+            obj.downloadUrl = self.azureUrl + obj.courseName + '-' + self.userService.userid + '-' + obj.courseId + '.pdf';
           });
           this.initializeColumns();
           this.initializeDonutChart();
@@ -91,8 +94,12 @@ export class AllReportsComponent implements OnInit {
       { field: 'enrollmentDate', header: 'Enrollment Date' },
       { field: 'endDate', header: 'Target End Date' },
       { field: 'completedOn', header: 'Completion Date' },
-      { field: 'statusName', header: 'Status' }
+      { field: 'statusName', header: 'Status' },
+      { field: 'certificate', header: 'Certificate', width: '75px' }
     ]
+  }
+  downloadCertificate(url) {
+    window.open(url, '_blank');
   }
   initializeDonutChart() {
     let labelArray = [];

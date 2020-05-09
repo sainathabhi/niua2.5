@@ -163,11 +163,12 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
     this.reportService.getOrgList().subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         if (response.result.count > 0) {
-          this.cityList = _.reject(response.result.channels, function (obj) {
-            if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
-              return obj;
-            }
-          });
+          // this.cityList = _.reject(response.result.channels, function (obj) {
+          //   if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
+          //     return obj;
+          //   }
+          // });
+          this.cityList = response.result.channels;
         }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
@@ -214,7 +215,7 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
         if (response.result.response.content.length > 0) {
           this.allOrgName = response.result.response.content;
           this.cityList = _.map(_.compact(_.reject(_.cloneDeep(response.result.response.content), function (obj) {
-            if (_.lowerCase(obj.orgName) == 'nuis' || _.lowerCase(obj.orgName) == 'test nuis' || _.lowerCase(obj.orgName) == 'pwc' || _.lowerCase(obj.orgName) == 'test niua' || obj.isRootOrg === false || _.isEmpty(obj.orgName))
+            if (obj.isRootOrg === false || _.isEmpty(obj.orgName))
               return obj;
           })), function (obj) {
             obj['orgName'] = _.lowerCase(obj['orgName']);

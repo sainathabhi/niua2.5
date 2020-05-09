@@ -46,6 +46,7 @@ export class ContentCreationStaticsComponent implements OnInit, OnDestroy {
     this.getOrgList();
     this.getOrgDetails();
     // this.getUserDetails();
+    this.getContentCreationStaticsReport();
   }
   initializeDateFields() {
     this.moment = moment();
@@ -53,10 +54,10 @@ export class ContentCreationStaticsComponent implements OnInit, OnDestroy {
     this.toDate = new Date();
   }
   getContentCreationStaticsReport() {
-    let channelFilter = [];
-    _.map(this.orgList, function (obj) {
-      channelFilter.push(obj.identifier)
-    });
+    // let channelFilter = [];
+    // _.map(this.orgList, function (obj) {
+    //   channelFilter.push(obj.identifier)
+    // });
     const data = {
       "request": {
         "query": "",
@@ -65,7 +66,7 @@ export class ContentCreationStaticsComponent implements OnInit, OnDestroy {
             "Live"
           ],
           "framework": ["nulp"],
-          "channel": channelFilter,
+          // "channel": channelFilter,
           "contentType": ["Course", 'Resource', 'Collection'],
           "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
         },
