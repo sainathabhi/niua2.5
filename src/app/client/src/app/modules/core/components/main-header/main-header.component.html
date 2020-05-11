@@ -4,7 +4,7 @@
 <div *ngIf="showAccountMergemodal">
     <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
-<div class="ui fixed relative main menu bs-0 d-block">
+<div class="ui fixed relative main menu bs-0 d-block" style="padding: 0;">
     <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">

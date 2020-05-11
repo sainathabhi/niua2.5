@@ -13,7 +13,7 @@ const routes: Routes = [
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {
-    path: 'nuis', component: NuihComponent, data: {
+    path: 'nulp', component: NuihComponent, data: {
       telemetry: {
         env: 'public', pageid: 'home', type: 'view', subtype: 'paginate'
       }

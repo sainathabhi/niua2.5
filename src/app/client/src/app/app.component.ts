@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.events.subscribe((ev) => {
         if (ev instanceof NavigationEnd) {
           // #NUIH change: Hide main header for Nuih Page
-          this.showMainHeader = _.indexOf(_.split(window.location.href, '/'), 'nuis') > -1
+          this.showMainHeader = _.indexOf(_.split(window.location.href, '/'), 'nulp') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'lms') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'innovate') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'iudx') > -1
@@ -114,7 +114,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           || _.indexOf(_.split(window.location.href, '/'), 'signup') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'comingsoon') > -1 ?
           false : true;
-        }
+            if (this.showMainHeader) {
+              $('body').css("padding-bottom", "170px");
+            } else {
+              $('body').removeAttr("style");
+            }
+          }
       });
   }
   /**
