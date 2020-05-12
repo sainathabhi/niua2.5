@@ -41,8 +41,16 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns">
                                 <tr>
-                                    <td *ngFor="let col of columns" class="ui-resizable-column">
+                                    <td *ngFor="let col of columns;let i=index" class="ui-resizable-column"
+                                        [ngClass]="{'align-center':i>2}">
                                         {{rowData[col.field]}}
+                                        <img *ngIf="col.header === 'Certificate' && rowData.statusName == 'Completed'"
+                                            src="{{'assets/images/certificate-badge.png' | cdnprefixurl}}"
+                                            style="height: 20px;cursor: pointer;"
+                                            (click)="downloadCertificate(rowData.downloadUrl)">
+                                        <img *ngIf="col.header === 'Certificate' && rowData.statusName != 'Completed'"
+                                            src="{{'assets/images/certificate-badge-grey.png' | cdnprefixurl}}"
+                                            style="height: 20px;cursor: not-allowed;">
                                     </td>
                                 </tr>
                             </ng-template>

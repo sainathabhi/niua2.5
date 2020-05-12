@@ -124,6 +124,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (this.batchId && this.progress === 100) {
           this.showCertificateBtn = true;
+          this.downloadCertificate();
         }
         this.showCertificateBtn = (this.progress === 100);
         if (!this.flaggedCourse && this.onPageLoadResume &&

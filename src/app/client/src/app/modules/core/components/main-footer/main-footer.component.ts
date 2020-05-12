@@ -8,7 +8,8 @@ import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-footer',
-  templateUrl: './main-footer.component.html'
+  templateUrl: './main-footer.component.html',
+  styles:['label {color:#FFFFFF}']
 })
 export class MainFooterComponent implements OnInit {
   /**

@@ -6,12 +6,15 @@ import { PublicPlayerService, LandingpageGuard } from './services';
 import { SharedModule } from '@sunbird/shared';
 import { PublicRoutingModule } from './public-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { NuihModule } from './module/nuih/nuih.module';
 @NgModule({
   imports: [
     CommonModule,
     CoreModule,
     SharedModule,
-    PublicRoutingModule
+    PublicRoutingModule,
+    // #NUIH change: Imported NuihModule
+    NuihModule
   ],
   declarations: [LandingPageComponent],
   providers: [PublicPlayerService, DeviceDetectorService, LandingpageGuard]

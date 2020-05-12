@@ -81,6 +81,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   resourceDataSubscription: any;
   shepherdData: Array<any>;
   private fingerprintInfo: any;
+  public showMainHeader = false;
   hideHeaderNFooter = true;
   queryParams: any;
   telemetryContextData: any ;
@@ -101,6 +102,25 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private shepherdService: ShepherdService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+      this.router.events.subscribe((ev) => {
+        if (ev instanceof NavigationEnd) {
+          // #NUIH change: Hide main header for Nuih Page
+          this.showMainHeader = _.indexOf(_.split(window.location.href, '/'), 'nulp') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'lms') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'innovate') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'iudx') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'smartgov') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'aboutus') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'signup') > -1
+          || _.indexOf(_.split(window.location.href, '/'), 'comingsoon') > -1 ?
+          false : true;
+            if (this.showMainHeader) {
+              $('body').css("padding-bottom", "170px");
+            } else {
+              $('body').removeAttr("style");
+            }
+          }
+      });
   }
   /**
    * dispatch telemetry window unload event before browser closes

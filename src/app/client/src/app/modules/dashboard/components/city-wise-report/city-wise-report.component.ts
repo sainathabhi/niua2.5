@@ -169,11 +169,12 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
     this.reportService.getOrgList().subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         if (response.result.count > 0) {
-          this.cityList = _.reject(response.result.channels, function (obj) {
-            if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
-              return obj;
-            }
-          });
+          // this.cityList = _.reject(response.result.channels, function (obj) {
+          //   if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
+          //     return obj;
+          //   }
+          // });
+          this.cityList = response.result.channels;
         }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
