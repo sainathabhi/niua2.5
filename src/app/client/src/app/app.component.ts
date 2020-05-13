@@ -115,7 +115,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           || _.indexOf(_.split(window.location.href, '/'), 'comingsoon') > -1 ?
           false : true;
             if (this.showMainHeader) {
-              $('body').css("padding-bottom", "170px");
+              $('body').css("padding-bottom", "210px");
             } else {
               $('body').removeAttr("style");
             }

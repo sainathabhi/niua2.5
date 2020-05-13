@@ -4,7 +4,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import { DiscussionService } from '../discussions/discussions.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as moment from 'moment';
 
 

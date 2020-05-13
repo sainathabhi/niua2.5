@@ -5,7 +5,7 @@ import { DiscussionService } from '../../services/discussions/discussions.servic
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { combineLatest, Subscription, Subject } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { TreeViewService } from '../../shared/tree-view.service';
 import { ResourceService } from './../../../shared/services/resource/resource.service';
 import { ToasterService } from './../../../shared/services/toaster/toaster.service';

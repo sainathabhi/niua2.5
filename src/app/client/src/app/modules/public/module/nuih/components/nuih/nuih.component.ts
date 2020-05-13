@@ -8,7 +8,7 @@ import {
 } from '@sunbird/shared';
 import { ICaraouselData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -52,7 +52,7 @@ export class NuihComponent implements OnInit, OnDestroy {
   /**
   * Contains result object returned from getPageData API.
   */
-  inspiredCarouselData: Array<ICaraouselData> = [];
+  // inspiredCarouselData: Array<ICaraouselData> = [];
   opportunitiesCarouselData: Array<ICaraouselData> = [];
   booksCarouselData: Array<ICaraouselData> = [];
   public config: ConfigService;
@@ -108,8 +108,8 @@ export class NuihComponent implements OnInit, OnDestroy {
             let noResultCounter = 0;
             this.showLoader = false;
             this.booksCarouselData = _.cloneDeep([apiResponse.sections[0]]);
-            this.inspiredCarouselData = _.cloneDeep([apiResponse.sections[1]]);
-            this.opportunitiesCarouselData = _.cloneDeep([apiResponse.sections[2]]);
+            // this.inspiredCarouselData = _.cloneDeep([apiResponse.sections[1]]);
+            this.opportunitiesCarouselData = _.cloneDeep([apiResponse.sections[1]]);
             _.forEach(this.booksCarouselData, (value, index) => {
               if (this.booksCarouselData[index].contents && this.booksCarouselData[index].contents.length > 0) {
                 const constantData = this.config.appConfig.ExplorePage.constantData;
@@ -119,15 +119,15 @@ export class NuihComponent implements OnInit, OnDestroy {
                   constantData, dynamicFields, metaData);
               }
             });
-            _.forEach(this.inspiredCarouselData, (value, index) => {
-              if (this.inspiredCarouselData[index].contents && this.inspiredCarouselData[index].contents.length > 0) {
-                const constantData = this.config.appConfig.ExplorePage.constantData;
-                const metaData = this.config.appConfig.ExplorePage.metaData;
-                const dynamicFields = this.config.appConfig.ExplorePage.dynamicFields;
-                this.inspiredCarouselData[index].contents = this.utilService.getDataForCard(this.inspiredCarouselData[index].contents,
-                  constantData, dynamicFields, metaData);
-              }
-            });
+            // _.forEach(this.inspiredCarouselData, (value, index) => {
+            //   if (this.inspiredCarouselData[index].contents && this.inspiredCarouselData[index].contents.length > 0) {
+            //     const constantData = this.config.appConfig.ExplorePage.constantData;
+            //     const metaData = this.config.appConfig.ExplorePage.metaData;
+            //     const dynamicFields = this.config.appConfig.ExplorePage.dynamicFields;
+            //     this.inspiredCarouselData[index].contents = this.utilService.getDataForCard(this.inspiredCarouselData[index].contents,
+            //       constantData, dynamicFields, metaData);
+            //   }
+            // });
             _.forEach(this.opportunitiesCarouselData, (value, index) => {
               if (this.opportunitiesCarouselData[index].contents && this.opportunitiesCarouselData[index].contents.length > 0) {
                 const constantData = this.config.appConfig.ExplorePage.constantData;
@@ -297,9 +297,9 @@ export class NuihComponent implements OnInit, OnDestroy {
     //Testimonials carousel Starts here
     // Testimonials carousel (uses the Owl Carousel library)
     (<any>$(".testimonials-carousel")).owlCarousel({
-      autoplay: true,
+      // autoplay: true,
       dots: true,
-      loop: true,
+      // loop: true,
       responsive: {
         0: {
           items: 1
@@ -374,7 +374,7 @@ export class NuihComponent implements OnInit, OnDestroy {
             this.filters[key] = value;
           }
         });
-        this.inspiredCarouselData = [];
+        // this.inspiredCarouselData = [];
         this.opportunitiesCarouselData = [];
         this.booksCarouselData = [];
         if (this.queryParams.sort_by && this.queryParams.sortType) {
