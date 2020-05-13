@@ -51,6 +51,7 @@
         }
         &.small {
             max-width: $sb-modal-small-width;
+            height: fit-content;
         }
         &.normal {
             max-width: $sb-modal-normal-width;

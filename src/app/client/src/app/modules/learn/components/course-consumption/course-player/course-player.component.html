@@ -71,7 +71,7 @@
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
                                 <p class="mb-5">
-                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}" class="cursor-pointer">
+                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}" class="cursor-pointer" style="color: #007ad9;">
                                       {{resourceService.frmelmnts.lbl.courseCredits}}
                                     </a>
                                 </p>
@@ -167,4 +167,6 @@
 </div>
 </div>
 <!-- <app-content-rating *ngIf='showRatingModal' [feedbackObject]='telemetryFeedbackObject' ></app-content-rating> -->
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+</app-content-credits>
 <router-outlet></router-outlet>
