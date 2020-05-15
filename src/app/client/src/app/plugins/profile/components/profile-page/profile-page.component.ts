@@ -36,6 +36,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   state: string;
   district: string;
   userFrameWork: any;
+  azureUrl: string;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
   editProfileInteractEdata: IInteractEventEdata;
@@ -54,6 +55,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.azureUrl = (<HTMLInputElement>document.getElementById('certificateUrl')).value + (<HTMLInputElement>document.getElementById('certificateContainerName')).value + '/course_certificate/';
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
@@ -68,7 +70,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getTrainingAttended();
     this.setInteractEventData();
   }
-
+  downloadCertificate(data) {
+    let downloadUrl = this.azureUrl + data.courseName + '-' + (<HTMLInputElement>document.getElementById('userId')).value + '-' + data.courseId + '.pdf';
+    window.open(downloadUrl, '_blank');
+  }
   getOrgDetails() {
     let orgList = [];
     this.roles = [];
