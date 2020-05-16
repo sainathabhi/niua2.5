@@ -24,7 +24,7 @@
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors">{{resourceService.frmelmnts.lbl.validPhone}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.email.touched && signUpForm.controls['email'].errors">{{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors)">{{showUniqueError}}</label>
-            <div class="inline fields mt-10 mb-10" id="Mandatory">
+            <!-- <div class="inline fields mt-10 mb-10" id="Mandatory">
               <div class="field">
                 <div class="ui radio checkbox" (click)="showContact='phone'">
                   <input class="sb-form-control" type="radio" checked="checked" value="phone" formControlName="contactType" role="phone" id="phoneNumber" aria-labelledby="Mandatory">
@@ -37,8 +37,8 @@
                   <label for="email" class="pl-20">{{resourceService.frmelmnts.lbl.email}}</label>
                 </div>
               </div>
-            </div>
-            <div class="field" *ngIf="showContact === 'email'">
+            </div> -->
+            <!-- <div class="field" *ngIf="showContact === 'email'">
               <input class="sb-form-control" type="email" [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
                 formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
             </div>
@@ -48,6 +48,10 @@
                   type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}">
                 <i class=" icon">+91-</i>
               </div>
+            </div> -->
+            <div class="field">
+              <input class="sb-form-control" type="email" [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
+                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && signUpForm.controls['password'].errors">{{resourceService.frmelmnts.lbl.validPassword}}</label>
             <div class="required field mb-20">

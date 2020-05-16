@@ -29,7 +29,7 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item"
+		<!-- <a class="item"
 			[class.active]="router.isActive('/search/explore') || router.isActive(slug ? slug + '/explore' : '/explore')"
 			*ngIf="!router.isActive('', true)" [routerLink]="[slug ? slug + '/explore' : '/explore']"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata">
@@ -41,7 +41,7 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<span class="item divider">|</span>
+		<span class="item divider">|</span> -->
 		<a class="item font-weight-bold sb-color-primary pr-0" href="/resources" appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}

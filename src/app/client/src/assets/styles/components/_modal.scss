@@ -2,6 +2,7 @@
 
 .sb-modal {
     .ui.modal {
+        height: fit-content !important;
         @include margin(3.5rem auto 0 auto);
         @include position(null, 0 0 null 0); //bourbon
         @include size(100%, auto); //bourbon

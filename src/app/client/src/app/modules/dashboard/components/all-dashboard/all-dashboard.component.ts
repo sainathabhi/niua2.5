@@ -2,13 +2,12 @@ import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective }
 import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsageService, ReportService } from './../../services';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
-import { DatePipe } from '@angular/common';
 import { ToasterService, ResourceService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-all-dashboard',
   templateUrl: './all-dashboard.component.html',
@@ -38,7 +37,7 @@ export class AllReportsComponent implements OnInit {
   telemetryInteractDownloadEdata: IInteractEventEdata;
   constructor(public configService: ConfigService, private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
-    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router, private datePipe: DatePipe, public reportService: ReportService
+    public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router, public reportService: ReportService
   ) {
     this.activatedRoute = activatedRoute;
   }
@@ -60,10 +59,10 @@ export class AllReportsComponent implements OnInit {
             obj.batchName = obj.batch.name;
             obj.courseName = obj.courseName;
             obj.enrollmentType = obj.batch.enrollmentType;
-            obj.startDate = self.datePipe.transform(obj.batch.startDate, 'dd-MMM-yyyy');
-            obj.enrollmentDate = self.datePipe.transform(obj.enrolledDate, 'dd-MMM-yyyy');
-            obj.endDate = self.datePipe.transform(obj.batch.endDate, 'dd-MMM-yyyy');
-            obj.completedOn = self.datePipe.transform(obj.completedOn, 'dd-MMM-yyyy');
+            obj.startDate = moment(obj.batch.startDate).format('DD-MMM-YYYY');
+            obj.enrollmentDate = moment(_.split(obj.enrolledDate,' ')[0]).format('DD-MMM-YYYY');
+            obj.endDate = moment(obj.batch.endDate).format('DD-MMM-YYYY');
+            obj.completedOn = moment(obj.completedOn).format('DD-MMM-YYYY');
             obj.statusName = (obj.progress === 0) ? 'Not-Started' : ((obj.progress === obj.leafNodesCount || obj.progress > obj.leafNodesCount) ? 'Completed' : 'In-Progress');
             obj.statusName = (obj.statusName != 'Completed' && (new Date(obj.batch.endDate) < new Date())) ? 'Expired' : obj.statusName;
             obj.downloadUrl = self.azureUrl + obj.courseName + '-' + self.userService.userid + '-' + obj.courseId + '.pdf';
