@@ -119,7 +119,7 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
             });
             _.map(tempObj, function (obj) {
               obj.createdOn = self.datePipe.transform(obj.lastPublishedOn, 'MM/dd/yyyy');
-              obj.OrgName = _.get(self.selectedCity, 'name');
+              obj.OrgName = _.get(self.selectedCity, 'orgName');
               obj.departmentName = _.get(self.selectedDepartment, 'orgName');
               // if (!_.isEmpty(obj.channel)) {
               //   obj.OrgName = _.lowerCase(_.get(_.find(self.allOrgName, { 'id': obj.channel }), 'orgName'));
@@ -168,15 +168,23 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
   }
   getOrgList() {
     this.cityList = [];
-    this.reportService.getOrgList().subscribe((response) => {
+    const data = {
+      "request": {
+        "filters": {
+          "isRootOrg":true,
+          "status":1
+        }
+      }
+    };
+    this.reportService.getOrganizationName(data).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        if (response.result.count > 0) {
+        if (response.result.response.count > 0) {
           // this.cityList = _.reject(response.result.channels, function (obj) {
           //   if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
           //     return obj;
           //   }
           // });
-          this.cityList = response.result.channels;
+          this.cityList = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
         }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
@@ -191,8 +199,9 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
     const data = {
       "request": {
         "filters": {
-          rootOrgId: _.get(this.selectedCity, 'identifier'),
-          isRootOrg: false
+          rootOrgId: _.get(this.selectedCity, 'id'),
+          isRootOrg: false,
+          status:1
         }
       }
     };
