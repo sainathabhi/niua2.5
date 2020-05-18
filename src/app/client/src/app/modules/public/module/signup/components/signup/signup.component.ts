@@ -20,11 +20,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
-  showContact = 'phone';
-  disableSubmitBtn = true;
+  disableSubmitBtn = false;
   showPassword = false;
-  captchaResponse = '';
-  googleCaptchaSiteKey: string;
   showSignUpForm = true;
   showUniqueError = '';
   tenantDataSubscription: Subscription;
@@ -55,16 +52,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
-
-    try {
-      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-    } catch (error) {
-      this.googleCaptchaSiteKey = '';
-    }
     this.getCacheLanguage();
     this.initializeFormFields();
     this.setInteractEventData();
-
     // Telemetry Start
     this.signUpTelemetryStart();
   }
@@ -119,10 +109,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       name: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
-      email: new FormControl(null, [Validators.email]),
-      contactType: new FormControl('phone'),
-      uniqueContact: new FormControl(null, [Validators.required])
+      email: new FormControl(null, [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
+      contactType: new FormControl('email'),
+      // uniqueContact: new FormControl(null, [Validators.required])
     }, {
         validator: (formControl) => {
           const passCtrl = formControl.controls.password;
@@ -137,55 +126,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           return null;
         }
       });
-    this.onContactTypeValueChanges();
-    this.enableSignUpSubmitButton();
-    this.onPhoneChange();
-  }
-
-  onContactTypeValueChanges(): void {
-    const emailControl = this.signUpForm.get('email');
-    const phoneControl = this.signUpForm.get('phone');
-    this.signUpForm.get('contactType').valueChanges.subscribe(
-      (mode: string) => {
-        this.setInteractEventData();
-        this.signUpForm.controls['uniqueContact'].setValue('');
-        if (mode === 'email') {
-          this.signUpForm.controls['phone'].setValue('');
-          emailControl.setValidators([Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]);
-          phoneControl.clearValidators();
-          this.onEmailChange();
-        } else if (mode === 'phone') {
-          this.signUpForm.controls['email'].setValue('');
-          emailControl.clearValidators();
-          phoneControl.setValidators([Validators.required, Validators.pattern('^\\d{10}$')]);
-          this.onPhoneChange();
-        }
-        emailControl.updateValueAndValidity();
-        phoneControl.updateValueAndValidity();
-      });
-  }
-
-  enableSignUpSubmitButton() {
-    this.signUpForm.valueChanges.subscribe(val => {
-      if (this.signUpForm.status === 'VALID') {
-        this.disableSubmitBtn = false;
-      } else {
-        this.disableSubmitBtn = true;
-      }
-    });
-  }
-
-  onPhoneChange() {
-    const phoneControl = this.signUpForm.get('phone');
-    let phoneValue = '';
-    phoneControl.valueChanges.subscribe(
-      (data: string) => {
-        if (phoneControl.status === 'VALID' && phoneValue !== phoneControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
-          this.vaidateUserContact();
-          phoneValue = phoneControl.value;
-        }
-      });
   }
 
   onEmailChange() {
@@ -194,7 +134,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     emailControl.valueChanges.subscribe(
       (data: string) => {
         if (emailControl.status === 'VALID' && emailValue !== emailControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
+          // this.signUpForm.controls['uniqueContact'].setValue('');
           this.vaidateUserContact();
           emailValue = emailControl.value;
         }
@@ -202,19 +142,17 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   vaidateUserContact() {
-    const value = this.signUpForm.controls.contactType.value === 'phone' ?
-      this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
+    const value = this.signUpForm.controls.email.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
     this.signupService.getUserByKey(uri).subscribe(
       (data: ServerResponse) => {
-        this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
-          this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+        this.showUniqueError = this.resourceService.frmelmnts.lbl.uniqueEmail;
       },
       (err) => {
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
           this.showUniqueError = this.resourceService.frmelmnts.lbl.blockedUserError;
         } else {
-          this.signUpForm.controls['uniqueContact'].setValue(true);
+          // this.signUpForm.controls['uniqueContact'].setValue(true);
           this.showUniqueError = '';
         }
       }
@@ -229,61 +167,27 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  resolved(captchaResponse: string) {
-    const newResponse = captchaResponse
-      ? `${captchaResponse.substr(0, 7)}...${captchaResponse.substr(-7)}`
-      : captchaResponse;
-    this.captchaResponse += `${JSON.stringify(newResponse)}\n`;
-    if (this.captchaResponse) {
-      this.onSubmitSignUpForm();
-    }
-  }
-
-  onSubmitSignUpForm() {
-    this.disableSubmitBtn = true;
-    this.generateOTP();
-  }
-
-  generateOTP() {
-    const request = {
-      'request': {
-        'key': this.signUpForm.controls.contactType.value === 'phone' ?
-          this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value,
-        'type': this.signUpForm.controls.contactType.value.toString()
-      }
-    };
-    this.signupService.generateOTP(request).subscribe(
-      (data: ServerResponse) => {
-        this.showSignUpForm = false;
-        this.disableSubmitBtn = false;
-      },
-      (err) => {
-        const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
-          (_.get(err, 'error.params.status') &&
-          err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
-        this.toasterService.error(failedgenerateOTPMessage);
-        this.resetGoogleCaptcha();
-        this.disableSubmitBtn = false;
-      }
-    );
-  }
-
-  resetGoogleCaptcha() {
-    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
-    element.click();
-  }
-
-  showParentForm(event) {
-    if (event === 'true') {
-      this.initializeFormFields();
-      this.showSignUpForm = true;
-    }
-  }
-
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryCdata = [{ 'type': 'signup', 'id': this.activatedRoute.snapshot.data.telemetry.uuid }];
       this.signUpTelemetryImpression();
+    });
+  }
+  createUser() {
+    const createRequest = {
+      request: {
+        firstName: _.split(_.trim(this.signUpForm.controls.name.value),' ')[0] || _.split(_.trim(this.signUpForm.controls.name.value),',')[0] || _.trim(this.signUpForm.controls.name.value),
+        lastName: _.split(_.trim(this.signUpForm.controls.name.value),' ')[1] || _.split(_.trim(this.signUpForm.controls.name.value),',')[1] || '',
+        password: _.trim(this.signUpForm.controls.password.value),
+        email: _.trim(this.signUpForm.controls.email.value),
+        phoneVerified: true,
+        emailVerified: true
+      }
+    };
+    this.signupService.createUser(createRequest).subscribe(
+      (response: ServerResponse) => {
+        this.initializeFormFields();
+        this.toasterService.success("User successfully registered.");
     });
   }
 
