@@ -238,7 +238,7 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
   initializeColumns() {
     this.cols = [
       { field: 'OrgName', header: 'City Name' },
-      { field: 'departmentName', header: 'Creator Department' },
+      // { field: 'departmentName', header: 'Creator Department' },
       { field: 'name', header: 'Name' },
       { field: 'board', header: 'Category' },
       { field: 'gradeLevel', header: 'Sub Category' },

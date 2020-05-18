@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@ang
 import { UsageService } from '../../services';
 import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UserService } from '@sunbird/core';
+import { UserService, SearchService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -46,7 +46,7 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
   private activatedRoute: ActivatedRoute;
   telemetryImpression: IImpressionEventInput;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer, private configService: ConfigService,
-    public userService: UserService, private toasterService: ToasterService,
+    public userService: UserService, private toasterService: ToasterService,private searchService:SearchService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router, public reportService: ReportService, private datePipe: DatePipe
   ) {
     this.activatedRoute = activatedRoute;
@@ -95,6 +95,7 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
             "Live"
           ],
           "framework": ["nulp"],
+          "channel": [_.get(this.selectedCity, 'id')],
           "contentType": [_.get(this.selectedContentType, 'name')],
           "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
         },
@@ -112,37 +113,46 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
             this.tableData = [];
             let tempObj = _.cloneDeep(response.result.content);
             var self = this;
-            tempObj = _.filter(_.cloneDeep(tempObj), function (obj) {
-              if (_.indexOf(_.toArray(obj.createdFor), _.get(self.selectedDepartment, 'identifier')) > -1) {
-                return obj;
+            const requestparam = {
+              filters: {
+                id: _.uniq(_.map(tempObj, 'createdBy'))
+              }
+            }
+            this.searchService.getUserList(requestparam).subscribe(response => {
+              let subOrgUser = _.map(_.filter(response.result.response.content, obj => _.includes(_.map(obj.organisations, 'organisationId'), _.get(self.selectedDepartment, 'id'))), 'id');
+              // tempObj = _.filter(_.cloneDeep(tempObj), function (obj) {
+              //   if (_.indexOf(_.toArray(obj.createdFor), _.get(self.selectedDepartment, 'identifier')) > -1) {
+              //     return obj;
+              //   }
+              // });
+              let filteredData = _.filter(tempObj,obj=>_.includes(subOrgUser,obj.createdBy));
+              _.map(filteredData, function (value) {
+                value.createdOn = self.datePipe.transform(value.lastPublishedOn, 'MM/dd/yyyy');
+                value.OrgName = _.get(self.selectedCity, 'orgName');
+                value.departmentName = _.get(self.selectedDepartment, 'orgName');
+                // if (!_.isEmpty(obj.channel)) {
+                //   obj.OrgName = _.lowerCase(_.get(_.find(self.allOrgName, { 'id': obj.channel }), 'orgName'));
+                // } else {
+                //   obj.OrgName = '';
+                // }
+                value.UserName = value.creator;
+                // if (!_.isEmpty(obj.createdBy)) {
+                //   obj.UserName = _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'firstName') + " " + _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'lastName');
+                // } else {
+                //   obj.UserName = '';
+                // }
+              });
+              this.noResult = false;
+              this.tableData = filteredData;
+              // this.tableData = _.filter(_.filter(tempObj, { OrgName: _.get(this.selectedCity, 'orgName') }), { board: _.get(this.selectedDepartment, 'name') });
+              this.initializeColumns();
+              if (_.isEmpty(this.tableData)) {
+                this.noResultMessage = {
+                  'messageText': 'messages.stmsg.m0131'
+                };
+                this.noResult = true;
               }
             });
-            _.map(tempObj, function (obj) {
-              obj.createdOn = self.datePipe.transform(obj.lastPublishedOn, 'MM/dd/yyyy');
-              obj.OrgName = _.get(self.selectedCity, 'orgName');
-              obj.departmentName = _.get(self.selectedDepartment, 'orgName');
-              // if (!_.isEmpty(obj.channel)) {
-              //   obj.OrgName = _.lowerCase(_.get(_.find(self.allOrgName, { 'id': obj.channel }), 'orgName'));
-              // } else {
-              //   obj.OrgName = '';
-              // }
-              obj.UserName = obj.creator;
-              // if (!_.isEmpty(obj.createdBy)) {
-              //   obj.UserName = _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'firstName') + " " + _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'lastName');
-              // } else {
-              //   obj.UserName = '';
-              // }
-            });
-            this.noResult = false;
-            this.tableData = tempObj;
-            // this.tableData = _.filter(_.filter(tempObj, { OrgName: _.get(this.selectedCity, 'orgName') }), { board: _.get(this.selectedDepartment, 'name') });
-            this.initializeColumns();
-            if (_.isEmpty(this.tableData)) {
-              this.noResultMessage = {
-                'messageText': 'messages.stmsg.m0131'
-              };
-              this.noResult = true;
-            }
           } else {
             this.noResultMessage = {
               'messageText': 'messages.stmsg.m0131'
