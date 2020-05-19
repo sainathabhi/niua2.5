@@ -117,7 +117,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: _.get(this.queryParams, 'appliedFilters') ?  _.assign(_.omit(this.frameworkData,'id'),{contentType:[_.get(this.queryParams, 'contentType')]}) : _.get(manipulatedData, 'filters'),
+      filters: _.get(this.queryParams, 'appliedFilters') ? filters : { board: _.get(this.frameworkData, 'board'), gradeLevel: _.get(this.frameworkData, 'gradeLevel'), medium: _.get(this.frameworkData, 'medium') },
       // mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
@@ -132,6 +132,9 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
+          this.carouselMasterData[0].contents = _.filter(_.cloneDeep(this.carouselMasterData[0].contents), { contentType: _.get(this.queryParams, 'contentType') });
+        }
         if (!this.carouselMasterData.length) {
           return; // no page section
         }
