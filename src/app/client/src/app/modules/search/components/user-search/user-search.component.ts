@@ -182,7 +182,14 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
         if (apiResponse.result.response.count && apiResponse.result.response.content.length > 0) {
           this.showLoader = false;
           this.noResult = false;
-          this.searchList = apiResponse.result.response.content;
+          this.searchList = _.map(apiResponse.result.response.content,function(obj) {
+            if(obj.organisations.length > 1 && obj.rootOrgId === obj.organisations[0].organisationId) {
+              obj.organisations = _.reverse(obj.organisations);
+              return obj;
+            } else {
+                return obj;
+            }
+          });
           this.totalCount = apiResponse.result.response.count;
           this.populateLocationDetailsAndSetRoles();
           this.pager = this.paginationService.getPager(apiResponse.result.response.count, this.pageNumber, this.pageLimit);
