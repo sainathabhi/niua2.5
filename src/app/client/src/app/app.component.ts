@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
       this.router.events.subscribe((ev) => {
         if (ev instanceof NavigationEnd) {
-          // #NUIH change: Hide main header for Nuih Page
+          // #NULP change: Hide main header for Nuih Page
           this.showMainHeader = _.indexOf(_.split(window.location.href, '/'), 'nulp') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'lms') > -1
           || _.indexOf(_.split(window.location.href, '/'), 'innovate') > -1

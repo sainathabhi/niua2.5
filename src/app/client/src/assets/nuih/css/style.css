@@ -1179,7 +1179,8 @@ li.nav-item.ft {
     width: 60%;
   }
   .navbar-brand {
-    margin-left: 4rem;
+    margin-left: 2rem;
+    padding-right: 15px;
     font-size: 1.25rem;
     line-height: inherit;
   }
@@ -1374,7 +1375,8 @@ li.nav-item.ft {
     width: 60%;
   }
   .navbar-brand {
-    margin-left: 4rem;
+    margin-left: 2rem;
+    padding-right: 15px;
     font-size: 1.25rem;
     line-height: inherit;
   }
@@ -1534,7 +1536,7 @@ div#header-sticky-wrapper {
   background-color: #fff;
 }
 
-/* NUIH change starts here: */
+/* NULP change starts here: */
 
 .nuis.nav-item {
   margin-bottom: 7px;
@@ -1549,7 +1551,7 @@ div#header-sticky-wrapper {
   height: 40px;
 }
 
-/* NUIH change ends here: */
+/* NULP change ends here: */
 
 .navbar-collapse {
   width: 100%;

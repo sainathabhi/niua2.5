@@ -13,7 +13,7 @@ import { NuihModule } from './module/nuih/nuih.module';
     CoreModule,
     SharedModule,
     PublicRoutingModule,
-    // #NUIH change: Imported NuihModule
+    // #NULP change: Imported NuihModule
     NuihModule
   ],
   declarations: [LandingPageComponent],
