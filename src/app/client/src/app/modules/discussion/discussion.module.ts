@@ -5,12 +5,12 @@ import { CourseDiscussService } from './../discussion/services/course-discuss/co
 import { DiscussionService } from './services';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-// #NUIH change Froala Rich Text Editor Module Imported:
+// #NULP change Froala Rich Text Editor Module Imported:
 import { QuillEditorModule } from 'ngx-quill-editor';
 import { TreeViewComponent } from './shared/tree-view.component';
 import { TreeView } from './shared/tree-view.directory';
 import { TreeViewService } from './shared/tree-view.service';
-// #NUIH change:
+// #NULP change:
 import { TelemetryModule } from './../telemetry/telemetry.module';
 
 @NgModule({

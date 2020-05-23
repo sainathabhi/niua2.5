@@ -4,9 +4,7 @@ body {
   color: #444;
   font-family: "Raleway", sans-serif !important;
 }
-.nav-item a {
-  cursor: pointer;
-}
+
 a {
   color: #0065fe;
   transition: 0.5s;
@@ -1179,7 +1177,8 @@ li.nav-item.ft {
     width: 60%;
   }
   .navbar-brand {
-    margin-left: 4rem;
+    margin-left: 2rem;
+    padding-right: 15px;
     font-size: 1.25rem;
     line-height: inherit;
   }
@@ -1374,7 +1373,8 @@ li.nav-item.ft {
     width: 60%;
   }
   .navbar-brand {
-    margin-left: 4rem;
+    margin-left: 2rem;
+    padding-right: 15px;
     font-size: 1.25rem;
     line-height: inherit;
   }
@@ -1534,7 +1534,7 @@ div#header-sticky-wrapper {
   background-color: #fff;
 }
 
-/* NUIH change starts here: */
+/* NULP change starts here: */
 
 .nuis.nav-item {
   margin-bottom: 7px;
@@ -1549,7 +1549,7 @@ div#header-sticky-wrapper {
   height: 40px;
 }
 
-/* NUIH change ends here: */
+/* NULP change ends here: */
 
 .navbar-collapse {
   width: 100%;
@@ -1591,7 +1591,6 @@ div#header-sticky-wrapper {
 }
 
 .smart-gov-border-btm {
-  margin-top: 0 !important;
   border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
@@ -2750,7 +2749,7 @@ li.nav-item.ft {
 
 .smart-gov-heading {
   margin-block-start: -17px;
-  /* margin-bottom: -17px; */
+  margin-bottom: -17px;
 }
 
 .smart-gov-heading h2 {
@@ -2976,7 +2975,7 @@ li.nav-item.ft {
 }
 
 .margin-top-7 {
-  margin-top: 7px !important;
+  margin-top: -7px !important;
 }
 
 span.pull-left.paticipate {

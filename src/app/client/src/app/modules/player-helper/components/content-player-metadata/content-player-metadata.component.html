@@ -30,21 +30,21 @@
         <dt>{{resourceService.frmelmnts?.lbl?.createdInstanceName  | interpolate:'{instance}': instance}}</dt>
         <dd *ngIf="metadata.creator">{{metadata.creator}}</dd>
     </dl>
-    <dl class="sb-meta-data">
+    <!-- <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
         <dd *ngIf="metadata.author">{{metadata.author}}</dd>
-    </dl>
+    </dl> -->
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
         <dd *ngIf="metadata.license">{{metadata.license}}&#x200E;</dd>
     </dl>
-    <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
+    <!-- <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
         <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
         <dd>
             <span class="d-inline-block">{{metadata?.organisation?.join(', ')}}</span>
             <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
         </dd>
-    </dl>
+    </dl> -->
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl?.copyRight}}</dt>
         <dd>
@@ -109,21 +109,21 @@
             <dt>{{resourceService.frmelmnts?.lbl?.contenttype}}</dt>
             <dd>{{metadata.originData.name}}</dd>
         </dl>
-        <dl class="sb-meta-data" *ngIf="metadata.originData.author">
+        <!-- <dl class="sb-meta-data" *ngIf="metadata.originData.author">
             <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
             <dd *ngIf="metadata.creator">{{metadata.originData.author}}</dd>
-        </dl>
+        </dl> -->
         <dl class="sb-meta-data" *ngIf="metadata.originData.license">
             <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
             <dd *ngIf="metadata.creator">{{metadata.originData.license}}&#x200E;</dd>
         </dl>
-        <dl class="sb-meta-data" *ngIf="metadata.originData.organisation">
+        <!-- <dl class="sb-meta-data" *ngIf="metadata.originData.organisation">
             <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
             <dd>
                 <span class="d-inline-block">{{metadata.originData.organisation.join(', ')}}</span>
                 <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.originData.orgDetails?.email}}</a>
             </dd>
-        </dl>
+        </dl> -->
     </div>
 </div>
 <app-content-credits [contentData]="metadata" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false"></app-content-credits>

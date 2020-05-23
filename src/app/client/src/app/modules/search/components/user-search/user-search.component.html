@@ -37,18 +37,18 @@
                     <div class="header mb-5" *ngIf="user.status===1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
                     <div class="header mb-5" *ngIf="user.status!==1">{{user.firstName}} &nbsp;{{user.lastName}}</div>
 
-                    <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float">
+                    <!-- <a *ngIf="user.status===1 && user.isEditableProfile" class="right-float"> -->
                       <!-- update user roles -->
-                      <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
+                      <!-- <span appTelemetryInteract [telemetryInteractEdata]="userEditIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
                         class="remove-outline" [queryParams]="queryParams" [routerLink]="['edit/' + user.id]" (click)="user.status===1 && userSearchService.userDetailsObject=user">
                         <i class="edit large icon"></i>
-                      </span>
+                      </span> -->
                       <!-- delete user -->
                       <!-- <span appTelemetryInteract [telemetryInteractEdata]="userDeleteIntractEdata" [telemetryInteractObject]="{id:user.id,type:'user',ver:'1.0'}"
                         class="remove-outline mx-5">
                         <i class="trash outline large icon remove-outline" [queryParams]="queryParams" [routerLink]="['delete/' + user.id]" (click)="userSearchService.userDetailsObject=user"></i>
                       </span> -->
-                    </a>
+                    <!-- </a> -->
 
                     <!-- organization Name -->
                     <div class="meta">

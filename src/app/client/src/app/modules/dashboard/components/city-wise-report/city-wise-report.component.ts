@@ -67,7 +67,7 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
             "Live"
           ],
           "framework": ["nulp"],
-          "channel": [_.get(this.selectedCity, 'identifier')],
+          "channel": [_.get(this.selectedCity, 'id')],
           // "channel": channelfilter,
           "contentType": ["Course", 'Resource', 'Collection'],
           "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
@@ -88,7 +88,7 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
             var self = this;
             _.map(tempObj, function (obj) {
               obj.createdOn = self.datePipe.transform(obj.lastPublishedOn, 'MM/dd/yyyy');
-              obj.OrgName = _.get(self.selectedCity, 'name');
+              obj.OrgName = _.get(self.selectedCity, 'orgName');
               if (_.toArray(obj.createdFor).length === 1) {
                 // obj.departmentName = _.toArray(obj.organisation)[0];
                 obj.departmentName = _.get(_.find(self.allOrgName, { 'id': _.toArray(obj.createdFor)[0] }), 'orgName');
@@ -166,15 +166,23 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
   }
   getOrgList() {
     this.cityList = [];
-    this.reportService.getOrgList().subscribe((response) => {
+    const data = {
+      "request": {
+        "filters": {
+          "isRootOrg":true,
+          "status":1
+        }
+      }
+    };
+    this.reportService.getOrganizationName(data).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        if (response.result.count > 0) {
+        if (response.result.response.count > 0) {
           // this.cityList = _.reject(response.result.channels, function (obj) {
           //   if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
           //     return obj;
           //   }
           // });
-          this.cityList = response.result.channels;
+          this.cityList = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
         }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
@@ -230,7 +238,7 @@ export class CityWiseReportComponent implements OnInit, OnDestroy {
   initializeColumns() {
     this.cols = [
       { field: 'OrgName', header: 'City Name' },
-      { field: 'departmentName', header: 'Creator Department' },
+      // { field: 'departmentName', header: 'Creator Department' },
       { field: 'name', header: 'Name' },
       { field: 'board', header: 'Category' },
       { field: 'gradeLevel', header: 'Sub Category' },

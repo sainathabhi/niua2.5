@@ -146,7 +146,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     const locationCodes = [];
     if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state); }
     if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
-    // #NUIH change: Commented unwanted payload
+    // #NULP change: Commented unwanted payload
     // const data = { firstName: _.trim(this.userDetailsForm.value.firstName), lastName: _.trim(this.userDetailsForm.value.lastName), locationCodes: locationCodes };
     const data = { firstName: _.trim(this.userDetailsForm.value.firstName), lastName: _.trim(this.userDetailsForm.value.lastName)};
     this.updateProfile(data);

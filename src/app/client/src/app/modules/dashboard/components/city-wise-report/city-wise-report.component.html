@@ -27,7 +27,7 @@
                     <label>City</label>
                     <div class="mt-10" style="cursor: pointer">
                         <p-dropdown [options]="cityList" [(ngModel)]="selectedCity" placeholder="Select a City"
-                            optionLabel="name" [ngModelOptions]="{standalone: true}">
+                            optionLabel="orgName" [ngModelOptions]="{standalone: true}">
                         </p-dropdown>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
         </div>
     </form><br><br>
     <div class="ui grid" *ngIf="!noResult && tableData.length > 0">
-        <div class="eight wide column">
+        <!-- <div class="eight wide column">
             <div class="ui two cards">
                 <div class="card" *ngFor="let block of pieChartData?.datasets[0].data;let i=index">
                     <div class="content center aligned">
@@ -54,7 +54,7 @@
         </div>
         <div class="four wide column">
             <p-chart type="pie" [data]="pieChartData" height="300px" [responsive]="true"></p-chart>
-        </div>
+        </div> -->
         <div class="twelve wide column">
             <span>Number of contents created:&nbsp;<b>{{tableData.length}}</b></span>
         </div>

@@ -17,7 +17,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./discussion.component.scss'],
 })
 export class DiscussionComponent implements OnInit, OnChanges {
-  // #NUIH change:
+  // #NULP change:
   // @ViewChild('fileInput') fileInput: ElementRef;
   // @ViewChild('fileInputforModal') fileInputforModal: ElementRef;
   selectedFile: string = null;
@@ -33,7 +33,7 @@ export class DiscussionComponent implements OnInit, OnChanges {
   //   toolbarButtonsSM: ['bold', 'italic', 'underline', 'formatOL', 'formatUL', 'insertLink', 'undo', 'redo', 'alert'],
   //   toolbarButtonsMD: ['bold', 'italic', 'underline', 'formatOL', 'formatUL', 'insertLink', 'undo', 'redo', 'alert']
   // };
-  // #NUIH change:
+  // #NULP change:
   private activatedRouteSubscription: Subscription;
   // private activatedRoute: ActivatedRoute;
 

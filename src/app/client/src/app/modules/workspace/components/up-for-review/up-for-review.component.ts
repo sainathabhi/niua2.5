@@ -196,9 +196,10 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     const searchParams = {
       filters: {
         status: ['Review'],
-        createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
-          rolesMap['BOOK_REVIEWER'],
-          rolesMap['CONTENT_REVIEW'])),
+        // createdFor: this.userService.RoleOrgMap && _.compact(_.union(rolesMap['CONTENT_REVIEWER'],
+        //   rolesMap['BOOK_REVIEWER'],
+        //   rolesMap['CONTENT_REVIEW'])),
+        channel:[this.userService.userProfile.rootOrgId],
         createdBy: { '!=': this.userService.userid },
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
@@ -215,12 +216,33 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.upForReviewContentData = data.result.content;
-          this.totalCount = data.result.count;
-          this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
-          this.showLoader = false;
-          this.noResult = false;
-        } else {
+          if(this.userService.userProfile.organisationIds.length > 1) {
+            const requestparam = {
+              filters: {
+                id:_.uniq(_.map(_.cloneDeep(data.result.content),'createdBy'))
+                }
+              }
+              let userList;
+              let subOrgUser;
+              this.searchService.getUserList(requestparam).subscribe(response=> {
+                userList = response.result.response.content;
+                let self=this;
+                let subOrgId = _.difference(_.get(_.cloneDeep(self.userService.userProfile),'organisationIds'),[self.userService.userProfile.rootOrgId]);
+                subOrgUser = _.map(_.filter(userList,obj=>_.includes(_.map(obj.organisations,'organisationId'),_.toString(subOrgId))),'id');
+                this.upForReviewContentData = _.filter(_.cloneDeep(data.result.content),obj=>_.includes(subOrgUser,obj.createdBy));
+                this.totalCount = this.upForReviewContentData.length;
+                this.pager = this.paginationService.getPager(this.upForReviewContentData.length, pageNumber, limit);
+                this.showLoader = false;
+                this.noResult = false;
+              });
+            } else {
+              this.upForReviewContentData = data.result.content;
+              this.totalCount = this.upForReviewContentData.length;
+              this.pager = this.paginationService.getPager(this.upForReviewContentData.length, pageNumber, limit);
+              this.showLoader = false;
+              this.noResult = false;
+            }
+          } else {
           this.showError = false;
           this.noResult = true;
           this.showLoader = false;

@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@ang
 import { UsageService } from '../../services';
 import * as _ from 'lodash-es';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UserService } from '@sunbird/core';
+import { UserService, SearchService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, ConfigService } from '@sunbird/shared';
 import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,7 +40,7 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
   private activatedRoute: ActivatedRoute;
   telemetryImpression: IImpressionEventInput;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer, private configService: ConfigService,
-    public userService: UserService, private toasterService: ToasterService,
+    public userService: UserService, private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router, public reportService: ReportService, private datePipe: DatePipe
   ) {
     this.activatedRoute = activatedRoute;
@@ -89,6 +89,7 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
             "Live"
           ],
           "framework": ["nulp"],
+          "channel": [_.get(this.selectedCity, 'id')],
           "contentType": ["Course", 'Resource', 'Collection'],
           "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
         },
@@ -106,37 +107,46 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
             this.tableData = [];
             let tempObj = _.cloneDeep(response.result.content);
             var self = this;
-            tempObj = _.filter(_.cloneDeep(tempObj), function (obj) {
-              if (_.indexOf(_.toArray(obj.createdFor), _.get(self.selectedDepartment, 'identifier')) > -1) {
-                return obj;
+            const requestparam = {
+              filters: {
+                id: _.uniq(_.map(tempObj, 'createdBy'))
+              }
+            }
+            this.searchService.getUserList(requestparam).subscribe(response => {
+              let subOrgUser = _.map(_.filter(response.result.response.content, obj => _.includes(_.map(obj.organisations, 'organisationId'), _.get(self.selectedDepartment, 'id'))), 'id');
+              // tempObj = _.filter(_.cloneDeep(tempObj), function (obj) {
+              //   if (_.indexOf(_.toArray(obj.createdFor), _.get(self.selectedDepartment, 'identifier')) > -1) {
+              //     return obj;
+              //   }
+              // });
+              let filteredData = _.filter(tempObj,obj=>_.includes(subOrgUser,obj.createdBy));
+              _.map(filteredData, function (value) {
+                value.createdOn = self.datePipe.transform(value.lastPublishedOn, 'MM/dd/yyyy');
+                value.OrgName = _.get(self.selectedCity, 'orgName');
+                value.departmentName = _.get(self.selectedDepartment, 'orgName');
+                // if (!_.isEmpty(obj.channel)) {
+                //   obj.OrgName = _.lowerCase(_.get(_.find(self.allOrgName, { 'id': obj.channel }), 'orgName'));
+                // } else {
+                //   obj.OrgName = '';
+                // }
+                value.UserName = value.creator;
+                // if (!_.isEmpty(obj.createdBy)) {
+                //   obj.UserName = _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'firstName') + " " + _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'lastName');
+                // } else {
+                //   obj.UserName = '';
+                // }
+              });
+              this.noResult = false;
+              this.tableData = filteredData;
+              // this.tableData = _.filter(_.filter(tempObj, { OrgName: _.get(this.selectedCity, 'orgName') }), { board: _.get(this.selectedDepartment, 'name') });
+              this.initializeColumns();
+              if (_.isEmpty(this.tableData)) {
+                this.noResultMessage = {
+                  'messageText': 'messages.stmsg.m0131'
+                };
+                this.noResult = true;
               }
             });
-            _.map(tempObj, function (obj) {
-              obj.createdOn = self.datePipe.transform(obj.lastPublishedOn, 'MM/dd/yyyy');
-              obj.OrgName = _.get(self.selectedCity, 'name');
-              obj.departmentName = _.get(self.selectedDepartment, 'orgName');
-              // if (!_.isEmpty(obj.channel)) {
-              //   obj.OrgName = _.lowerCase(_.get(_.find(self.allOrgName, { 'id': obj.channel }), 'orgName'));
-              // } else {
-              //   obj.OrgName = '';
-              // }
-              obj.UserName = obj.creator;
-              // if (!_.isEmpty(obj.createdBy)) {
-              //   obj.UserName = _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'firstName') + " " + _.get(_.find(self.allUserName, { 'id': obj.createdBy }), 'lastName');
-              // } else {
-              //   obj.UserName = '';
-              // }
-            });
-            this.noResult = false;
-            this.tableData = tempObj;
-            // this.tableData = _.filter(_.filter(tempObj, { OrgName: _.get(this.selectedCity, 'orgName') }), { board: _.get(this.selectedDepartment, 'name') });
-            this.initializeColumns();
-            if (_.isEmpty(this.tableData)) {
-              this.noResultMessage = {
-                'messageText': 'messages.stmsg.m0131'
-              };
-              this.noResult = true;
-            }
           } else {
             this.noResultMessage = {
               'messageText': 'messages.stmsg.m0131'
@@ -160,15 +170,23 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
   }
   getOrgList() {
     this.cityList = [];
-    this.reportService.getOrgList().subscribe((response) => {
+    const data = {
+      "request": {
+        "filters": {
+          "isRootOrg": true,
+          "status": 1
+        }
+      }
+    };
+    this.reportService.getOrganizationName(data).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        if (response.result.count > 0) {
+        if (response.result.response.count > 0) {
           // this.cityList = _.reject(response.result.channels, function (obj) {
           //   if (obj.name === 'nuis_test' || obj.name === 'niua_test' || obj.name === 'nuis' || obj.name === 'pwc') {
           //     return obj;
           //   }
           // });
-          this.cityList = response.result.channels;
+          this.cityList = _.reject(response.result.response.content, obj => _.isEmpty(obj.orgName));
         }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
@@ -183,8 +201,9 @@ export class DeptCityWiseReportComponent implements OnInit, OnDestroy {
     const data = {
       "request": {
         "filters": {
-          rootOrgId: _.get(this.selectedCity, 'identifier'),
-          isRootOrg: false
+          rootOrgId: _.get(this.selectedCity, 'id'),
+          isRootOrg: false,
+          status: 1
         }
       }
     };

@@ -13,7 +13,7 @@ body {
   letter-spacing: 0.2px;
   height: auto;
   color: $default-text-color;
-  /*padding-bottom: 336px;*/
+  padding-bottom: 336px;
   min-height: 100vh;
   &.pushable {
     background: $body-background-color !important;
@@ -28,34 +28,34 @@ body {
 }
 @include respond-above (lg){
   body{
-    /*.footer-fix {
+    .footer-fix {
       padding-bottom: 56px;
-    }*/
+    }
   }
 }
 @include respond-between (md, lg){
   body{
-    /*.footer-fix {
+    .footer-fix {
       padding-bottom: 64px;
-    }*/
+    }
   }
 }
 @include respond-between (sm, md){
   body{
-    /*.footer-fix {
+    .footer-fix {
       padding-bottom: 112px;
-    }*/
+    }
   }
 }
 @include respond-above(sm) {
   body {
-    /*padding-bottom: 168px;*/
+    padding-bottom: 168px;
     .pusher {
       padding-bottom: 240px !important;
     }
-    /*.footer-fix {
+    .footer-fix {
       min-height: calc(100vh - 168px);
-    }*/
+    }
     .sb-mid-container-min-height{
       min-height: calc(100vh - 288px);
       margin-bottom: -($base-block-space * 4) !important;
