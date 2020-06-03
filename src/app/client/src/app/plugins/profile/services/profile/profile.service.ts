@@ -7,8 +7,14 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse
   providedIn: 'root'
 })
 export class ProfileService {
+  /**
+   * user id
+   */
+  userid: string;
   constructor(private learnerService: LearnerService,
-    public userService: UserService, public configService: ConfigService) { }
+    public userService: UserService, public configService: ConfigService) {
+      this.userid = this.userService.userid;
+    }
   /**
    * This method is used to update profile picture of the user
    */
@@ -124,5 +130,12 @@ export class ProfileService {
       data: request,
     };
     return this.learnerService.post(options);
+  }
+  getEnrolledCourses() {
+    const option = {
+      url: this.configService.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid,
+      param: { ...this.configService.appConfig.Course.contentApiQueryParams, ...this.configService.urlConFig.params.enrolledCourses }
+    };
+    return this.learnerService.get(option);
   }
 }

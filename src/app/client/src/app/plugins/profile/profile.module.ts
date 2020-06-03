@@ -7,7 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-  AccountRecoveryInfoComponent
+  AccountRecoveryInfoComponent, MyCalendarComponent, UserUploadComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
@@ -16,8 +16,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { AvatarModule } from 'ngx-avatar';
+import { FullCalendarModule } from 'primeng/fullcalendar';
 @NgModule({
   imports: [
+    FullCalendarModule,
     CommonModule,
     ProfileRoutingModule,
     SharedModule,
@@ -33,7 +35,7 @@ import { AvatarModule } from 'ngx-avatar';
     SharedFeatureModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-   AccountRecoveryInfoComponent],
+   AccountRecoveryInfoComponent, MyCalendarComponent, UserUploadComponent],
   providers: []
 })
 export class ProfileModule { }

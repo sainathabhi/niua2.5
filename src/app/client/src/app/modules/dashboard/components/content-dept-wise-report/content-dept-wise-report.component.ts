@@ -31,9 +31,22 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
   allOrgName: any = [];
   allUserName: any = [];
   contentTypeList: any = [
-    { name: 'Resource' },
-    { name: 'Course' },
-    { name: 'Collection' }
+    {
+      name:'Pdf',
+      value:['application/pdf']
+    },
+    {
+      name:'Video',
+      value:['video/x-youtube','video/Webm','video/mp4']
+    },
+    {
+      name:'Collection',
+      value:['application/vnd.ekstep.content-collection']
+    },
+    {
+      name:'Assessment',
+      value:['application/vnd.ekstep.ecml-archive']
+    }
   ];
   cityList: any = [];
   departmentList: any = [];
@@ -96,14 +109,14 @@ export class ContentDeptWiseReportComponent implements OnInit, OnDestroy {
           ],
           "framework": ["nulp"],
           "channel": [_.get(this.selectedCity, 'id')],
-          "contentType": [_.get(this.selectedContentType, 'name')],
+          "mimeType": _.get(this.selectedContentType, 'value'),
           "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
         },
         "limit": "1000",
         "sort_by": {
           "lastUpdatedOn": "desc"
         },
-        "fields": ["identifier", "creator", "organisation", "name", "contentType", "createdFor", "channel", "board", "medium", "gradeLevel", "subject", "lastUpdatedOn", "status", "createdBy", "framework", "createdOn", "lastPublishedOn"]
+        "fields": ["identifier", "creator", "organisation", "name", "contentType", "createdFor", "channel", "board", "medium", "gradeLevel", "subject", "lastUpdatedOn", "status", "createdBy", "framework", "createdOn", "lastPublishedOn","mimeType"]
       }
     };
     if (!_.isEmpty(this.selectedCity) && !_.isEmpty(this.selectedDepartment) && !_.isEmpty(this.selectedContentType)) {

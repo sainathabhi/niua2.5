@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
  * This service is used to manage bulk upload of users data or organization data.
  * This service is also used to check status of uploaded file
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class OrgManagementService {
   /**
  * reference of config service.

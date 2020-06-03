@@ -22,6 +22,24 @@
                                             <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
                                         </p>
                                     </div>
+                                </div><br>
+                                <div>
+                                    <span>
+                                        <b>Category: </b>
+                                        <span>{{courseHierarchy?.board}}</span>
+                                    </span>
+                                    <span>
+                                        <b style="margin-left:45px;">Sub-Category: </b>
+                                        <span>{{courseHierarchy?.gradeLevel.join(', ')}}</span>
+                                    </span>
+                                    <span>
+                                        <b style="margin-left:45px;">Topic: </b>
+                                        <span>{{courseHierarchy?.subject.join(', ')}}</span>
+                                    </span>
+                                    <span>
+                                        <b style="margin-left:45px;">Language: </b>
+                                        <span>{{courseHierarchy?.medium.join(', ')}}</span>
+                                    </span>
                                 </div>
                             </div>
 
