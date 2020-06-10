@@ -26,7 +26,11 @@
     </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
-      <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
+      <div class="fs-1-16 ml-5">{{userProfile?.userName}}</div>
+    </div>
+    <div class="mb-10 d-flex mb-5 flex-jc-center">
+      <div class="fs-1-16">City :</div>
+      <div class="fs-1-16 ml-5">{{userProfile?.rootOrgName}}</div>
     </div>
     <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5"

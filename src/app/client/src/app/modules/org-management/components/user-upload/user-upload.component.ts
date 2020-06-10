@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
+import { Angular2Csv } from 'angular2-csv';
 import { OrgManagementService } from '../../services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
@@ -8,6 +9,7 @@ import { UserService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
+
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -17,13 +19,11 @@ import * as _ from 'lodash-es';
   selector: 'app-user',
   templateUrl: './user-upload.component.html'
 })
-export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UserUploadComponent implements OnInit, OnDestroy {
+  organizationsList: any = [];
+  userProfile: any;
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
-  /**
-  *Element Ref  for copyLinkButton;
-  */
- @ViewChild('copyErrorData') copyErrorButton: ElementRef;
   /**
 * reference for ActivatedRoute
 */
@@ -60,10 +60,6 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 * To show/hide loader
 */
   showLoader: boolean;
-   /**
-   * To show / hide modal
-   */
-  modalName = 'upload';
   /**
    * Upload org form name
    */
@@ -72,17 +68,6 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  * Contains reference of FormBuilder
  */
   sbFormBuilder: FormBuilder;
-   /**
- * error object
- */
-  errors: [];
-  /**
- * error object
- */
-error: '';
-file: any;
-activateUpload = false;
-
   /**
    * To call resource service which helps to use language constant
    */
@@ -100,11 +85,11 @@ activateUpload = false;
 	*/
   telemetryImpression: IImpressionEventInput;
   userUploadInteractEdata: IInteractEventEdata;
-  userErrorInteractEdata: IInteractEventEdata;
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
   private uploadUserRefLink: string;
+  showOrgError: boolean = false;
   /**
 * Constructor to create injected service(s) object
 *
@@ -112,17 +97,9 @@ activateUpload = false;
 *
 * @param {ResourceService} resourceService To call resource service which helps to use language constant
 */
-  csvOptions = {
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalseparator: '.',
-    showLabels: true,
-    headers: []
-  };
   constructor(orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
-    public navigationhelperService: NavigationHelperService) {
+    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -140,29 +117,48 @@ activateUpload = false;
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
+    this.userService.userData$.subscribe(userdata => {
+      if (userdata && !userdata.err) {
+        this.userProfile = userdata.userProfile;
+      }
+    });
+    this.getOrgList();
     document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
     this.activatedRoute.data.subscribe(data => {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
       } else {
-        this.redirectUrl = '/resources';
+        this.redirectUrl = '/home';
       }
     });
     this.uploadUserForm = this.sbFormBuilder.group({
       provider: ['', null],
       externalId: ['', null],
-      organisationId: ['', null]
+      organisationId: [this.userProfile.rootOrgId],
+      orgId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0099 },
-      { instructions: this.resourceService.frmelmnts.instn.t0100 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0101 },
-      { instructions: this.resourceService.frmelmnts.instn.t0102 },
-      { instructions: this.resourceService.frmelmnts.instn.t0103 },
-      { instructions: this.resourceService.frmelmnts.instn.t0104 },
-      { instructions: this.resourceService.frmelmnts.instn.t0105 }
-      ];
+      { instructions: this.resourceService.frmelmnts.instn.t0070 },
+      {
+        instructions: this.resourceService.frmelmnts.instn.t0071,
+        subinstructions: [
+          { instructions: this.resourceService.frmelmnts.instn.t0072 },
+          { instructions: this.resourceService.frmelmnts.instn.t0073 },
+          // { instructions: this.resourceService.frmelmnts.instn.t0074 }
+        ]
+      }];
     this.showLoader = false;
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: 'profile-bulk-upload-user-upload',
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url
+      }
+    };
     this.setInteractEventData();
   }
   /**
@@ -175,29 +171,71 @@ activateUpload = false;
     this.router.navigate([this.redirectUrl]);
   }
   /**
+ * This method helps to download a sample csv file
+ */
+  public downloadSampleCSV() {
+    const options = {
+      fieldSeparator: ',',
+      // quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      useBom: false,
+      headers: ['firstName', 'phone', 'email', 'orgId', 'userType', 'roles'],
+    };
+    const csvData = [{
+      'firstName': '',
+      'phone': '',
+      'email': '',
+      'orgId': this.uploadUserForm.value.orgId,
+      'userType': '',
+      'roles': ''
+    }];
+    if (!_.isEmpty(this.uploadUserForm.value.orgId)) {
+      const csv = new Angular2Csv(csvData, 'Sample_Users', options);
+    } else {
+      this.showOrgError = true;
+    }
+  }
+  validateOrg() {
+    if (!_.isEmpty(this.uploadUserForm.value.orgId)) {
+      this.showOrgError = false;
+    }
+  }
+  getOrgList() {
+    // this.organizationsList = _.filter(_.reject(this.userProfile.organisations, { 'organisationId': this.userProfile.rootOrgId }), function (obj) {
+    //   if (_.indexOf(_.get(obj, 'roles'), 'ORG_ADMIN') > -1) {
+    //     return obj;
+    //   }
+    // });
+    this.organizationsList = this.userProfile.organisations;
+  }
+  /**
   * This method helps to call uploadOrg method to upload a csv file
   */
   openImageBrowser(inputbtn) {
-    this.bulkUploadError = false;
-    this.bulkUploadErrorMessage = '';
-    inputbtn.click();
-  }
-  fileChanged(event) {
-    this.file = event.target.files[0];
-    this.activateUpload = true;
+    if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
+      this.bulkUploadError = false;
+      this.bulkUploadErrorMessage = '';
+      inputbtn.click();
+    } else {
+      this.bulkUploadError = true;
+      this.bulkUploadErrorMessage = this.resourceService.messages.emsg.m0003;
+    }
   }
   /**
   * This method helps to upload a csv file and return process id
   */
-  uploadUsersCSV() {
-    const file = this.file;
+  uploadUsersCSV(file) {
     const data = this.uploadUserForm.value;
-    if (file && file.name.match(/.(csv)$/i)) {
+    if (file[0] && file[0].name.match(/.(csv)$/i)) {
       this.showLoader = true;
       const formData = new FormData();
-      formData.append('user', file);
+      formData.append('user', file[0]);
+      formData.append('orgProvider', data.provider);
+      formData.append('orgExternalId', data.externalId);
+      formData.append('organisationId', data.organisationId);
       const fd = formData;
-      this.fileName = file.name;
+      this.fileName = file[0].name;
       this.orgManagementService.bulkUserUpload(fd).pipe(
         takeUntil(this.unsubscribe$))
         .subscribe(
@@ -205,17 +243,14 @@ activateUpload = false;
             this.showLoader = false;
             this.processId = apiResponse.result.processId;
             this.toasterService.success(this.resourceService.messages.smsg.m0030);
-            this.modal.deny();
           },
           err => {
             this.showLoader = false;
             const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-            this.resourceService.messages.fmsg.m0051;
-            this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
-            this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
-            this.modalName = 'error';
+              this.resourceService.messages.fmsg.m0051;
+            this.toasterService.error(errorMsg);
           });
-    } else if (file && !(file.name.match(/.(csv)$/i))) {
+    } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
@@ -227,20 +262,11 @@ activateUpload = false;
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
   }
-  copyToClipboard() {
-    const element = (<HTMLInputElement>document.getElementById('errorTextArea'));
-    element.value = '';
-    element.value = this.error;
-    element.select();
-    document.execCommand('copy');
-  }
   ngOnDestroy() {
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
-    this.router.navigate(['/resources']);
+    this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-  ngAfterViewInit() {
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {
@@ -255,13 +281,8 @@ activateUpload = false;
     };
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'User',
+      type: 'user',
       ver: '1.0'
-    };
-    this.userErrorInteractEdata = {
-      id: 'error-upload-user',
-      type: 'click',
-      pageid: 'profile-read'
     };
   }
 }

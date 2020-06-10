@@ -34,7 +34,12 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public redirectUrl;
   public pageSections: Array<ICaraouselData> = [];
-
+  public mimeTypes:any={
+    'pdf':['application/pdf'],
+    'video':['video/x-youtube','video/Webm','video/mp4'],
+    'collection':['application/vnd.ekstep.content-collection'],
+    'ecml':['application/vnd.ekstep.ecml-archive']
+  }
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
     && this.pageSections.length < this.carouselMasterData.length) {
@@ -117,13 +122,16 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Resource',
-      filters: _.get(this.queryParams, 'appliedFilters') ? filters : { board: _.get(this.frameworkData, 'board'), gradeLevel: _.get(this.frameworkData, 'gradeLevel'), medium: _.get(this.frameworkData, 'medium') },
+      filters: _.get(this.queryParams, 'appliedFilters') ? _.omit(filters,'contentType') : { board: _.get(this.frameworkData, 'board'), gradeLevel: _.get(this.frameworkData, 'gradeLevel'), medium: _.get(this.frameworkData, 'medium') },
       // mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params : this.configService.appConfig.Library.contentApiQueryParams
     };
     if (_.get(manipulatedData, 'filters')) {
       option.softConstraints = _.get(manipulatedData, 'softConstraints');
+    }
+    if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
+      option.filters.mimeType = _.get(this.mimeTypes,_.get(this.queryParams, 'contentType'));
     }
     if (this.queryParams.sort_by) {
       option.sort_by = {[this.queryParams.sort_by]: this.queryParams.sortType  };
@@ -132,9 +140,6 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(data => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
-          this.carouselMasterData[0].contents = _.filter(_.cloneDeep(this.carouselMasterData[0].contents), { contentType: _.get(this.queryParams, 'contentType') });
-        }
         if (!this.carouselMasterData.length) {
           return; // no page section
         }
@@ -142,10 +147,6 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
           this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
         } else if (this.carouselMasterData.length >= 1) {
           this.pageSections = [this.carouselMasterData[0]];
-        }
-        if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
-          this.pageSections[0].contents = _.filter(_.cloneDeep(this.pageSections[0].contents), { contentType: _.get(this.queryParams, 'contentType') });
-          this.pageSections[0].count = this.pageSections[0].contents.length;
         }
         this.cdr.detectChanges();
       }, err => {

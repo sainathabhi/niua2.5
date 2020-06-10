@@ -38,6 +38,10 @@
                             <a class="item" routerLink="profile">
                                 {{resourceService.frmelmnts?.lnk?.profile}}
                             </a>
+                            <a *ngIf="userProfile?.rootOrgAdmin" class="item" routerLink="profile/userUpload">
+                            <a *ngIf="userProfile?.rootOrgAdmin" class="item" routerLink="profile/orgUserManagement">
+                                Upload users
+                            </a>
                     <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                         [permission]='adminDashboard' routerLink="orgDashboard">
                         {{resourceService.frmelmnts?.lnk?.dashboard}}

@@ -129,12 +129,20 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'reload';
     this.allContentTypes = [
       {
-        id: "Collection",
+        id: "pdf",
+        name: "Pdf"
+      },
+      {
+        id: "video",
+        name: "Video"
+      },
+      {
+        id: "collection",
         name: "Collection"
       },
       {
-        id: "Resource",
-        name: "Learn"
+        id: "ecml",
+        name: "Assessment"
       }
     ]
   }

@@ -53,4 +53,24 @@ export class OrgManagementService {
     };
     return this.learnerService.get(options);
   }
+  /**
+ * This method is used to create the single user
+ */
+  public createUser(data): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.USER.CREATE_V2,
+      data: data
+    };
+    return this.learnerService.post(httpOptions);
+  }
+  /**
+ * This method is used to assign user to the member org
+ */
+  public assignUser(data): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.MEMBER.ADD,
+      data: data
+    };
+    return this.learnerService.post(httpOptions);
+  }
 }

@@ -1,17 +1,46 @@
-<div>
-  <div class="twelve wide column pt-0 pb-15">
-    <a class="ui cursor-pointer m-responsive-p-header-fl" routerLink="/profile/bulkUpload/organizationUpload">
+<!-- <div>
+  <div class="twelve wide column pt-0 pb-15 menu-label mb-15"> -->
+<!-- <a class="ui cursor-pointer m-responsive-p-header-fl" routerLink="/orgUserManagement/bulkUpload/organizationUpload"> -->
+<!-- <a class="ui cursor-pointer m-responsive-p-header-fl">
       {{resourceService?.frmelmnts?.instn?.t0015}}
     </a>
   </div>
-  <div class="twelve wide column pt-0 pb-15">
-    <a class="ui cursor-pointer m-responsive-p-header-fl" routerLink="/profile/bulkUpload/userUpload">
+  <div class="twelve wide column pt-0 pb-15 menu-label mb-15" [ngClass]="{'active': selectedMenu === 'menu2' }"
+    (click)="chooseMenu('menu2','/orgUserManagement/bulkUpload/userUpload')">
+    <a class="ui cursor-pointer m-responsive-p-header-fl">
       {{resourceService?.frmelmnts?.instn?.t0016}}
     </a>
   </div>
-  <div class="twelve wide column pt-0 pb-15">
-    <a class="ui cursor-pointer m-responsive-p-header-fl" routerLink="/profile/bulkUpload/checkStatus">
+  <div class="twelve wide column pt-0 pb-15 menu-label mb-15" [ngClass]="{'active': selectedMenu === 'menu3' }"
+    (click)="chooseMenu('menu3','/orgUserManagement/bulkUpload/checkStatus')">
+    <a class="ui cursor-pointer m-responsive-p-header-fl">
       {{resourceService?.frmelmnts?.lbl?.chkuploadsts}}
     </a>
+  </div>
+  <div class="twelve wide column pt-0 pb-15 menu-label mb-15" [ngClass]="{'active': selectedMenu === 'menu4' }"
+    (click)="chooseMenu('menu4','/orgUserManagement/bulkUpload/onboardUser')">
+    <a class="ui cursor-pointer m-responsive-p-header-fl">
+      {{resourceService?.frmelmnts?.lbl?.onboardUser}}
+    </a>
+  </div>
+</div> -->
+<div class="ui two column centered grid" style="padding-top: 70px; padding-bottom: 100px;background-color: #ffffff;">
+  <div class="five column centered row">
+    <div class="column menu-label" (click)="chooseMenu('menu2','profile/orgUserManagement/bulkUpload/userUpload')">
+      <!-- <img src="{{'assets/images/Upload_users.png' | cdnprefixurl}}"> -->
+      <span><i style="color:#007ad9" class="fa fa-cloud-upload fa-3x" aria-hidden="true"></i></span>
+      <a class="ui cursor-pointer m-responsive-p-header-fl">
+        {{resourceService?.frmelmnts?.instn?.t0016}}
+      </a>
+    </div>
+  <!-- </div>
+  <div class="five column centered row"> -->
+    <div class="column menu-label" (click)="chooseMenu('menu3','profile/orgUserManagement/bulkUpload/checkStatus')">
+      <!-- <img src="{{'assets/images/Check_upload_status.png' | cdnprefixurl}}"> -->
+      <span><i style="color:#007ad9" class="fa fa-check-circle-o fa-3x" aria-hidden="true"></i></span>
+      <a class="ui cursor-pointer m-responsive-p-header-fl">
+        {{resourceService?.frmelmnts?.lbl?.chkuploadsts}}
+      </a>
+    </div>
   </div>
 </div>
