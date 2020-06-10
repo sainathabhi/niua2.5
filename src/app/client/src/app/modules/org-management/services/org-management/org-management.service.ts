@@ -6,9 +6,7 @@ import { Observable } from 'rxjs';
  * This service is used to manage bulk upload of users data or organization data.
  * This service is also used to check status of uploaded file
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OrgManagementService {
   /**
  * reference of config service.
@@ -54,5 +52,25 @@ export class OrgManagementService {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.STATUS + '/' + processId
     };
     return this.learnerService.get(options);
+  }
+  /**
+ * This method is used to create the single user
+ */
+  public createUser(data): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.USER.CREATE_V2,
+      data: data
+    };
+    return this.learnerService.post(httpOptions);
+  }
+  /**
+ * This method is used to assign user to the member org
+ */
+  public assignUser(data): Observable<ServerResponse> {
+    const httpOptions: RequestParam = {
+      url: this.configService.urlConFig.URLS.MEMBER.ADD,
+      data: data
+    };
+    return this.learnerService.post(httpOptions);
   }
 }
