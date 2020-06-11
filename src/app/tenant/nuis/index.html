@@ -231,6 +231,7 @@
                 
                 <!-- The slideshow -->
                 <div class="carousel-inner no-padding" id="popularCourseSection"></div>
+                <div class="row"><div class="col-md-12"><a class="carousel-control-prev" style="margin-right:5px;" href="#demo3" data-slide="prev">  <span class="carousel-control-next-icon sp"></span> </a> <a class="carousel-control-next" href="#demo3" data-slide="next"> <span class="carousel-control-prev-icon sp"></span></a></div></div>
               </div>
             </div>
           </div>
@@ -271,7 +272,7 @@
     </section>
 
     <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-      <div class="container">
+      <div class="container" style="margin-left: 50px;">
 
         <div class="row ">
 
@@ -281,13 +282,13 @@
               <h5><b>Learn and share<br>the latest skills</b></h5>
             </div>
           </div>
-          <div class="col-md-6" style="text-align: center;"><img class="img-fluid card-img-to" src="img/partners/Learnshare.jpg" width="60%"></div>
+          <div class="col-md-6" style="text-align: center;"><img class="img-fluid card-img-to" src="img/partners/Learnshare.jpg" width="60%" style="margin-left: -5%;"></div>
 
         </div>
 
         <div class="row ">
 
-          <div class="col-md-6" style="text-align:center ;"><img class="img-fluid card-img-to" src="img/lg3.png" width="auto" style="margin-left: -11%;"></div>
+          <div class="col-md-6" style="text-align:center ;"><img class="img-fluid card-img-to" src="img/lg3.png" width="auto" style="margin-left: 20%;"></div>
           <div class="col-md-6">
             <div style="text-align: center;margin-top: 15%;">
               <img class="img-fluid card-img-to" src="img/lg3a.png" width="auto">
@@ -308,12 +309,12 @@
             </div>
           <div class="col-md-6" style="text-align: center;">
             <img class="img-fluid card-img-to" src="img/lg4a.png" width="65%"
-              style="border:1px solid #e1e1e1">
+              style="border:1px solid #e1e1e1;margin-left: -5%;">
           </div>
         </div>
         <div class="row">
           <div class="col-md-6" style="text-align: center;">
-            <img class="img-fluid card-img-to" src="img/lg5.png" width="auto">
+            <img class="img-fluid card-img-to" src="img/lg5.png" width="auto" style="margin-left: 35%;">
           </div>
           <div class="col-md-6" style="text-align: center;">
             <div style="text-align: center;margin-top: 15%;">
@@ -369,7 +370,7 @@
 
 
     </section>
-    <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+    <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;padding-bottom: 0;">
       <div class="container">
         <div class="row">
           <div class="col-md-4 imc"> <a href="https://www.niua.org/" target="_blank"><img style="margin-bottom: 9px;" src="img/test-1.png" class=" pro-img" alt="" width="auto"></a>
@@ -431,19 +432,19 @@
     </div> -->
   <!-- </div> -->
   <footer id="footer">
-    <div style="margin-left: 95px;">
+    <div style="margin: 0 80px;">
       <div class="row">
-        <div class="col-md-2"> <a href="http://smartcities.gov.in/content/" target="_blank"><img src="img/smrt.png"
+        <div class="col-md-2" style="text-align: center;"> <a href="http://smartcities.gov.in/content/" target="_blank"><img src="img/smrt.png"
               width="90px" height="auto" alt="" /></a> </div>
-        <div class="col-md-2"> <a href="http://amrut.gov.in/" target="_blank"><img src="img/amrut.png" width="90px"
+        <div class="col-md-2" style="text-align: center;"> <a href="http://amrut.gov.in/" target="_blank"><img src="img/amrut.png" width="90px"
               height="auto" alt="" /></a> </div>
-        <div class="col-md-2"> <a href="https://www.hridayindia.in/" target="_blank"><img src="img/hri.png" width="90px"
+        <div class="col-md-2" style="text-align: center;"> <a href="https://www.hridayindia.in/" target="_blank"><img src="img/hri.png" width="90px"
               height="auto" alt="" /></a> </div>
-        <div class="col-md-2"> <a href="https://swachhbharatmission.gov.in/sbmcms/index.htm" target="_blank"><img
+        <div class="col-md-2" style="text-align: center;"> <a href="https://swachhbharatmission.gov.in/sbmcms/index.htm" target="_blank"><img
               src="img/bhrt.png" width="90px" height="auto" alt="" /></a> </div>
-        <div class="col-md-2"><a href="https://pmaymis.gov.in/" target="_blank"><img src="img/m.png" width="90px"
+        <div class="col-md-2" style="text-align: center;"><a href="https://pmaymis.gov.in/" target="_blank"><img src="img/m.png" width="90px"
               height="auto" alt="" /></a> </div>
-        <div class="col-md-2"><a href="https://nulm.gov.in/" target="_blank"><img src="img/day.png" width="90px"
+        <div class="col-md-2" style="text-align: center;"><a href="https://nulm.gov.in/" target="_blank"><img src="img/day.png" width="90px"
               height="auto" alt="" style="margin-left: -27px;" /></a> </div>
       </div>
     </div>
@@ -664,6 +665,7 @@
           contentType: 'application/json',
           success: function (response) {
             var latestCourses = _.find(response.result.response.sections, { name: 'Popular Courses' });
+            // latestCourses.contents = latestCourses.contents.slice(0,2)
             // $(".pageSection-count").html(latestCourses.count);
             var resourceContents = '';
             $.each(latestCourses.contents, function (index, value) {
@@ -688,7 +690,7 @@
               resourceContents += '<p>'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
-              if(index === 2) {
+              if(index === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
               } else {
@@ -712,12 +714,11 @@
               resourceContents += '<p>'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
-              if(index % 3 === 2) {
+              if(index % 3 === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
               }
             });
-            resourceContents += '<a class="carousel-control-prev" style="margin-right:5px;" href="#demo3" data-slide="prev">  <span class="carousel-control-next-icon sp"></span> </a> <a class="carousel-control-next" href="#demo3" data-slide="next"> <span class="carousel-control-prev-icon sp"></span></a>';
             $("#popularCourseSection").html(resourceContents);
           }
         });

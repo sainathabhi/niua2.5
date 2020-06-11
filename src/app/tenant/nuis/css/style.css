@@ -1462,7 +1462,7 @@ span.carousel-control-next-icon {
     z-index: 9;
     bottom: 0;
     float: right;
-	    margin-top: 35px;
+	    margin-top: 10px;
 }
 
 .carousel-control-prev {
@@ -1473,7 +1473,7 @@ span.carousel-control-next-icon {
     z-index: 9;
     bottom: 0;
     float: right;
-	    margin-top: 35px;
+	    margin-top: 10px;
 }
 
 .carousel-control-prev-icon{
