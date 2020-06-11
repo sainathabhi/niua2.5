@@ -140,8 +140,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
-
-
+  public mimeTypes:any={
+    'pdf':['application/pdf'],
+    'video':['video/x-youtube','video/Webm','video/mp4'],
+    'collection':['application/vnd.ekstep.content-collection'],
+    'ecml':['application/vnd.ekstep.ecml-archive']
+  }
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
@@ -259,7 +263,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   private manipulateQueryParam(results) {
     this.filters = {};
     const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'appliedFilters',
-      'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+      'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic', 'contentType']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;
@@ -298,6 +302,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+    }
+    if (!_.isEmpty(_.get(this.queryParams, 'contentType'))) {
+      requestParams.filters.mimeType = _.get(this.mimeTypes,_.get(this.queryParams, 'contentType'));
     }
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
