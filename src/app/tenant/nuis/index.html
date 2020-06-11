@@ -231,6 +231,7 @@
                 
                 <!-- The slideshow -->
                 <div class="carousel-inner no-padding" id="popularCourseSection"></div>
+                <div class="row"><div class="col-md-12"><a class="carousel-control-prev" style="margin-right:5px;" href="#demo3" data-slide="prev">  <span class="carousel-control-next-icon sp"></span> </a> <a class="carousel-control-next" href="#demo3" data-slide="next"> <span class="carousel-control-prev-icon sp"></span></a></div></div>
               </div>
             </div>
           </div>
@@ -664,6 +665,7 @@
           contentType: 'application/json',
           success: function (response) {
             var latestCourses = _.find(response.result.response.sections, { name: 'Popular Courses' });
+            // latestCourses.contents = latestCourses.contents.slice(0,2)
             // $(".pageSection-count").html(latestCourses.count);
             var resourceContents = '';
             $.each(latestCourses.contents, function (index, value) {
@@ -688,7 +690,7 @@
               resourceContents += '<p>'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
-              if(index === 2) {
+              if(index === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
               } else {
@@ -712,12 +714,11 @@
               resourceContents += '<p>'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
-              if(index % 3 === 2) {
+              if(index % 3 === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
               }
             });
-            resourceContents += '<a class="carousel-control-prev" style="margin-right:5px;" href="#demo3" data-slide="prev">  <span class="carousel-control-next-icon sp"></span> </a> <a class="carousel-control-next" href="#demo3" data-slide="next"> <span class="carousel-control-prev-icon sp"></span></a>';
             $("#popularCourseSection").html(resourceContents);
           }
         });
