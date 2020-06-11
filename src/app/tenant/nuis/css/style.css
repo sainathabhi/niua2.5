@@ -827,6 +827,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 #testimonials .testimonial-item {
+  width: 26%;
   box-sizing: content-box;
   padding: 30px 20px 0 20px;
   margin: 30px 15px;
