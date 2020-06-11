@@ -65,8 +65,8 @@
                <li><a href="/aboutus.html">About Us</a></li>
                <li><a href="https://www.niua.org/" target="_blank">NIUA</a></li>
                <li><a href="javascript:">NUIS</a></li>
-               <li><a href="javascript:">CCSG</a></li>
-               <li><a href="javascript:">IUDX</a></li>
+               <li><a href="/smartgov.html">CCSG</a></li>
+               <li><a href="/iudx.html">IUDX</a></li>
             </ul>
          </div>
           <!-- <div class="dropdown">
@@ -135,13 +135,8 @@
           overall system to better solve challenges of urban India.</p>
       </div>
     </div>
-    <div id="intro-carousel" class="owl-carousel">
-      <div class="overlay-color"></div>
+    <div id="intro-carousel">
       <div class="item" style="background-image: url('img/intro-carousel/landing.png');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/landing.png');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/landing.png');"></div>
-      <div class="item" style="background-image: url('img/intro-carousel/landing.png');"></div>
-
     </div>
   </section>
   <!-- #intro -->
@@ -189,19 +184,35 @@
         <div class="section-header grow" style="margin-top: 0;margin-left: auto;">
           <div class="col-md-6 col-lg-6 pull-left nw">
 
-            <h4 style="margin-top: 45px;">NULP aims to empower India’s urban functionaries, administrators, elected
+            <h4 style="margin-top: 70px;">NULP aims to empower India’s urban functionaries, administrators, elected
               representatives, civil
               society, industry actors and other ecosystem players to build smart, inclusive, sustainable, resilient
               cities.
             </h4>
           </div>
           <div class="col-md-6 col-lg-6 pull-left">
-            <h3>
-              <img src="img/blu-2.png" width="auto">
-            </h3>
-
+            <div class="row">
+            <div class="col-md-6 col-lg-6 pull-left br-rgt-bottom">
+            <p><img src="img/blu-icon1.png" width="auto"></p>
+            <p style="padding-bottom: 35px;"><b style="font-size: 13px;">Facilitating Learning</b><br>Advance yet accessible, self-directed mode of training and leadership development</p>
+            </div>
+          <div class="col-md-6 col-lg-6 pull-left br-bottom">
+            <p><img src="img/blu-icon2.png" width="auto"></p>
+            <p><b style="font-size: 13px;">Improving Goverance</b><br>Supporting implementation of newly acquired skills in day-to-day activities</p>
+            </div>
+              <div class="col-md-6 col-lg-6 pull-left br-rgt">
+            <p style="padding-top:30px;"><img src="img/blu-icon3.png" width="auto"></p>
+            <p><b style="font-size: 13px;">Advanced learning</b><br>Digitally improving learning journey and upskilling experience</p>
           </div>
-        </div>
+               <div class="col-md-6 col-lg-6 pull-left">
+            <p style="padding-top:30px;"><img src="img/blu-icon4.png" width="auto"></p>
+            <p><b style="font-size: 13px;">Blended learning</b><br>Advance skills through cross-learning and peer-to-peer interactions</p>
+            </div>
+            
+            </div>
+                
+               </div>
+               </div>
       </div>
     </section>
 
@@ -685,9 +696,9 @@
               }
               resourceContents += '</a>';
               resourceContents += '<div class="silder-content oppor">';
-              resourceContents += '<p><b>'+_.capitalize(value.name)+'</b></p>';
+              resourceContents += '<p class="truncate" title="'+value.name+'"><b>'+_.capitalize(value.name)+'</b></p>';
               resourceContents += '<p><b><small>'+value.organisation[0]+'</small></b></p>';
-              resourceContents += '<p>'+value.description+'</p>';
+              resourceContents += '<p class="truncate" title="'+value.description+'">'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
               if(index === 2 || index===latestCourses.contents.length-1) {
@@ -709,9 +720,9 @@
               }
               resourceContents += '</a>';
               resourceContents += '<div class="silder-content oppor">';
-              resourceContents += '<p><b>'+_.capitalize(value.name)+'</b></p>';
+              resourceContents += '<p class="truncate" title="'+value.name+'"><b>'+_.capitalize(value.name)+'</b></p>';
               resourceContents += '<p><b><small>'+value.organisation[0]+'</small></b></p>';
-              resourceContents += '<p>'+value.description+'</p>';
+              resourceContents += '<p class="truncate" title="'+value.description+'">'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
               resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
               if(index % 3 === 2 || index===latestCourses.contents.length-1) {

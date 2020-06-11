@@ -198,8 +198,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#192736', end
   color: #ffffff;
   margin-top: 30px;
   margin-bottom: 30px;
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 33px;
+  font-weight: 600 !important;
   text-align:left;
   width:90%;
 }
@@ -247,11 +247,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#192736', end
   z-index: 8;
 }
 
-#intro #intro-carousel::before {
+/* #intro #intro-carousel::before {
   content: '';
   background: url(../img/intro-carousel/landing.png);
   background-position:100% 100%;
-  background-size:100% 100%;
+  background-size:100% 100%; */
  /* 
 background: rgba(25,39,54,1);
 background: -moz-linear-gradient(left, rgba(25,39,54,1) 0%, rgba(73,155,234,0.16) 100%);
@@ -262,7 +262,7 @@ background: -ms-linear-gradient(left, rgba(25,39,54,1) 0%, rgba(73,155,234,0.16)
 background: linear-gradient(to right, rgba(25,39,54,1) 0%, rgba(73,155,234,0.16) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#192736', endColorstr='#499bea', GradientType=1 );
 */
-  position: absolute;
+  /* position: absolute;
   height: 100%;
   width: 100%;
   top: 0;
@@ -270,7 +270,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#192736', end
   left: 0;
   bottom: 0;
   z-index: 7;
-}
+} */
 
 #intro #intro-carousel .item {
   width: 100%;
@@ -538,7 +538,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 3px;
   bottom: 16px;
   left: 49%;
-  border-bottom: 4px solid #006dfe;
+  border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
 }
@@ -553,7 +553,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 3px;
   bottom: 16px;
   left: 46%;
-  border-bottom: 4px solid #006dfe;
+  border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
 }
@@ -565,7 +565,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 3px;
   bottom: 17px;
   left: 36%;
-  border-bottom: 4px solid #006dfe;
+  border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
 }
@@ -577,7 +577,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 3px;
   bottom: 16px;
   left: 34%;
-  border-bottom: 4px solid #006dfe;
+  border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
 }
@@ -589,7 +589,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   height: 3px;
   bottom: 16px;
   left: 32.7%;
-  border-bottom: 4px solid #006dfe;
+  border-bottom: 3px solid #006dfe;
   border-radius: 3px;
   padding-bottom: 33px;
 }
@@ -1348,7 +1348,8 @@ div#header-sticky-wrapper{
 .intro-content p {
     text-align: left;
     width: 90%;
-	color:#ffffff;
+  color:#ffffff;
+  font-size: 15px;
 }
 .navbar-brand {
     line-height: 148px;
@@ -1389,11 +1390,11 @@ div#header-sticky-wrapper{
     line-height: 82px;
 }
 .border-btm{
-	border-bottom: 5px solid #006dfe;
+	border-bottom: 3px solid #006dfe;
     border-radius: 3px;
-    padding-bottom: 33px;
+    padding-bottom: 0px;
     border-height: 2rem;
-    width: 83px;
+    width: 29px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
@@ -2160,7 +2161,7 @@ label {
 
 .owl-stage-outer2{
 box-sizing: content-box;
-    padding: 30px 30px 0 30px;
+    padding: 30px 18px 0 30px;
     margin: 30px 15px;
     text-align: left;
     min-height:200px;
@@ -3088,7 +3089,7 @@ p.explore {
 }
 p.explore a{
 	font-size:12px;
-	color:#1c2c3e;
+	color:#0089cf;
 	
 }
 .p-15{
@@ -3234,4 +3235,59 @@ a.bt.dropdown-toggle::after {
 .partners img {
   height: 60px;
   margin: 0px 37px;
+}
+.section-header.grow .col-md-6.col-lg-6.pull-left p{
+	
+	font-size: 12px;
+    text-align: center;
+    padding: 0px 5px 15px;
+	
+}
+
+.br-rgt-bottom{
+	
+	border-right: 1px solid #4cfefe;
+    border-bottom: 1px solid #4cfefe;
+
+}
+.br-bottom{
+	
+	
+    border-bottom: 1px solid #4cfefe;
+
+}
+
+.br-rgt{
+	border-right: 1px solid #4cfefe;
+	
+}
+.smart-gov-heading b,.border-btm b {
+  font-size: 25px;
+  color: #0c2e8a;
+  text-transform: none;
+  font-weight: 600 !important;
+  position: relative;
+  padding-bottom: 20px;
+  text-align: center;
+}
+span.pull-left.paticipate {
+  color: #0065fe;
+  font-size: 12px;
+  border: 1px solid #0065fe;
+  padding: 6px 10px;
+  width: 100px;
+  text-align: center;
+  border-radius: 2px;
+}
+.owl-nav {
+  display: none;
+}
+.smart-gov-img img {
+  width: 100%;
+}
+.truncate {
+  width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
