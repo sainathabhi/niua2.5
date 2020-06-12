@@ -1179,7 +1179,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 #footer {
   background: #FFFFFF;
-  padding: 30px 0;
+  padding: 10px 0;
   font-size: 14px;
   overflow-x: hidden;
 }
@@ -1632,7 +1632,7 @@ line-height:35px;
     padding: 90px 114px 0 108px;
     margin: 30px 15px;
     text-align: center;
-    min-height:490px;
+    min-height:400px;
     /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
 	text-align:left;
 	background:url(../img/know.png) no-repeat top left;
@@ -3166,6 +3166,7 @@ ul.test-link li a{
 } */
 /*I'm Interested In Section starts here*/
 .scT{
+  /* margin-top: 10px; */
   font-size: 13px;
   font-weight: 600;
   color: #0b2e8a;
