@@ -1632,14 +1632,14 @@ line-height:35px;
     padding: 90px 114px 0 108px;
     margin: 30px 15px;
     text-align: center;
-    min-height:400px;
+    min-height:330px;
     /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
 	text-align:left;
 	background:url(../img/know.png) no-repeat top left;
-	-webkit-background-size:100% 100%;
-        -moz-background-size: 100% 100%;
-        -o-background-size:100% 100%r;
-        background-size: 100% 100%; 
+	-webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
        
 }
 .grow h2.grow-hd.grow-text{
@@ -3171,7 +3171,7 @@ ul.test-link li a{
   font-weight: 600;
   color: #0b2e8a;
   text-align: center;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 }
 .col-md-2.imc {
   margin: 0 auto;
