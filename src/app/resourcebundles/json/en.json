@@ -293,7 +293,7 @@
                 "phonenumber": "Phone Number",
                 "pincode": "Pin Code",
                 "playContent": "Play Content",
-                "plslgn": "Session Expired, please Login to continue accessing",
+                "plslgn": "Session Expired, please Sign In to continue accessing",
                 "preferredLanguage": "Preferred Language",
                 "previous": "Previous",
                 "processid": "Process ID",
@@ -503,7 +503,7 @@
                 "downloadPending": "Download pending",
                 "edit": "Edit",
                 "enroll": "Join Training",
-                "login": "Login",
+                "login": "Sign In",
                 "merge": "Merge",
                 "myLibrary": "My Contents",
                 "next": "Next",
@@ -918,7 +918,7 @@
                 "publish": "Approve",
                 "requestChanges": "Request changes",
                 "startcreating": "Start creating",
-                "login": "Login"
+                "login": "Sign In"
             },
             "lbl": {
                 "name": "Name",
