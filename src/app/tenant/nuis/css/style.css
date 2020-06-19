@@ -3146,7 +3146,8 @@ p.explore a{
 }
 .test-link {
   padding-left: 0;
-  margin-top: 1rem;
+  margin-top: 1px;
+  margin-bottom: 0;
 }
 ul.test-link li {
     padding: 2px 15px;
