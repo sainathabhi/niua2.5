@@ -64,9 +64,6 @@
             <ul class = "dropdown-menu dropdown-menu-right" style="padding: 10px 20px;">
                <li><a href="/aboutus.html">About Us</a></li>
                <li><a href="https://www.niua.org/" target="_blank">NIUA</a></li>
-               <li><a href="javascript:">NUIS</a></li>
-               <li><a href="/smartgov.html">CCSG</a></li>
-               <li><a href="/iudx.html">IUDX</a></li>
             </ul>
          </div>
           <!-- <div class="dropdown">
@@ -468,18 +465,21 @@
       </div>
       <div class="row" style="background-color: #0089cf;">
         <div class="col-md-4 imc">
-          <ul class="test-link">
-            <li><a href="/aboutus.html" style="margin-left: 37%;">About</a></li>
+          <ul class="test-link" style="margin-left: 37%;text-align: center;">
+            <li><a href="/aboutus.html">About</a></li>
+            <li><a href="javascript:">NUIS</a></li>
           </ul>
         </div>
         <div class="col-md-4 imc">
-          <ul class="test-link">
-            <li><a href="javascript:" style="margin-left:3%;">Leadership</a></li>
+          <ul class="test-link" style="margin-left:3%;text-align: center;">
+            <li><a href="javascript:">Leadership</a></li>
+            <li><a href="/smartgov.html">CCSG</a></li>
           </ul>
         </div>
         <div class="col-md-4 imc">
-          <ul class="test-link">
-            <li><a href="/explore-course" style="margin-left: -30%;">Catalog</a></li>
+          <ul class="test-link" style="margin-left: -30%;text-align: center;">
+            <li><a href="/explore-course">Catalog</a></li>
+            <li><a href="/iudx.html">IUDX</a></li>
           </ul>
         </div>
       </div>
@@ -751,10 +751,10 @@
                     resourceContents += '<input type="hidden" value=' + value.identifier + '>';
                     resourceContents += '<a href="javascript:" onclick=abc(this) class="slider_info">';
                       if (value.appIcon != undefined) {
-                        resourceContents += '<img class="img-fluid card-img-top" src=' + value.appIcon + ' alt=' + value.name + ' width="305px" style="height:158px">';
+                        resourceContents += '<img class="img-fluid card-img-top" src=' + value.appIcon + ' alt=' + value.name + ' width="305px" style="height:158px;object-fit: cover;">';
                       }
               else {
-                resourceContents += '<img class="img-fluid card-img-top" src="img/book.png" alt=' + value.name + ' width="305px" style="height:158px">';
+                resourceContents += '<img class="img-fluid card-img-top" src="img/book.png" alt=' + value.name + ' width="305px" style="height:158px;object-fit: cover;">';
               }
               resourceContents += '</a>';
               resourceContents += '<div class="silder-content oppor">';
@@ -762,7 +762,7 @@
               resourceContents += '<p><b><small>'+value.organisation[0]+'</small></b></p>';
               resourceContents += '<p class="truncate" title="'+value.description+'">'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
-              resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
+              resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">More Information</span></p> </div> </div> </div>';
               if(index === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
@@ -775,10 +775,10 @@
                     resourceContents += '<input type="hidden" value=' + value.identifier + '>';
                     resourceContents += '<a href="javascript:" onclick=abc(this) class="slider_info">';
                       if (value.appIcon != undefined) {
-                        resourceContents += '<img class="img-fluid card-img-top" src=' + value.appIcon + ' alt=' + value.name + ' width="305px" style="height:158px">';
+                        resourceContents += '<img class="img-fluid card-img-top" src=' + value.appIcon + ' alt=' + value.name + ' width="305px" style="height:158px;object-fit: cover;">';
                       }
               else {
-                resourceContents += '<img class="img-fluid card-img-top" src="img/book.png" alt=' + value.name + ' width="305px" style="height:158px">';
+                resourceContents += '<img class="img-fluid card-img-top" src="img/book.png" alt=' + value.name + ' width="305px" style="height:158px;object-fit: cover;">';
               }
               resourceContents += '</a>';
               resourceContents += '<div class="silder-content oppor">';
@@ -786,7 +786,7 @@
               resourceContents += '<p><b><small>'+value.organisation[0]+'</small></b></p>';
               resourceContents += '<p class="truncate" title="'+value.description+'">'+value.description+'</p>';
               // resourceContents += '' + calculateTimeAgo(value.createdOn) + '';
-              resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">Participate</span></p> </div> </div> </div>';
+              resourceContents += '<p class="bottom-text opport"><small class="small-text">Created Date</small>' + calculateTimeAgo(value.createdOn) + '<span class="pull-right paticipate">More Information</span></p> </div> </div> </div>';
               if(index % 3 === 2 || index===latestCourses.contents.length-1) {
                   resourceContents += '</div>';
               }
