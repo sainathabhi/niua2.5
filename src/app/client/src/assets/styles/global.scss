@@ -168,3 +168,13 @@ body {
 .ui.selection.able.dropdown {
   padding: 9px 8px !important;
 }
+.ui.basic.button {
+  color: #302868 !important;
+  font-weight: 600;
+}
+.ui.basic.button:hover {
+  box-shadow: none !important;
+  color: #fff !important;
+  background: #0069d9 !important;
+  border: 2px solid #0069d9;
+}
