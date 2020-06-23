@@ -168,6 +168,9 @@ export class MainMenuComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
+  navigateToResource() {
+    window.location.href="/resources";
+  }
   navigateTo(url) {
     return this.slug ? this.slug + url : url;
   }

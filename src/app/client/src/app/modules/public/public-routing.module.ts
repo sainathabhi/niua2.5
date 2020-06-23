@@ -10,6 +10,9 @@ const routes: Routes = [
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
+    path: 'maintenance', loadChildren: './module/maintenance/maintenance.module#MaintenanceModule'
+  },
+  {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {

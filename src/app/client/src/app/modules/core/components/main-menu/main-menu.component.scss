@@ -43,6 +43,17 @@
   }
 }
 
+.login-button {
+  color: #302868 !important;
+  background-color: transparent;
+  border: 2px solid #302868;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: none !important;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
 .logout-btn {
   position: fixed !important;
   bottom: 0;

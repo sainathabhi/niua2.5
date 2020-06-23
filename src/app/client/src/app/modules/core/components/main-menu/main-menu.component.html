@@ -42,10 +42,21 @@
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<span class="item divider">|</span> -->
-		<a class="item font-weight-bold sb-color-primary pr-0" href="/resources" appTelemetryInteract
+		<!-- <a class="item font-weight-bold sb-color-primary pr-0" href="/resources" appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}
-		</a>
+		</a> -->
+		<button class="ui basic button login-button" appTelemetryInteract *ngIf="!userService.loggedIn && !isOffline"
+		[telemetryInteractEdata]="signInIntractEdata" (click)="navigateToResource()" style="margin-right: 35px;">Sign In</button>
+		<div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+			<span style="cursor: pointer;font-size: 35px;">☰</span>
+			<div class="menu" suiDropdownMenu>
+				<a class="item" href="/" title="Home">Home</a>
+				<a class="item" href="/aboutus.html" title="About Us">About Us</a>
+				<a class="item" href="https://www.niua.org/" target="_blank" title="National Institute of Urban Affairs" title="About Us">NIUA</a>
+				<a class="item" href="http://mohua.gov.in/" target="_blank" title="Ministry of Housing and Urban Affairs" title="About Us">MoHUA</a>
+			</div>
+		</div>
 	</ng-container>
 	<!--/Not Logged in user-->
 	<!-- offline container-->

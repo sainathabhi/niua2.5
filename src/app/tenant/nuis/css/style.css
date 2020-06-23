@@ -3200,7 +3200,8 @@ ul.test-link li a{
   border-radius:4px;
   box-shadow:none;
   margin-top:20px;
-  width:160px;
+  min-width:110px !important;
+  max-width:110px !important;
 }
 .dropdown ul.dropdown-menu:before {
   content: "";
