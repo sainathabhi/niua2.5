@@ -36,16 +36,12 @@
     Header
   ============================-->
   <header id="header">
-    <!--move to top button start here-->
-    <!-- <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-arrow-up"></i></button> -->
-    <!--move to top button close here-->
-
-    <div class="container-fluid" data-spy="affix" data-offset-top="197">
+    <div class="container-fluid" >
       <div class="row">
-        <div class="col-sm-6">
-          <img src="img/logo.png" style="margin-top: -15px;width: 60%;margin-left: 15%;cursor: pointer;" class="testimonial-img" alt="">
+        <div class="col-sm-6 nav-lg" style="padding-top: 0px;">
+          <img src="img/logo.png" class="testimonial-img" alt=""  style="width: 67%;margin-top: 5px;">
         </div>
-        <div class="col-sm-4 p-15">
+        <div class="col-sm-4 srch-nav">
 
           <input type="search" id="site-search" name="q" autocomplete="off" aria-label="Search through site content"
             placeholder="What do you want to learn?">
@@ -55,11 +51,10 @@
           <p class="explore"><a href="/explore">Explore Content</a></p>
         </div>
 
-        <div class="col-sm-1 p-15">
+        <div class="col-sm-2 sgn">
           <a class="btn btn-primary pull-left btn-width" href="/resources">Sign In</a>
-        </div>
-        <div class="col-sm-1 p-15">
-          <div class = "dropdown">
+        
+		  <div class = "dropdown pull-right">
             <a class = "bt dropdown-toggle" type = "button" data-toggle="dropdown" style="cursor: pointer;">☰</a>
             <ul class = "dropdown-menu dropdown-menu-right" style="padding: 10px 20px;">
                <li><a href="/aboutus.html" title="About Us">About Us</a></li>
@@ -67,19 +62,11 @@
                <li><a href="http://mohua.gov.in/" target="_blank" title="Ministry of Housing and Urban Affairs">MoHUA</a></li>
             </ul>
          </div>
-          <!-- <div class="dropdown">
-            <h2 class="home-menu1 pull-right dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false" title="menu" style="cursor:pointer;">☰</h2>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="font-size: 14px;">
-              <a class="dropdown-item" href="javascript:">About us</a>
-              <a class="dropdown-item" href="javascript:">NUIS Home</a>
-              <a class="dropdown-item" href="javascript:">Innovate</a>
-              <a class="dropdown-item" href="javascript:">Data Exchange</a>
-              <a class="dropdown-item" href="javascript:">Smart Gov</a>
-            </div>
-          </div> -->
-        </div>
+          
+		</div>
+        
 
+		
       </div>
     </div>
 
@@ -124,7 +111,7 @@
   <section id="intro">
 
     <div class="intro-content">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
         <h2>NATIONAL URBAN
           <br>
           LEARNING PLATFORM </h2>
@@ -175,7 +162,7 @@
       </div>
     </section> -->
     <section id="about" class="wow fadeInUp" style="padding-top: 50px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
         <div class="row">
           <div class="col-lg-2 content">
             <h2 class="border-btm">Popular<br>
@@ -207,18 +194,18 @@
     </section>
 
     <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;padding-top: 0px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
-        <div class="section-header" style="margin-bottom: 60px;">
+      <div class="container">
+        <div class="section-header interested-in" style="margin-bottom: 60px;">
           <h2>I am interested in</h2>
         </div>
         <div class="section-header" style="margin:0 12%;">
           <div class="container">
-            <div class="row">
+            <div class="row mobile-center-align">
               <div class="col-md-2 imc"> <img src="img/icons/mobility.png" class=" pro-img" alt="" style="margin-bottom:7px;height:60px;"
                   onclick="exploreCourse('/explore/1?key=Urban%20Mobility')">
                 <h5 class="scT">Urban Mobility</h5>
               </div>
-              <div class="col-md-2 imc"> <img src="img/icons/finance.png" class=" pro-img" alt="" style="margin-bottom:7px;height:60px;"
+              <div class="col-md-2 imc mobile-interested"> <img src="img/icons/finance.png" class=" pro-img" alt="" style="margin-bottom:7px;height:60px;"
                   onclick="exploreCourse('/explore/1?key=Urban%20Finance')">
                 <h5 class="scT">Urban Finance</h5>
               </div>
@@ -231,7 +218,7 @@
                   onclick="exploreCourse('/explore/1?key=Urban%20Resilience')">
                 <h5 class="scT">Urban Resilience</h5>
               </div>
-              <div class="col-md-2 imc"> <img src="img/icons/wash.png" class=" pro-img" alt="" style="margin-bottom:7px;height:60px;"
+              <div class="col-md-2 imc mobile-interested"> <img src="img/icons/wash.png" class=" pro-img" alt="" style="margin-bottom:7px;height:60px;"
                   onclick="exploreCourse('/explore/1?key=WASH')">
                 <h5 class="scT">WASH</h5>
               </div>
@@ -244,9 +231,9 @@
       About Section
     ============================-->
     <section id="team" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
-        <div class="section-header grow" style="margin-top: 0;margin-left: auto;">
-          <div class="col-md-6 col-lg-6 pull-left nw">
+      <div class="container">
+        <div class="section-header grow mobile-center-align">
+          <div class="col-md-5 col-lg-5 pull-left nw">
 
             <h4>NULP aims to empower India’s urban functionaries, administrators, elected
               representatives, civil
@@ -254,8 +241,8 @@
               cities.
             </h4>
           </div>
-          <div class="col-md-6 col-lg-6 pull-left">
-            <div class="row" style="margin-top: -75px;">
+          <div class="col-md-7 col-lg-7 pull-left">
+            <div class="row">
             <div class="col-md-6 col-lg-6 pull-left br-rgt-bottom">
             <p><img src="img/blu-icon1.png" width="auto"></p>
             <p style="padding-bottom: 35px;"><b style="font-size: 13px;">Facilitating Learning</b><br>Advance yet accessible, self-directed mode of training and leadership development</p>
@@ -264,7 +251,7 @@
             <p><img src="img/blu-icon2.png" width="auto"></p>
             <p><b style="font-size: 13px;">Improving Goverance</b><br>Supporting implementation of newly acquired skills in day-to-day activities</p>
             </div>
-              <div class="col-md-6 col-lg-6 pull-left br-rgt">
+              <div class="col-md-6 col-lg-6 pull-left br-rgt brd">
             <p style="padding-top:30px;"><img src="img/blu-icon3.png" width="auto"></p>
             <p><b style="font-size: 13px;">Advanced learning</b><br>Digitally improving learning journey and upskilling experience</p>
           </div>
@@ -281,8 +268,8 @@
     </section>
 
     <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;padding-top:15px;padding-bottom: 0px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
-        <div class="row " style="margin-bottom: 35px;">
+      <div class="container">
+        <div class="row mobile-center-align" >
           <div class="col-md-3">
             <div style="text-align: center;">
               <img class="img-fluid card-img-to" src="img/icons/skill.png" style="margin-bottom: 15px;height: 90px">
@@ -311,20 +298,75 @@
       </div>
     </section>  
     <section id="testimonials-2" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;margin-bottom: 50px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
         <div class="section-header text-center" style="margin-bottom: 10px;">
           <h2 style="margin-bottom: 0px;">Our Partners</h2>
-          <!-- <p>Enroll in courses from your area of interest &amp; explore contents from the<br>
-            best universities, institutions &amp; organisations</p> -->
+         
         </div>
-        <!-- <div class="owl-carousel testimonials-carousel owl-loaded owl-drag">
-          <div class="owl-stage-outer">
-            <div class="owl-stage"
-              style="transform: translate3d(-1110px, 0px, 0px); transition: all 0.25s ease 0s; width: 2960px;">
-              <div class="owl-item" style="width: 370px;">
-                <div class="testimonial-item join-nuih height-auto">
-                  <div class="col-md-12 col-lg-12 col-sm-12 "> -->
-                    <div class="partners">
+     <div class="container">
+        <!--    <div id="democs" class="carousel slide" data-ride="carousel"> 
+              
+              <ul class="carousel-indicators mb-0 pb-0">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1" class=""></li>
+                <li data-target="#demo" data-slide-to="2"></li>
+              </ul>
+            
+              <div class="carousel-inner no-padding partners"> 
+               
+               
+                <div class="carousel-item active">
+                  <div class="col-xs-3 col-sm-3 col-md-3 pull-left"> 
+                  <div> 
+                 <img class="img-fluid card-img-to" src="img/partners/PwC-logo.png">
+                    </div>
+                  </div>
+                  <div class="col-xs-3 col-sm-3 col-md-3 pull-left"> 
+                  <div> 
+                   <img class="img-fluid card-img-to" src="img/partners/EY_logo_2013.png">
+                    
+                    </div>
+                  </div>
+                  <div class="col-xs-3 col-sm-3 col-md-3 pull-left">
+                  <div> 
+                   <img class="img-fluid card-img-to" src="img/partners/AIILSG_Logo.jpg">
+                    
+                    </div>
+                  </div>
+				  
+				   <div class="col-xs-3 col-sm-3 col-md-3 pull-left">
+                  <div> 
+                     <img class="img-fluid card-img-to" src="img/partners/Societal_Platforms_logo.jpg">
+                    
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                 
+                    <div class="col-xs-3 col-sm-3 col-md-3 pull-left">
+                  <div> 
+               <img class="img-fluid card-img-to" src="img/partners/IIC_logo.png">
+                    </div>
+                  </div>
+              <div class="col-xs-4 col-sm-4 col-md-4 pull-left"> 
+                  <div> 
+              
+                    </div>
+                  </div>
+				    <div class="col-xs-3 col-sm-3 col-md-3 pull-left">
+                  <div> 
+                   
+                     
+                    </div>
+                  </div>
+                </div>
+              <a class="carousel-control-next" href="#democs" data-slide="next"> <span class="carousel-control-prev-icon sp"></span></a>  <a class="carousel-control-prev" href="#democs" data-slide="prev">  <span class="carousel-control-next-icon sp"></span> </a> 
+              </div>
+            </div>
+        -->
+		
+		
+		<div class="partners">
                       <span style="margin-top: 15px;cursor: not-allowed;"><i class="fa fa-angle-left fa-2x" aria-hidden="true"></i></span>
                       <img class="img-fluid card-img-to" src="img/partners/Societal_Platforms_logo.jpg" style="height: 50px;margin-top: 10px;">
                       <img class="img-fluid card-img-to" src="img/partners/IIC_logo.png" style="height: 50px;margin-top: 10px;">
@@ -333,17 +375,14 @@
                       <img class="img-fluid card-img-to" src="img/partners/EY_logo_2013.png">
                       <span style="margin-top: 15px;cursor: not-allowed;"><i class="fa fa-angle-right fa-2x" aria-hidden="true"></i></span>
                     </div>
-        <!-- </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+		
+		</div>
+      
       </div>
     </section>
 
     <!-- <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
 
         <div class="row " style="margin-bottom: 35px;">
 
@@ -398,7 +437,7 @@
     </section> -->
 
     <!-- <section id="testimonials" class="wow fadeInUp" style="padding-top: 25px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
         <div class="section-header text-center" style="margin-bottom: -30px;">
           <h2>Testimonials</h2>
         </div>
@@ -428,12 +467,12 @@
       </div>
     </section> -->
     <section id="contact" class="wow fadeInUp" style="padding-top:0px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
+      <div class="container">
         <div class="section-header text-center" style="margin-bottom: -35px;">
           <h2>About Us</h2>
           <p>NULP ( National Urban Learning Platform ) is an initiative of the Ministry of Housing and Urban<br>
             Affairs to support the development of cities across India...
-          <div class="learn" style="margin: 20px auto 20px;">Learn More</div>
+          <div class="learn" style="margin: 20px auto 20px;cursor: pointer;" onclick="window.location.href='aboutus.html'">Learn More</div>
           </p>
         </div>
 
@@ -441,47 +480,48 @@
 
 
     </section>
-    <section id="testimonials" class="wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;padding-bottom: 0;padding-top:30px;">
-      <div class="container" style="margin-left: 8.5%;margin-right: 8.5%;">
-        <div class="row">
+    <section id="testimonials" class="wow fadeInUp anchor-class" style="visibility: visible; animation-name: fadeInUp;padding-bottom: 0;padding-top:30px;">
+      <div class="container">
+        <div class="row mobile-center-align">
           <div class="col-md-4 imc">
             <div class="row">
               <br>
-              <h5 style="padding-top: 0;color: #0c2e8a;"><b>Anchor Institute</b></h5>
+              <h5 class="footer-h5 anchor" style="padding-top: 0;color: #0c2e8a;"><b>Anchor Institute</b></h5>
             </div>
-            <a href="https://www.niua.org/" target="_blank"><img style="margin-bottom: 9px;" src="img/test-1.png" class=" pro-img" alt="" width="auto"></a>
+            <a href="https://www.niua.org/" target="_blank"><img style="margin-bottom: 9px;" src="img/test-1.png" class=" pro-img footer-sec niua" alt="" width="auto"></a>
           </div>
           <div class="col-md-4 imc">
             <div class="row">
               <br>
-              <h5 style="padding-top: 0;color: #0c2e8a;"><b>Nodal Ministry</b></h5>
+              <h5 class="footer-h5" style="padding-top: 0;color: #0c2e8a;"><b>Nodal Ministry</b></h5>
             </div>
-            <a href="http://mohua.gov.in/" target="_blank"><img style="margin-bottom: 11px;width: 170px;" src="img/mohua.png" class=" pro-img" alt=""></a>
+            <a href="http://mohua.gov.in/" target="_blank"><img style="margin-bottom: 11px;width: 170px;" src="img/mohua.png" class=" pro-img footer-sec" alt=""></a>
           </div>
           <div class="col-md-4 imc">
             <div class="row">
               <br>
-              <h5 style="padding-top: 0;color: #0c2e8a;"><b>Donor Partner</b></h5>
+              <h5 class="footer-h5" style="padding-top: 0;color: #0c2e8a;"><b>Donor Partner</b></h5>
             </div>
-            <a href="http://www.gov.uk/dfid" target="_blank"><img src="img/test-3.png" class=" pro-img" alt="" width="auto" style="height: 85px;"></a>
+            <a href="http://www.gov.uk/dfid" target="_blank"><img src="img/test-3.png" class=" pro-img footer-sec mohua" alt="" width="auto" style="height: 85px;"></a>
           </div>
         </div>
       </div>
-      <div style="background-color: #0089cf;">
-      <div class="row" style="margin: 0 100px;margin-left: 120px;">
+   <div style="background-color: #0089cf;margin-top: 10px;" class="container-fluid">
+      <div class="container">
+<div class="row mobile-center-align-footer" style="/* margin: 0 100px; *//* margin-left: 120px; */">
         <div class="col-md-2 imc">
           <ul class="test-link" style="text-align: center;">
-            <li style="margin-left: -10px;"><a href="/aboutus.html">About</a></li>
+            <li><a href="/aboutus.html">About</a></li>
           </ul>
         </div>
         <div class="col-md-2 imc">
           <ul class="test-link" style="text-align: center;">
-            <li style="margin-left: 7px;"><a href="/maintenance">Leadership</a></li>
+            <li><a href="/maintenance">Leadership</a></li>
           </ul>
         </div>
         <div class="col-md-2 imc">
           <ul class="test-link" style="text-align: center;">
-            <li style="margin-left: 13px;"><a href="/explore-course">Catalog</a></li>
+            <li><a href="/explore-course">Catalog</a></li>
           </ul>
         </div>
         <div class="col-md-2 imc">
@@ -491,7 +531,7 @@
         </div>
         <div class="col-md-2 imc">
           <ul class="test-link" style="text-align: center;">
-            <li style="margin-left: 30px;"><a href="/smartgov.html">CCSG</a></li>
+            <li><a href="/smartgov.html">CCSG</a></li>
           </ul>
         </div>
         <div class="col-md-2 imc">
@@ -500,8 +540,8 @@
           </ul>
         </div>
       </div>
-      </div>
-    </section>
+</div>
+      </div> </section>
     <!--==========================
       Contact Section
     ============================-->
@@ -523,8 +563,8 @@
     </div> -->
   <!-- </div> -->
   <footer id="footer">
-    <div style="margin: 0 100px;margin-left: 120px;">
-      <div class="row">
+    <div class="container">
+      <div class="row mobile-center-align">
         <div class="col-md-2" style="text-align: center;"> <a href="http://smartcities.gov.in/content/" target="_blank"><img src="img/smrt.png"
               width="90px" height="auto" alt="" /></a> </div>
         <div class="col-md-2" style="text-align: center;"> <a href="http://amrut.gov.in/" target="_blank"><img src="img/amrut.png" width="90px"
@@ -536,7 +576,7 @@
         <div class="col-md-2" style="text-align: center;"><a href="https://pmaymis.gov.in/" target="_blank"><img src="img/m.png" width="90px"
               height="auto" alt="" /></a> </div>
         <div class="col-md-2" style="text-align: center;"><a href="https://nulm.gov.in/" target="_blank"><img src="img/day.png" width="90px"
-              height="auto" alt="" style="margin-left: -27px;" /></a> </div>
+              height="auto" alt="" /></a> </div>
       </div>
     </div>
   </footer>

@@ -113,7 +113,7 @@ h6 {
 --------------------------------------------------------------*/
 
 #header {
-  padding: 20px 0;
+  padding: 0px 0;
   height: 100px;
   transition: all 0.5s;
   z-index: 997;
@@ -1321,9 +1321,19 @@ div#header-sticky-wrapper{
 	 font-size: 12px;
     font-weight: 600;
 }
-.navbar{
-	padding:0;
+.navbar {
+    padding:10px 30px;
+    height: 100px;
+    /* line-height: 10px; */
+    width: 100%;
 }
+a.navbar-brand.nav-lg{
+	line-height:normal;
+	width:50%;
+	
+}
+
+
 .navbar-expand-lg .navbar-nav .nav-link {
     margin-right: 36px;
     padding:0;
@@ -1628,18 +1638,19 @@ line-height:35px;
 	margin-top:90px;
 }*/
 .grow{
-	box-sizing: content-box;
-    padding: 90px 114px 0 108px;
+    ox-sizing: content-box;
+    padding: 1rem 2rem 0 4rem;
     margin: 30px 15px;
     text-align: center;
-    min-height:330px;
+    min-height: 24rem;
     /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
-	text-align:left;
-	background:url(../img/know.png) no-repeat top left;
-	-webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+    text-align: left;
+    background: url(../img/know.png) no-repeat top left;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
        
 }
 .grow h2.grow-hd.grow-text{
@@ -2932,6 +2943,60 @@ button.btn.btn-primary.pull-right {
   .closebtn {/*margin-top:100px;*/}
 
 }
+@media only screen and (max-width: 510px) {
+  .mobile-center-align-footer {
+    margin-left: 2% !important;
+  }
+  .mobile-center-align {
+    margin-left: 1% !important;
+  }
+  .mobile-interested {
+    display: none;
+  }
+  .interested-in {
+    margin-bottom: 0 !important;
+  }
+  .anchor-class {
+    padding-top: 0 !important;
+  }
+  .footer-h5.anchor {
+    margin-left: 8px;
+  }
+  .footer-h5 {
+    display: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .pro-img.footer-sec {
+    height: auto !important;
+    width: 170px !important;
+    margin-left: 31% !important;
+    margin-bottom: 10px !important;
+  }
+  .pro-img.footer-sec.mohua {
+    width: 145px !important;
+    margin-left: 34% !important;
+  }
+  .pro-img.footer-sec.niua {
+    width: 190px !important;
+    margin-left: 28% !important;
+  }
+  .dropdown.pull-right {
+    margin-right: 6px;
+  }
+  #testimonials-2 {
+    display: none;
+  }
+  .partners {
+    margin-left: 22%;
+  }
+  .partners span {
+    display: none;
+  }
+  .partners, .partners img {
+    display: block !important;
+  }
+}
 @media only screen and (max-width: 516px) {
   .home-menu2{float:left;}
   .home-menu2{float:left; padding:none; height:10px;}
@@ -2955,6 +3020,10 @@ button.btn.btn-primary.pull-right {
   .closebtn {/*margin-top:100px;*/}
 
 }
+
+
+
+
 @media only screen and (max-width: 545px) {
   .home-menu2{float:right;}
   .home-menu2{float:right; padding:none; height:10px;}
@@ -2963,7 +3032,151 @@ button.btn.btn-primary.pull-right {
   .sidenav a {font-size: 18px;}
   .sidenav a {margin-left:10px;}
   .closebtn {/*margin-top:100px;*/}
+  .col-md-6.col-lg-6.pull-left.br-rgt.brd{
+	  
+	  border-bottom: 1px solid #4cfefe;
+	  
+  }
+  
+  .col-md-4.imc a img.pro-img {
+ 
+    /* margin: 0 2rem!important; */
+    /* width: 80%!important; */
+    /* padding: 0; */
+}
+    .nav-lg img{
+    width:85%;
+  }
+  .btn-width {
+    
+    margin-top: 10px;
+}
 
+a.bt.dropdown-toggle {
+    font-size: 34px;
+
+}
+
+img.testimonial-img {
+    margin-left: 0!important;
+}
+
+  input#site-search {
+    width:75%!important;
+    font-size: 9px!important;
+	    padding-left: 5px!important;
+}
+button.searchIcon {
+    position: relative;
+	margin-left: -4px;
+    height: 34px;
+    cursor: pointer;
+    right: 0;
+	    top: 2px;
+}
+
+#header {
+    padding: 2px 6px;
+   
+}
+  .nav-lg{
+	
+	    width: 50%;
+    float: left;
+    margin: 0;
+    padding: 0!important;
+	line-height: normal;
+
+}
+.col-sm-2.sgn {
+    padding-top: 0!important;
+}
+.srch-nav{
+	    float: left;
+    width: 50%;
+	    margin-bottom: 2px;
+		padding: 0!important;
+}
+/*
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}*/
+p.explore {
+   float: left;
+    padding: 0!important;
+    margin: 10px;
+    position: absolute;
+    top: 54px;
+}
+a.bt.dropdown-toggle {
+    font-size: 38px;
+    margin-top: 0!important;
+    padding-left: 0px!important;
+}
+.pro-img {
+    margin: 0!important;
+    position: relative;
+    width: auto;
+}
+.col-md-5.col-lg-5.pull-left.nw h4 {
+    font-size: 13px;
+}
+.col-md-6.col-lg-6.pull-left .row {
+    margin-top: 0!important;
+}
+.grow {
+    box-sizing: content-box;
+    padding: 25px 0 50px;
+    margin: 0 auto;
+    text-align: center;
+    min-height: 50em;
+    /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
+    text-align: left;
+    background-image: url(../img/know.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* background-size: cover; */
+    height: 100%;
+    width: 100%;
+
+
+}
+
+.col-md-6.col-lg-6.pull-left .row {
+    margin-top: 0!important;
+}
+
+.col-md-5.col-lg-5.pull-left.nw {
+	text-align:center!important;
+    padding: 10px!important;
+}
+
+/*.partners{
+	
+	width: 300px!important;
+    overflow-y: scroll!important;
+}
+*/
 }
 
  html{
@@ -3049,18 +3262,17 @@ button.btn.btn-primary.pull-right {
 .mover:hover{
 	transform: rotate(360deg);
 }
-
-input#site-search{
-	
-	border:none;
-	background-color:#e6e6e6;
-	color:#000;
-	height:34px;
-	    font-size: 11px;
-
+form.form-inline.srch-nav {
+    width: 20%;
+}
+input#site-search {
+    border: none;
+    background-color: #e6e6e6;
+    color: #000;
+    height: 34px;
+    font-size: 11px;
     width: 50%;
-padding-left: 15px;
-	
+    padding-left: 15px;
 }
 
 input#site-search:focus {
@@ -3075,18 +3287,19 @@ input:focus, textarea:focus, select:focus {
 outline-offset: 0px !important;
 outline: none !important;
 }
-.searchIcon{
-	background-color: #1f6ccf;
+.searchIcon {
+   background-color: #1f6ccf;
     color: white;
     border: 4px solid #1f6ccf;
-      margin-left: -5px;
-	  height:34px;
+    margin-left: -5px;
+    height: 34px;
     position: absolute;
     cursor: pointer;
 }
 p.explore {
-    float: right;
-	padding: 6px 53px;
+       float: right;
+    padding: 4px 50px 0;
+    margin: 0;
 }
 p.explore a{
 	font-size:12px;
@@ -3101,11 +3314,11 @@ p.explore a{
 	width:98px;
 }
 
-.col-md-6.col-lg-6.pull-left.nw{
-	font-size:27px;
-	text-align:left;
-	color:white;
-	padding: 0 135px 0 0;
+.col-md-5.col-lg-5.pull-left.nw{
+	font-size: 24px;
+    text-align: left;
+    color: white;
+    padding: 35px 90px 44px 30px;
 	
 }
 .width-780{
@@ -3148,6 +3361,7 @@ p.explore a{
   padding-left: 0;
   margin-top: 1px;
   margin-bottom: 0;
+      background-color: #0089cf;
 }
 ul.test-link li {
     padding: 2px 15px;
@@ -3200,8 +3414,7 @@ ul.test-link li a{
   border-radius:4px;
   box-shadow:none;
   margin-top:20px;
-  min-width:110px !important;
-  max-width:110px !important;
+  width:160px;
 }
 .dropdown ul.dropdown-menu:before {
   content: "";
@@ -3225,8 +3438,8 @@ ul.test-link li a{
 }
 a.bt.dropdown-toggle {
   font-size: 38px;
-  margin-top: -12px;
-  padding-left: 40px;
+    margin-top: -12px;
+    padding-left: 40px;
 }
 a.bt.dropdown-toggle::after {
   content: none;
@@ -3294,4 +3507,32 @@ span.pull-left.paticipate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.col-sm-6.nav-lg {
+    padding-top: 8px;
+}
+
+.col-sm-4.srch-nav {
+    padding-top: 30px;
+}
+.col-sm-2.sgn {
+    padding-top: 30px;
+}
+
+img.testimonial-img {
+    margin-left: 15%;
+}
+
+.col-md-5.col-lg-5.pull-left.nw h4 {
+    font-size: 100%;
+}
+
+.adj{
+	
+	    left: 0!important;
+    position: absolute;
+}
+.margin-top-20 {
+  margin-top: 20px;
 }
