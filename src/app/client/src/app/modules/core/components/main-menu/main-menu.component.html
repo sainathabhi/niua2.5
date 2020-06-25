@@ -48,7 +48,7 @@
 		</a> -->
 		<button class="ui basic button login-button" appTelemetryInteract *ngIf="!userService.loggedIn && !isOffline"
 		[telemetryInteractEdata]="signInIntractEdata" (click)="navigateToResource()" style="margin-right: 35px;">Sign In</button>
-		<div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+		<div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header" style="margin-right: -50px;">
 			<span style="cursor: pointer;font-size: 35px;">☰</span>
 			<div class="menu" suiDropdownMenu>
 				<a class="item" href="/" title="Home">Home</a>
