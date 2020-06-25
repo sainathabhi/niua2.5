@@ -99,6 +99,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   public onItemSelect(item: any) {
     if (!item.folder) {
+      window.location.href="/resources";
       this.contentSelect.emit({ id: item.data.id, title: item.title });
     }
   }
