@@ -1638,11 +1638,11 @@ line-height:35px;
 	margin-top:90px;
 }*/
 .grow{
-    ox-sizing: content-box;
-    padding: 1rem 2rem 0 4rem;
+    box-sizing: content-box;
+       padding:1rem 2rem 1rem 2rem;
     margin: 30px 15px;
     text-align: center;
-    min-height: 24rem;
+   /* min-height: 24rem;*/
     /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
     text-align: left;
     background: url(../img/know.png) no-repeat top left;
@@ -1650,7 +1650,7 @@ line-height:35px;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-
+	display:inline-block;
        
 }
 .grow h2.grow-hd.grow-text{
@@ -2944,6 +2944,17 @@ button.btn.btn-primary.pull-right {
 
 }
 @media only screen and (max-width: 510px) {
+  .testimonial-img {
+    width:60% !important;
+    margin-top: auto !important;    
+  }
+  .mobile-center-align-anchor {
+    margin-left: -9%;
+  }
+  .disabled-link{
+    cursor: default;
+    pointer-events: none;        
+  }
   .mobile-center-align-footer {
     margin-left: 2% !important;
   }
@@ -3020,7 +3031,6 @@ button.btn.btn-primary.pull-right {
   .closebtn {/*margin-top:100px;*/}
 
 }
-
 
 
 
@@ -3122,7 +3132,7 @@ p.explore {
     padding: 0!important;
     margin: 10px;
     position: absolute;
-    top: 54px;
+    top: 55px;
 }
 a.bt.dropdown-toggle {
     font-size: 38px;
@@ -3142,10 +3152,10 @@ a.bt.dropdown-toggle {
 }
 .grow {
     box-sizing: content-box;
-    padding: 25px 0 50px;
+padding:25px 0 2rem;
     margin: 0 auto;
     text-align: center;
-    min-height: 50em;
+    min-height: 41rem;
     /* box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08); */
     text-align: left;
     background-image: url(../img/know.png);
