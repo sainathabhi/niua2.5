@@ -1,3 +1,4 @@
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 // Angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -18,7 +19,7 @@ import {
 import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, DataTableComponent, DataChartComponent } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
-import { SearchService } from '@sunbird/core';
+import { CoreModule, SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 // Imported Primeng Calendar Module
@@ -26,6 +27,12 @@ import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { PermissionDirective } from './directives';
+import { AddUserssComponent } from './components/add-userss/add-userss.component';
+import { UserSearchService } from '../search/services';
+import { SlickModule } from 'ngx-slick';
+import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { BatchService } from '../workspace/services';
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,20 +44,28 @@ import { PermissionDirective } from './directives';
     SuiModule,
     SharedModule,
     OrderModule,
+    AngularMultiSelectModule,
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
     DiscussionModule,
     CalendarModule,
     TableModule,
-    DropdownModule
+    DropdownModule,
+    SlickModule,
+    CoreModule,
+    SharedFeatureModule,
+    MultiSelectModule
+
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, PermissionDirective],
+    DataTableComponent, DataChartComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, PermissionDirective, AddUserssComponent],
   exports: [CourseProgressComponent, DataTableComponent, PermissionDirective],
   providers: [
     RendererService,
     DashboardUtilsService,
     SearchService,
+    BatchService,
+    UserSearchService,
     LineChartService,
     CourseConsumptionService,
     OrganisationService, DownloadService, CourseProgressService, UsageService, DatePipe]

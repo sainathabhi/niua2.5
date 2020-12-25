@@ -7,3 +7,4 @@ export * from './chartjs';
 export * from './course-progress/course-progress.service';
 export * from './usage/usage.service';
 export * from './reports/reports.service';
+export * from './addusser/addusser.service';

@@ -10,3 +10,4 @@ export * from './total-users/total-users.component';
 export * from './all-dashboard/all-dashboard.component';
 export * from './data-table/data-table.component';
 export * from './data-chart/data-chart.component';
+export * from './add-userss/add-userss.component';

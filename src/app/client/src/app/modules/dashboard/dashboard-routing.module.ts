@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, AllReportsComponent } from './components/';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, AllReportsComponent, AddUserssComponent } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
 const routes: Routes = [
@@ -19,6 +19,10 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Course', url: '/learn' }, { label: 'Course Creator Dashboard', url: '' }]
     }
+  },
+  {
+    path: 'addusess', component: AddUserssComponent
+  
   },
   {
     path: 'activity/course/consumption/:id/:timePeriod', component: CourseConsumptionComponent,
