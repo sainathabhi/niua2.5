@@ -70,6 +70,9 @@ export class MainHeaderComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
   showOfflineHelpCentre = false;
+  userRole: any;
+  adminVar: string;
+  adminVarLink: string;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -91,6 +94,17 @@ export class MainHeaderComponent implements OnInit {
       this.userService.userData$.pipe(first()).subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+          console.log('User Profile');
+          console.log(this.userProfile);
+          if(this.userProfile.userRoles.includes("ORG_MANAGEMENT") || this.userProfile.userRoles.includes("ORG_MODERATOR") || this.userProfile.userRoles.includes("ORG_ADMIN") || this.userProfile.userRoles.includes("SYSTEM_ADMINISTRATION"))
+          {
+            this.adminVarLink ="present";
+          }
+          else
+          {
+            this.adminVarLink = "not present";
+            console.log('second');
+          }
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
         }

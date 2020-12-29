@@ -3,12 +3,12 @@
       <div class="twelve wide column workspacesegment">
           <sui-tabset>
               <div class="ui top attached tabular menu">
-                  <a class="item" suiTabHeader="yourLearnings">User Management</a>
-                  <a class="item" suiTabHeader="contentcreation" *ngIf="orgDataLength == 1">Organization Management</a>
+                  <a class="item" suiTabHeader="yourLearnings" *ngIf="userTab">User Management</a>
+                  <a class="item" suiTabHeader="contentcreation" *ngIf="organizationTab">Organization Management</a>
                   
                  
               </div>
-              <div class="ui bottom attached segment" suiTabContent="yourLearnings">
+              <div class="ui bottom attached segment" *ngIf="userTab" suiTabContent="yourLearnings">
 
             
 
@@ -105,7 +105,7 @@
 
 
               </div>
-              <div class="ui bottom attached segment" *ngIf="orgDataLength == 1" suiTabContent="contentcreation">
+              <div class="ui bottom attached segment" *ngIf="organizationTab" suiTabContent="contentcreation">
                 <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
                 </div>
                
@@ -298,7 +298,7 @@
                 
           
 
-                
+
 
                 <sui-modal
   [mustScroll]="true" 

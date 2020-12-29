@@ -205,6 +205,8 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   confirmPopupMsg: string;
   isrootOrganization: string;
   channel: any;
+  userTab: boolean = false;
+  organizationTab: boolean  = false;
 
 
   
@@ -510,8 +512,38 @@ else{
        this.orgData = apiResponse.result.response.organisations;
        sessionStorage.setItem("orgDatalength", this.orgData.length);
        sessionStorage.setItem("userLoginDataChannel", this.userLoginDataChannel);
-       for (var i = 0; i < this.orgData.length; i++) {
-        this.orgDataRole=this.orgData[0].roles
+       //Organization tab is visible for system admin and Root Admin
+       for (var i = 0; i < this.orgData.length; i++) {  
+         if((this.orgData.length>1) && (this.userLoginData.rootOrgId!=this.orgData[1].organisationId))
+         {
+            this.orgDataRole=this.orgData[1].roles
+         }
+         else if(this.orgData.length==1)
+         {
+             this.orgDataRole=this.orgData[0].roles
+         }
+
+        if(this.orgDataRole.includes("ORG_ADMIN") || this.orgDataRole.includes("SYSTEM_ADMINISTRATION"))
+        {
+          this.userTab = true;
+          if(this.orgData.length==1)
+          {
+          this.organizationTab = true;
+          }
+
+
+        }
+        else
+        {
+           if(this.orgDataRole.includes("ORG_MANAGEMENT"))
+           {
+            this.organizationTab = true;
+           }
+           if(this.orgDataRole.includes("ORG_MODERATOR"))
+           {
+            this.userTab = true;
+           }
+        }
        
        
         if(this.orgData.length == 1)
