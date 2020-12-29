@@ -1,4 +1,5 @@
 import { UserService } from '../../../core/services/user/user.service';
+import { ValidationserviceService } from './../../../shared/regex/validationservice.service';
 import { ServerResponse } from './../../../shared/interfaces/serverResponse';  
 import { ResourceService } from './../../../shared/services/resource/resource.service';
 import { ToasterService } from './../../../shared/services/toaster/toaster.service';
@@ -6,7 +7,9 @@ import { AddusserService } from './../../services/addusser/addusser.service';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-
+import {
+  NavigationHelperService
+} from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserSearchService } from '../../../search/services';
@@ -18,7 +21,7 @@ import * as _ from 'lodash-es';
   templateUrl: './add-userss.component.html',
   styleUrls: ['./add-userss.component.scss']
 })
-export class AddUserssComponent implements OnInit {
+export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('multiSelect') multiSelect;
   createUserForm: FormGroup;
   addRoleForm: FormGroup;
@@ -192,6 +195,16 @@ export class AddUserssComponent implements OnInit {
   orgStatusValOrg:any='';
   addorgSelectName: string;
   orgNameUser: any;
+  orgTypelListOrg: any[];
+  orgTypeOrgArry: any;
+  orgTypeListOrgArryData: any[] = new Array();
+  orgTypeUser: any;
+  orgTypelListUser: any[];
+  orgTypelListUserArry: any;
+  orgTypeListUserArryData: any[] = new Array();
+  confirmPopupMsg: string;
+  isrootOrganization: string;
+  channel: any;
 
 
   
@@ -213,7 +226,7 @@ export class AddUserssComponent implements OnInit {
   
   */
 
-  constructor(public userService: UserService, private _httpService: AddusserService,private activatedRoute: ActivatedRoute,public router: Router,toasterService: ToasterService, resourceService: ResourceService,userSearchService: UserSearchService) { 
+  constructor(public userService: UserService, private _httpService: AddusserService,private activatedRoute: ActivatedRoute,public router: Router,toasterService: ToasterService, resourceService: ResourceService,userSearchService: UserSearchService,private _validation:ValidationserviceService, public navigationhelperService: NavigationHelperService) { 
 
     this.resourceService = resourceService;
     this.toasterService = toasterService;
@@ -234,9 +247,9 @@ export class AddUserssComponent implements OnInit {
   ngOnInit() {
     this.createUserForm = new FormGroup({
       firstname: new FormControl(null,Validators.required),
-      lastname: new FormControl(null,Validators.required),
-      emailid: new FormControl(null,Validators.required),
-      phone: new FormControl(null,Validators.required),
+      lastname: new FormControl(null),
+      emailid: new FormControl("",  [Validators.required,Validators.pattern(this._validation.emailRegex)]),
+      phone: new FormControl("",  [Validators.required,Validators.pattern(this._validation.mobileno)]),
       isrootSub:new FormControl(null),
       subRootorgname:new FormControl(null),
       orgname: new FormControl(null,Validators.required),
@@ -356,6 +369,7 @@ export class AddUserssComponent implements OnInit {
   initializeColumns() {
     this.colsUser = [
       { field: 'orgName', header: 'Organization', width: '150px' },
+      // { field: 'orgType', header: 'Organization Type', width: '150px' },
       { field: 'firstName', header: ' First Name', width: '150px' },
       { field: 'lastName', header: 'Last Name', width: '150px' },
       { field: 'email', header: 'Email', width: '150px' },
@@ -403,7 +417,7 @@ getRoleName(str:any)
   console.log(this.onchangeorgName);
   if(this.systemVar=='notpresent')
   {
-  if( this.onchangeorgName[0]=="PCMC")
+  if( this.onchangeorgName[2]=="true")
   {
     this.dropdownList = [
       {"id":1,"itemName":"PUBLIC"},
@@ -411,7 +425,8 @@ getRoleName(str:any)
       {"id":3,"itemName":"CONTENT_REVIEWER"},
       {"id":4,"itemName":"COURSE_MENTOR"},
       {"id":5,"itemName":"ORG_ADMIN"},
-      {"id":6,"itemName":"ORG_MODERATOR"},
+      {"id":6,"itemName":"ORG_MANAGEMENT"},
+      {"id":7,"itemName":"ORG_MODERATOR"},
      
     ];
   }
@@ -422,8 +437,7 @@ getRoleName(str:any)
       {"id":3,"itemName":"CONTENT_REVIEWER"},
       {"id":4,"itemName":"COURSE_MENTOR"},
       {"id":5,"itemName":"ORG_ADMIN"},
-      {"id":6,"itemName":"ORG_MANAGEMENT"},
-      {"id":7,"itemName":"ORG_MODERATOR"},
+      {"id":6,"itemName":"ORG_MODERATOR"},
      
     ];
   }
@@ -439,7 +453,8 @@ else if(this.systemVar=='present')
     {"id":4,"itemName":"COURSE_MENTOR"},
     {"id":5,"itemName":"ORG_ADMIN"},
     {"id":6,"itemName":"ORG_MODERATOR"},
-    {"id":7,"itemName":"SYSTEM_ADMINISTRATION"},
+    {"id":7,"itemName":"ORG_MANAGEMENT"},
+    {"id":8,"itemName":"SYSTEM_ADMINISTRATION"},
    
   ];
 }
@@ -450,8 +465,7 @@ else{
     {"id":3,"itemName":"CONTENT_REVIEWER"},
     {"id":4,"itemName":"COURSE_MENTOR"},
     {"id":5,"itemName":"ORG_ADMIN"},
-    {"id":6,"itemName":"ORG_MANAGEMENT"},
-    {"id":7,"itemName":"ORG_MODERATOR"},
+    {"id":6,"itemName":"ORG_MODERATOR"},
    
   ];
 }
@@ -505,7 +519,8 @@ else{
           this.checkRootOrg= true;
           for( var k = 0; k < this.orgDataRole.length; k++ ) {
             if(this.orgDataRole[k] =="SYSTEM_ADMINISTRATION"){
-              this.systemVar='present';             
+              this.systemVar='present'; 
+              this.isrootOrganization='yes'            
             }
             else{
               this.systemVar='notpresent';
@@ -518,13 +533,48 @@ else{
         else if(this.orgData.length == 2)
         {
           this.systemVar='notpresent';
-          this.subOrgName = this.orgData[1].orgName;
-          sessionStorage.setItem("subOrgName", this.subOrgName);
+         // this.subOrgName = this.orgData[1].orgName;
+        //  sessionStorage.setItem("subOrgName", this.subOrgName);
           this.organisationId = this.orgData[1].organisationId;
-         if(i==0)
-         {
-          this.mentorList.push( {'id' :this.organisationId,'orgName': this.subOrgName}) 
-         }
+          if(this.mentorList.length==0)
+          {
+            debugger
+            let tempArray : any
+        tempArray= {
+        "request": {
+        "filters": {
+        },
+        "limit": 1000,
+        "offset": 0
+        }
+        }
+        this._httpService.getSuborgData(tempArray).subscribe(res => {
+        console.log('get the firstttttttttttttttttttttt organization');
+          console.log(res.result.response.content);
+        res.result.response.content.forEach(element2 => {
+          if(element2.identifier==this.orgData[1].organisationId)
+                  {
+                   this.subOrgName = element2.orgName
+
+                  
+                  }
+  
+          });
+       
+        
+          if(this.mentorList.length==0)
+          {
+         sessionStorage.setItem("subOrgName", this.subOrgName);
+        console.log("---mentor list1111111")
+        sessionStorage.setItem("subOrgName", this.subOrgName);
+        this.mentorList.push( {'id' :this.organisationId,'orgName': this.subOrgName,'isRootOrg':false}) 
+        console.log(this.mentorList)
+          }
+        },err=>{
+        // this.popupMsg=err.params.errmsg;
+        console.log(err)
+        });
+          }
           this.checkRootOrg= false;
         }
      }
@@ -565,7 +615,8 @@ else{
             'query': '',
             'filters': {
               "channel":userLoginDataChannel
-            }
+            },
+            'limit': 1000
           }
         }
       }
@@ -578,12 +629,13 @@ else{
           'request': {
             'query': organisationId,
             'filters': {
-            }
+            },
+            'limit': 1000
           }
         }
     
       }     
-     this.showUserData = [];
+    // this.showUserData = [];
      // this.orgName ="";
     // this.orgNameUser ="";
       this._httpService.userSearch(tempArray).subscribe(res => {
@@ -591,7 +643,9 @@ else{
        // this.userData = res.result.response['content'];
         this.userData = res.result.response.content;
        
-       // this.showUserData = [];
+        this.showUserData = [];
+        this.statuslistArryData =[];
+        this.orgListData =[];
       // this.orgNameUser ="";
         res.result.response.content.forEach(element => {
          // if(element.eNqFlage){
@@ -624,6 +678,7 @@ else{
           if((element1.identifier==element.organisations[1].organisationId) && (element.rootOrgId!=element.organisations[1].organisationId))
           {
            this.orgNameUser  = element1.orgName
+           this.orgTypeUser =   'Sub Organization';
           }
     
           }
@@ -632,17 +687,19 @@ else{
          if( this.userOrgLength==1)
           {
             this.orgNameUser  = element.organisations[0].orgName;
+            this.orgTypeUser =   'Root  Organization';
           }
         }
         else if(this.orgDatalength >1)
         {
           this.orgNameUser =   this.subOrgName;
+          this.orgTypeUser =   'Sub Organization';
         }
          
 
      //console.log(this.orgNameUser+'====================================wee'+element.firstName)
           
-         this.showUserData.push({"userId":element.id,"uStatus":element.status,"createdDate":element.createdDate,"firstName": element.firstName,"lastName":element.lastName,"email":element.email,"phone":element.phone,"orgLength":  element.organisations.length,"orgName":this.orgNameUser,"status":this.status,"userOrglengths":this.userOrgLength})
+         this.showUserData.push({"orgType": this.orgTypeUser,"userId":element.id,"uStatus":element.status,"createdDate":element.createdDate,"firstName": element.firstName,"lastName":element.lastName,"email":element.email,"phone":element.phone,"orgLength":  element.organisations.length,"orgName":this.orgNameUser,"status":this.status,"userOrglengths":this.userOrgLength})
          // this.showUserData.push({"userId":element.id,"uStatus":element.status,"firstName": element.firstName,"lastName":element.lastName,"email":element.email,"phone":element.phone,"orgLength":  element.organisations.length,"orgName":this.orgName})
         
          
@@ -654,6 +711,15 @@ else{
         console.log('showUserData');
         console.log(this.showUserData);
         console.log('showUserData11');
+
+
+        this.orgTypelListUser = this.showUserData
+        .map(item => item.orgType)
+        .filter((value, index, self) => self.indexOf(value) === index)
+        this.orgTypelListUserArry  = this.orgTypelListUser.filter(f => f !== undefined && f !== null) as any;
+        this.orgTypelListUserArry.forEach(element => {
+        this.orgTypeListUserArryData.push({"label": element,"value":element})
+        });
 
         this.statusList = this.showUserData
         .map(item => item.status)
@@ -903,6 +969,9 @@ else{
   }
   getSubRootOrganization(strOrg:any)
   {
+   // this.mentorList=[];
+  //  this.subMentorList=[];
+    this.selectedItems=[];
     console.log(strOrg.target.value);
     if(strOrg.target.value=='yes')
     {
@@ -1014,6 +1083,7 @@ console.log( addRoletempArray);
            {"id":3,"itemName":"CONTENT_REVIEWER"},
            {"id":4,"itemName":"COURSE_MENTOR"},
            {"id":5,"itemName":"ORG_ADMIN"},
+           {"id":6,"itemName":"ORG_MANAGEMENT"},
            {"id":7,"itemName":"ORG_MODERATOR"},
           
          ];
@@ -1029,8 +1099,7 @@ console.log( addRoletempArray);
            {"id":3,"itemName":"CONTENT_REVIEWER"},
            {"id":4,"itemName":"COURSE_MENTOR"},
            {"id":5,"itemName":"ORG_ADMIN"},
-           {"id":6,"itemName":"ORG_MANAGEMENT"},
-           {"id":7,"itemName":"ORG_MODERATOR"},
+           {"id":6,"itemName":"ORG_MODERATOR"},
           
          ];
          this.roleEditData=this.roleEditeUserData.organisations[1].roles;
@@ -1128,6 +1197,7 @@ console.log( addOrgtempArray);
        {"id":3,"itemName":"CONTENT_REVIEWER"},
        {"id":4,"itemName":"COURSE_MENTOR"},
        {"id":5,"itemName":"ORG_ADMIN"},
+       {"id":6,"itemName":"ORG_MANAGEMENT"},
        {"id":7,"itemName":"ORG_MODERATOR"},
       
      ];
@@ -1145,8 +1215,7 @@ console.log( addOrgtempArray);
        {"id":3,"itemName":"CONTENT_REVIEWER"},
        {"id":4,"itemName":"COURSE_MENTOR"},
        {"id":5,"itemName":"ORG_ADMIN"},
-       {"id":6,"itemName":"ORG_MANAGEMENT"},
-       {"id":7,"itemName":"ORG_MODERATOR"},
+       {"id":6,"itemName":"ORG_MODERATOR"},
       
      ];
      this.roleEditData= this.orgEditeUserData.organisations[1].roles;
@@ -1175,6 +1244,14 @@ console.log( addOrgtempArray);
     this.blockUserid=userIds;
     this.blockId=blockId;
     this.confirmPopup=true;
+    if(blockId==1)
+    {
+    this.confirmPopupMsg="Are you sure you want to block the user";
+    }
+    if(blockId==0)
+    {
+      this.confirmPopupMsg="Are you sure you want to Unblock the user";
+    }
   }
   blockConfirmState()
   {
@@ -1255,6 +1332,27 @@ console.log( addOrgtempArray);
     this.addUserPopup=true
     this.addRolePopup = false
     this.addOrgPopup = false
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+  
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   closepopup()
   {
@@ -4910,10 +5008,12 @@ createOrgFormSubmit()
   if(this.onchangeorgId !='')
   {
     this.onchangeorgId = this.onchangeorgId 
+	 this.channel = this.onchangeorgName[3]
   }
   else
   {
     this.onchangeorgId = this.rootOrgId 
+	this.channel = this.userLoginDataChannel 
   }
   
     let tempArray : any
@@ -5210,8 +5310,7 @@ getUserOrganization(checkSystemAdmin:any)
     'request': {
       'query': '',
       'filters': {
-      },
-      'limit': 100
+      }
     }
   }
 }
@@ -5222,25 +5321,24 @@ tempArray= {
     'query': '',
     'filters': {
       "channel": this.userLoginDataChannel
-    },
-    'limit': 100
+    }
   }
 }
 }
-  this.showOrgData = [];
-  this.showOrgData1 = [];
-  this.showOrgData2 = [];
+ // this.showOrgData = [];
+  //this.showOrgData1 = [];
+  //this.showOrgData2 = [];
   this._httpService.orgSearch(tempArray).subscribe(res => {
     this.orgSearchData = res.result.response.content;
     this.countOrgRecord = res.result.response.count;
-    console.log('chakshu');
-    console.log(this.orgSearchData);
-    console.log(this.orgSearchData);
+ 
     this.showOrgData = [];
-    this.showOrgData1 = [];
-    this.showOrgData2 = [];
-    this.statuslistArryDataOrg = [];
-    this.orgListDataOrg = [];
+   
+    this.channelListOrgArryData= [];
+    this.statuslistArryDataOrg= [];
+     this.orgListDataOrg= [];
+     this.orgTypeListOrgArryData = [];
+   
     this.result = 0;
     res.result.response.content.forEach(element => {
 
@@ -5259,7 +5357,7 @@ tempArray= {
       }
       else if(element.isRootOrg==false)
       {
-        this.orgType =   'SubRoot Organization';
+        this.orgType =   'Sub Organization';
       }
 
       if(element.isRootOrg)
@@ -5283,21 +5381,21 @@ tempArray= {
 
     });
 
-   //this.showOrgData = [];
-   this.statuslistArryDataOrg = [];
-   this.orgListDataOrg = [];
-  
-   
-  // this.showOrgData =  this.showOrgData.concat(this.showOrgData1,this.showOrgData2); 
-  
 
-    /*this.showOrgData = this.showOrgData.sort(function(a, b) {
-      return b.isRootOrg - a.isRootOrg
-     })*/
 
      console.log('ccccc')
      console.log(this.showOrgData)
      console.log('ccccc2222')
+
+
+
+     this.orgTypelListOrg = this.showOrgData
+     .map(item => item.orgType)
+     .filter((value, index, self) => self.indexOf(value) === index)
+     this.orgTypeOrgArry  = this.orgTypelListOrg.filter(f => f !== undefined && f !== null) as any;
+     this.orgTypeOrgArry.forEach(element => {
+     this.orgTypeListOrgArryData.push({"label": element,"value":element})
+     });
 
 
      this.channelListOrg = this.showOrgData
@@ -5329,10 +5427,6 @@ tempArray= {
 
 
   });
-}
-
-ngOnDestroy() {
- 
 }
 
 //user code change 22-12-2020//

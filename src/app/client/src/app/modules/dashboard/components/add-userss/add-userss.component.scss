@@ -1,10 +1,7 @@
 .align-center {
   text-align: center;
 }
-.buttonleft{
-  margin-left: 88%;
-    margin-top: 10px
-}
+
 ui.dropdown>.dropdown.icon {
   float:right;
 }
@@ -26,5 +23,13 @@ ui.dropdown>.dropdown.icon {
   color: #fff;
 }
 .ng-star-inserted .sb-btn-normal, .sb-btn-sm, .sb-btn-md {
-  padding: 8px 6px;
+    padding: 8px 0px;
+    width: 76px;
+    margin: 0px !important;
+
+}
+.grid .twelve .buttonleft{
+  float: right;
+    right: 3px;
+
 }

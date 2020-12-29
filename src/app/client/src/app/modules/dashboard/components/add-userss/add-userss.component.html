@@ -10,7 +10,7 @@
               </div>
               <div class="ui bottom attached segment" suiTabContent="yourLearnings">
 
-             <button  class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn buttonleft" (click)="show()"> Add User </button>
+            
 
              <div class="ui container">
               
@@ -19,6 +19,7 @@
               <div class="ui grid" >
                 <div class="twelve wide column">
                     <span>Number of User Found:&nbsp;<b>{{countUserRecord}}</b></span>
+                    <button  class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn buttonleft" (click)="show()"> Add User </button>
                 </div>
             
             
@@ -52,6 +53,10 @@
                           
                             <p-multiSelect *ngSwitchCase="'orgName'" [options]="orgListData" defaultLabel="All"
                             appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+
+
+                            <!-- <p-multiSelect *ngSwitchCase="'orgType'" [options]="orgTypeListUserArryData" defaultLabel="All"
+                            appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect> -->
           
                             <p-multiSelect *ngSwitchCase="'status'" [options]="statuslistArryData" defaultLabel="All"
                             appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
@@ -91,11 +96,7 @@
               </div>
                 
             </div>
-            <div class="ui grid" *ngIf="countUserRecord > 0">
-                <div class="twelve wide column">
-                    <span style="font-size: 13px;" class="ui red header">Note: This system supports 1000 records only...</span>
-                </div>
-            </div>
+           
             
              
               
@@ -106,10 +107,6 @@
               </div>
               <div class="ui bottom attached segment" *ngIf="orgDataLength == 1" suiTabContent="contentcreation">
                 <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
-                  <p><button  *ngIf="systemVar=='present'" class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn" (click)="showRootOrg()">Add  Root  Organization </button>
-          
-                    <button  class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn marginLeft10" (click)="showOrg()">Add Sub Organization </button></p>
-          
                 </div>
                
                 <div class="ui container marginTop10">
@@ -124,17 +121,22 @@
 
                     <div class="twelve wide column">
                       <span>Number of Organization Found:&nbsp;<b>{{ countOrgRecord}}</b></span> 
+                      <button  *ngIf="systemVar=='present'" class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn buttonleft" (click)="showRootOrg()">Add  Root  Organization </button>
+                    &nbsp;
+                    <button  class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn buttonleft" style="
+                    margin-right: 10px;
+                " (click)="showOrg()">Add Sub Organization </button>
                     </div>
                     
                     <div class="twelve wide column">
-                      <p-table #dt [value]="showOrgData" (onFilter)="onFilterOrg($event, dt)" [columns]="cols" [paginator]="true" [rows]="10" [resizableColumns]="true">
+                      <p-table #dtOrg [value]="showOrgData" (onFilter)="onFilterOrg($event, dtOrg)" [columns]="cols" [paginator]="true" [rows]="10" [resizableColumns]="true">
                         <ng-template pTemplate="caption">
                           <tr>
                             <td>
                           <div  class="ui small left icon input align-left">
                             <i class="search icon"></i>
                             <input type="text" pInputText size="50" placeholder="Search"
-                              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                              (input)="dtOrg.filterGlobal($event.target.value, 'contains')" style="width:auto">
                           </div>
                           </td>
                           </tr>
@@ -154,13 +156,17 @@
                                <th  *ngFor="let col of columns" [ngSwitch]="col.field">
                                 
                                   <p-multiSelect *ngSwitchCase="'orgName'" [options]="orgListDataOrg" defaultLabel="All"
-                                  appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                  appendTo="body" (onChange)="dtOrg.filter($event.value, col.field, 'in')"></p-multiSelect>
+
+
+                                  <p-multiSelect *ngSwitchCase="'orgType'" [options]="orgTypeListOrgArryData" defaultLabel="All"
+                                  appendTo="body" (onChange)="dtOrg.filter($event.value, col.field, 'in')"></p-multiSelect>
                 
                                   <p-multiSelect *ngSwitchCase="'status'" [options]="statuslistArryDataOrg" defaultLabel="All"
-                                  appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                  appendTo="body" (onChange)="dtOrg.filter($event.value, col.field, 'in')"></p-multiSelect>
 
                                   <p-multiSelect *ngSwitchCase="'channel'" [options]="channelListOrgArryData" defaultLabel="All"
-                                  appendTo="body" (onChange)="dt.filter($event.value, col.field, 'in')"></p-multiSelect>
+                                  appendTo="body" (onChange)="dtOrg.filter($event.value, col.field, 'in')"></p-multiSelect>
 
                                   
                                 
@@ -192,15 +198,23 @@
                   </div>
                     
                 </div>
-                <div class="ui grid" *ngIf="countOrgRecord > 0">
-                    <div class="twelve wide column">
-                        <span style="font-size: 13px;" class="ui red header">Note: This system supports 1000 records only...</span>
-                    </div>
-                </div>
+              
                 
-                
-                <sui-modal class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); addOrgrPopup = false;" #modal
-                *ngIf="addOrgrPopup">
+               
+
+
+                <sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='addOrgrPopup'
+  >
                   <!--Header-->
                   <i class="close icon" (click)="closepopupOrg()"></i>
                   <div class="sb-modal-header">
@@ -232,7 +246,7 @@
                         <label class="required">Root Organization:</label>
                         <select  formControlName="rootOrgName" class="abcd" [(ngModel)]="selectedRootOrgOption">
                           <option  value="">Select Root Organization</option>  
-                          <option *ngFor="let dataObj of mentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.isRootOrg">{{dataObj.orgName}}</option>  
+                                       <option *ngFor="let dataObj of mentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.isRootOrg+'/'+dataObj.channel">{{dataObj.orgName}}</option>   
                           
                         </select>
                       </div>
@@ -282,8 +296,21 @@
                 
                 
                 
-                <sui-modal class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); addRootOrgrPopup = false;" #modal
-                *ngIf="addRootOrgrPopup">
+          
+
+
+                <sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='addRootOrgrPopup'
+  >
                 
                   <!--Header-->
                   <i class="close icon" (click)="closepopupOrg()"></i>
@@ -341,8 +368,21 @@
                 
                 
                 
-                <sui-modal class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); editOrgrPopup = false;" #modal
-                *ngIf="editOrgrPopup">
+              
+
+
+                <sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='editOrgrPopup'
+  >
                 
                   <!--Header-->
                   <i class="close icon" (click)="closepopupOrg()"></i>
@@ -396,9 +436,21 @@
                 
              
 				  
-				  
-				  <sui-modal class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); editOrgrStatusPopup = false;" #modal
-                *ngIf="editOrgrStatusPopup">
+			
+
+
+                <sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='editOrgrStatusPopup'
+  >
                 
                   <!--Header-->
                   <i class="close icon" (click)="closepopupOrg()"></i>
@@ -455,7 +507,18 @@
 </div>
 
 
-<sui-modal  class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); addUserPopup =false;"  #modal *ngIf='addUserPopup'>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='addUserPopup'
+  >
 
   <!--Header-->
   <i class="close icon" (click)="closepopup()"></i>
@@ -515,7 +578,7 @@
   <div class="sb-field-group" *ngIf="systemVar=='present'">
     <div class="sb-field">
       <label>Do You Want Creat a  Root Organization</label>     
-      <select  formControlName="isrootSub" class="abcd" (change)="getSubRootOrganization($event)">
+      <select  formControlName="isrootSub" class="abcd" [(ngModel)]="isrootOrganization" (change)="getSubRootOrganization($event)">
         <option  value="yes">YES</option>  
         <option  value="no">NO</option>
       </select>
@@ -583,7 +646,18 @@
 
 
 
-<sui-modal  class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); addRolePopup =false;"  #modal *ngIf='addRolePopup'>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='addRolePopup'
+  >
   <!--Header-->
   <i class="close icon" (click)="closepopup()"></i>
   <div class="sb-modal-header">
@@ -687,7 +761,19 @@
   <!--/Actions-->
 </sui-modal>
 
-<sui-modal  class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); confirmPopup =false;"  #modal *ngIf='confirmPopup'>
+
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='confirmPopup'
+  >
 
   <!--Header-->
   <i class="close icon" (click)="closepopup()"></i>
@@ -698,7 +784,7 @@
 
   <!--Content-->
   <div class="font-align">
- <b> Are You Sure You Want To This..! </b></div>
+ <b> {{confirmPopupMsg}}</b></div>
  
   <form [formGroup]="confirmUserForm" class="sb-form batchAddUserForm" id="validateFoem">
         <input type="hidden" name="description" formControlName="blockUserid" [(ngModel)]="blockUserid" class="sb-form-control">
@@ -822,7 +908,18 @@
 
 
 
-<sui-modal  class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); sucesErrorPopup =false;"  #modal *ngIf='sucesErrorPopup'>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='sucesErrorPopup'
+  >
 
 
   <!--Header-->
