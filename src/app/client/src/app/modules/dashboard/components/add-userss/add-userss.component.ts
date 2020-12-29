@@ -667,38 +667,49 @@ else{
          console.log(this.getAllOrgData);
         /// this.orgIdUser = element.organisations[1].organisationId
          console.log('Organizations');
-        this.userOrgLength =  element.organisations.length;
+        
         if(this.orgDatalength ==1)
         {
+          this.userOrgLength =  element.organisations.length;
         this.getAllOrgData.forEach(element1 => {
 
          // debugger
-          if( this.userOrgLength>1)
+          if( element.organisations.length>1)
           {
           if((element1.identifier==element.organisations[1].organisationId) && (element.rootOrgId!=element.organisations[1].organisationId))
           {
            this.orgNameUser  = element1.orgName
            this.orgTypeUser =   'Sub Organization';
           }
+          else if(element.rootOrgId==element.organisations[1].organisationId)
+          {
+            this.orgNameUser  = element.organisations[0].orgName;
+            this.orgTypeUser =   'Sub Organization';
+          }
     
           }
          });
 
-         if( this.userOrgLength==1)
+         if( element.organisations.length==1)
           {
             this.orgNameUser  = element.organisations[0].orgName;
             this.orgTypeUser =   'Root  Organization';
           }
         }
-        else if(this.orgDatalength >1)
+        else if(element.organisations.length >1)
         {
           this.orgNameUser =   this.subOrgName;
           this.orgTypeUser =   'Sub Organization';
         }
          
 
-     //console.log(this.orgNameUser+'====================================wee'+element.firstName)
-          
+        if(element.firstName== 'Medical')
+        {
+         console.log( this.orgTypeUser);
+         console.log(element);
+         console.log(this.userOrgLength);
+        console.log(this.orgNameUser+'====================================wee'+element.firstName)
+        } 
          this.showUserData.push({"orgType": this.orgTypeUser,"userId":element.id,"uStatus":element.status,"createdDate":element.createdDate,"firstName": element.firstName,"lastName":element.lastName,"email":element.email,"phone":element.phone,"orgLength":  element.organisations.length,"orgName":this.orgNameUser,"status":this.status,"userOrglengths":this.userOrgLength})
          // this.showUserData.push({"userId":element.id,"uStatus":element.status,"firstName": element.firstName,"lastName":element.lastName,"email":element.email,"phone":element.phone,"orgLength":  element.organisations.length,"orgName":this.orgName})
         
@@ -1074,6 +1085,7 @@ console.log( addRoletempArray);
   this._httpService.getEditUserById(gridUserId).subscribe(response => { 
         this.roleEditeUserData=response.result.response; 
         console.log(this.roleEditeUserData) 
+        console.log(this.roleEditeUserData) 
         if(this.roleEditeUserData.organisations.length == 1)
         {
          this.addRolePopup = true
@@ -1090,7 +1102,7 @@ console.log( addRoletempArray);
          this.roleEditData=this.roleEditeUserData.organisations[0].roles;
          this.addRoleorgId = this.roleEditeUserData.organisations[0].organisationId;
         }                              
-        else if(this.roleEditeUserData.organisations.length >1)
+        else if((this.roleEditeUserData.organisations.length >1) && (this.roleEditeUserData.rootOrgId!=this.roleEditeUserData.organisations[1].organisationId))
         {
          this.addRolePopup = true
          this.dropdownList = [
@@ -1105,6 +1117,22 @@ console.log( addRoletempArray);
          this.roleEditData=this.roleEditeUserData.organisations[1].roles;
          this.addRoleorgId = this.roleEditeUserData.organisations[1].organisationId;
         }
+       else  if((this.roleEditeUserData.organisations.length > 1) && (this.roleEditeUserData.rootOrgId==this.roleEditeUserData.organisations[1].organisationId))
+        {
+         this.addRolePopup = true
+         this.dropdownList = [
+           {"id":1,"itemName":"PUBLIC"},
+           {"id":2,"itemName":"CONTENT_CREATOR"},
+           {"id":3,"itemName":"CONTENT_REVIEWER"},
+           {"id":4,"itemName":"COURSE_MENTOR"},
+           {"id":5,"itemName":"ORG_ADMIN"},
+           {"id":6,"itemName":"ORG_MANAGEMENT"},
+           {"id":7,"itemName":"ORG_MODERATOR"},
+          
+         ];
+         this.roleEditData=this.roleEditeUserData.organisations[0].roles;
+         this.addRoleorgId = this.roleEditeUserData.organisations[0].organisationId;
+        } 
         if( this.roleEditData.length > 0 ) {
          for( var i = 0; i < this.dropdownList.length; i++ ) {      
           for( var j = 0; j < this.roleEditData.length; j++ ) {
@@ -1397,7 +1425,7 @@ removeOrg(orgUserId:any)
     console.log(err);
   });
 
-  
+
 console.log(this.removeOrgUserdataAll)
 }
 removeOrgSubmit()
