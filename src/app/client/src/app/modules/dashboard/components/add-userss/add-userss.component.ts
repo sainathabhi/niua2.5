@@ -1397,6 +1397,7 @@ removeOrg(orgUserId:any)
     console.log(err);
   });
 
+  
 console.log(this.removeOrgUserdataAll)
 }
 removeOrgSubmit()
