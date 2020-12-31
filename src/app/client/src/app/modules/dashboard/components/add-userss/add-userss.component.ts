@@ -207,6 +207,7 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   channel: any;
   userTab: boolean = false;
   organizationTab: boolean  = false;
+  onchangeChanelName: any;
 
 
   
@@ -409,6 +410,47 @@ onSelectAll(items: any){
 onDeSelectAll(items: any){
     console.log(items);
 }
+superAdminOrgList()
+{
+  this.dropdownList = [
+    {"id":1,"itemName":"PUBLIC"},
+    {"id":2,"itemName":"CONTENT_CREATOR"},
+    {"id":3,"itemName":"CONTENT_REVIEWER"},
+    {"id":4,"itemName":"COURSE_MENTOR"},
+    {"id":5,"itemName":"ORG_ADMIN"},
+    {"id":6,"itemName":"ORG_MODERATOR"},
+    {"id":7,"itemName":"ORG_MANAGEMENT"},
+    {"id":8,"itemName":"SYSTEM_ADMINISTRATION"},
+   
+  ]; 
+  return this.dropdownList;
+}
+rootAdminOrgList()
+{
+  this.dropdownList = [
+    {"id":1,"itemName":"PUBLIC"},
+    {"id":2,"itemName":"CONTENT_CREATOR"},
+    {"id":3,"itemName":"CONTENT_REVIEWER"},
+    {"id":4,"itemName":"COURSE_MENTOR"},
+    {"id":5,"itemName":"ORG_ADMIN"},
+    {"id":6,"itemName":"ORG_MANAGEMENT"},
+    {"id":7,"itemName":"ORG_MODERATOR"},
+   
+  ];
+  return this.dropdownList; 
+}
+subRootAdminOrgList()
+{
+  this.dropdownList = [
+    {"id":1,"itemName":"PUBLIC"},
+    {"id":2,"itemName":"CONTENT_CREATOR"},
+    {"id":3,"itemName":"CONTENT_REVIEWER"},
+    {"id":4,"itemName":"COURSE_MENTOR"},
+    {"id":5,"itemName":"ORG_ADMIN"},
+    {"id":6,"itemName":"ORG_MODERATOR"},
+   
+  ]; 
+}
 getRoleName(str:any)
 {
   this.subMentorList=[]
@@ -421,55 +463,20 @@ getRoleName(str:any)
   {
   if( this.onchangeorgName[2]=="true")
   {
-    this.dropdownList = [
-      {"id":1,"itemName":"PUBLIC"},
-      {"id":2,"itemName":"CONTENT_CREATOR"},
-      {"id":3,"itemName":"CONTENT_REVIEWER"},
-      {"id":4,"itemName":"COURSE_MENTOR"},
-      {"id":5,"itemName":"ORG_ADMIN"},
-      {"id":6,"itemName":"ORG_MANAGEMENT"},
-      {"id":7,"itemName":"ORG_MODERATOR"},
-     
-    ];
+   this.rootAdminOrgList();
   }
   else{
-    this.dropdownList = [
-      {"id":1,"itemName":"PUBLIC"},
-      {"id":2,"itemName":"CONTENT_CREATOR"},
-      {"id":3,"itemName":"CONTENT_REVIEWER"},
-      {"id":4,"itemName":"COURSE_MENTOR"},
-      {"id":5,"itemName":"ORG_ADMIN"},
-      {"id":6,"itemName":"ORG_MODERATOR"},
-     
-    ];
+    this.subRootAdminOrgList();
   }
 }
 else if(this.systemVar=='present')
 {
   if(this.createUserForm.value['isrootSub']=='yes')
   {
-  this.dropdownList = [
-    {"id":1,"itemName":"PUBLIC"},
-    {"id":2,"itemName":"CONTENT_CREATOR"},
-    {"id":3,"itemName":"CONTENT_REVIEWER"},
-    {"id":4,"itemName":"COURSE_MENTOR"},
-    {"id":5,"itemName":"ORG_ADMIN"},
-    {"id":6,"itemName":"ORG_MODERATOR"},
-    {"id":7,"itemName":"ORG_MANAGEMENT"},
-    {"id":8,"itemName":"SYSTEM_ADMINISTRATION"},
-   
-  ];
+   this.superAdminOrgList();
 }
 else{
-  this.dropdownList = [
-    {"id":1,"itemName":"PUBLIC"},
-    {"id":2,"itemName":"CONTENT_CREATOR"},
-    {"id":3,"itemName":"CONTENT_REVIEWER"},
-    {"id":4,"itemName":"COURSE_MENTOR"},
-    {"id":5,"itemName":"ORG_ADMIN"},
-    {"id":6,"itemName":"ORG_MODERATOR"},
-   
-  ];
+  this.subRootAdminOrgList();
 }
 }
   if(this.createUserForm.value['isrootSub']=='no')
@@ -593,13 +600,13 @@ else{
   
           });
        
-        
+         
           if(this.mentorList.length==0)
           {
          sessionStorage.setItem("subOrgName", this.subOrgName);
         console.log("---mentor list1111111")
         sessionStorage.setItem("subOrgName", this.subOrgName);
-        this.mentorList.push( {'id' :this.organisationId,'orgName': this.subOrgName,'isRootOrg':false}) 
+        this.mentorList.push( {'id' :this.organisationId,'orgName': this.subOrgName,channel: this.userLoginDataChannel,'isRootOrg':false}) 
         console.log(this.mentorList)
           }
         },err=>{
@@ -801,7 +808,8 @@ else{
     this.orgId=this.createUserForm.value['orgname']
     this.onchangeorgName=this.orgId.split("/");
     this.onchangeorgId = this.onchangeorgName[1]
-    this.orgRootStatus= this.onchangeorgName[2]
+    this.onchangeChanelName=this.onchangeorgName[2]
+    this.orgRootStatus= this.onchangeorgName[3]
     console.log(this.onchangeorgName);
       let tempArray : any
       tempArray = 
@@ -811,12 +819,13 @@ else{
         "firstName":this.createUserForm.value['firstname'],
         "lastName": this.createUserForm.value['lastname'],
         "phone":this.createUserForm.value['phone'],
-        "channel": this.userLoginDataChannel,
+        "channel": this.onchangeChanelName,
         "userName":"user_"+this.createUserForm.value['phone'],
         "phoneVerified": true,
         "emailVerified": true
       }
-    }    
+    }  
+    console.log(tempArray);  
    // return
     this._httpService.createUserDetailSave(tempArray).subscribe(res=>{
       this.addUserPopup=false
@@ -891,6 +900,7 @@ else{
       this.popupMsg=res.result.response;
      // this.populateUserProfile();
    },err=>{
+    console.log(err)
     this.popupMsg=err.params.errmsg;
    console.log(err)
    })
@@ -1012,9 +1022,6 @@ else{
   }
   getSubRootOrganization(strOrg:any)
   {
-   // this.mentorList=[];
-  //  this.subMentorList=[];
-    this.selectedItems=[];
     console.log(strOrg.target.value);
     if(strOrg.target.value=='yes')
     {
@@ -1024,6 +1031,17 @@ else{
     {
       this.subOrgofRoot=true;  
     }
+    if(this.systemVar=='present')
+    {
+    if(this.createUserForm.value['isrootSub']=='yes')
+    {
+    this.superAdminOrgList();
+    }
+   else{
+    this.subRootAdminOrgList();
+   }
+   }
+
    
   } 
  /**
@@ -1121,47 +1139,21 @@ console.log( addRoletempArray);
         if(this.roleEditeUserData.organisations.length == 1)
         {
          this.addRolePopup = true
-         this.dropdownList = [
-           {"id":1,"itemName":"PUBLIC"},
-           {"id":2,"itemName":"CONTENT_CREATOR"},
-           {"id":3,"itemName":"CONTENT_REVIEWER"},
-           {"id":4,"itemName":"COURSE_MENTOR"},
-           {"id":5,"itemName":"ORG_ADMIN"},
-           {"id":6,"itemName":"ORG_MANAGEMENT"},
-           {"id":7,"itemName":"ORG_MODERATOR"},
-          
-         ];
+         this.rootAdminOrgList();
          this.roleEditData=this.roleEditeUserData.organisations[0].roles;
          this.addRoleorgId = this.roleEditeUserData.organisations[0].organisationId;
         }                              
         else if((this.roleEditeUserData.organisations.length >1) && (this.roleEditeUserData.rootOrgId!=this.roleEditeUserData.organisations[1].organisationId))
         {
          this.addRolePopup = true
-         this.dropdownList = [
-           {"id":1,"itemName":"PUBLIC"},
-           {"id":2,"itemName":"CONTENT_CREATOR"},
-           {"id":3,"itemName":"CONTENT_REVIEWER"},
-           {"id":4,"itemName":"COURSE_MENTOR"},
-           {"id":5,"itemName":"ORG_ADMIN"},
-           {"id":6,"itemName":"ORG_MODERATOR"},
-          
-         ];
+         this.subRootAdminOrgList();
          this.roleEditData=this.roleEditeUserData.organisations[1].roles;
          this.addRoleorgId = this.roleEditeUserData.organisations[1].organisationId;
         }
        else  if((this.roleEditeUserData.organisations.length > 1) && (this.roleEditeUserData.rootOrgId==this.roleEditeUserData.organisations[1].organisationId))
         {
          this.addRolePopup = true
-         this.dropdownList = [
-           {"id":1,"itemName":"PUBLIC"},
-           {"id":2,"itemName":"CONTENT_CREATOR"},
-           {"id":3,"itemName":"CONTENT_REVIEWER"},
-           {"id":4,"itemName":"COURSE_MENTOR"},
-           {"id":5,"itemName":"ORG_ADMIN"},
-           {"id":6,"itemName":"ORG_MANAGEMENT"},
-           {"id":7,"itemName":"ORG_MODERATOR"},
-          
-         ];
+         this.rootAdminOrgList();
          this.roleEditData=this.roleEditeUserData.organisations[0].roles;
          this.addRoleorgId = this.roleEditeUserData.organisations[0].organisationId;
         } 
@@ -1251,16 +1243,7 @@ console.log( addOrgtempArray);
       if(this.orgEditeUserData.organisations.length == 1)
     {
       this.addOrgPopup = true
-     this.dropdownList = [
-       {"id":1,"itemName":"PUBLIC"},
-       {"id":2,"itemName":"CONTENT_CREATOR"},
-       {"id":3,"itemName":"CONTENT_REVIEWER"},
-       {"id":4,"itemName":"COURSE_MENTOR"},
-       {"id":5,"itemName":"ORG_ADMIN"},
-       {"id":6,"itemName":"ORG_MANAGEMENT"},
-       {"id":7,"itemName":"ORG_MODERATOR"},
-      
-     ];
+      this.rootAdminOrgList();
      this.roleEditData=this.orgEditeUserData.organisations[0].roles;
      this.addRoleorgId = this.orgEditeUserData.organisations[0].organisationId;
      this.addorgSelectName=this.orgEditeUserData.organisations[0].orgName+'/'+this.orgEditeUserData.organisations[0].organisationId+'/'+true;
@@ -1269,15 +1252,7 @@ console.log( addOrgtempArray);
     else if(this.orgEditeUserData.organisations.length >1)
     {
       this.addOrgPopup = true
-     this.dropdownList = [
-       {"id":1,"itemName":"PUBLIC"},
-       {"id":2,"itemName":"CONTENT_CREATOR"},
-       {"id":3,"itemName":"CONTENT_REVIEWER"},
-       {"id":4,"itemName":"COURSE_MENTOR"},
-       {"id":5,"itemName":"ORG_ADMIN"},
-       {"id":6,"itemName":"ORG_MODERATOR"},
-      
-     ];
+      this.subRootAdminOrgList();
      this.roleEditData= this.orgEditeUserData.organisations[1].roles;
      this.addRoleorgId =  this.orgEditeUserData.organisations[1].organisationId;
      //this.addorgSelectName=this.orgEditeUserData.organisations[1].orgName+'/'+this.orgEditeUserData.organisations[1].organisationId+'/'+false;

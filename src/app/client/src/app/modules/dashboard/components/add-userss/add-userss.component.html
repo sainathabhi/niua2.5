@@ -593,7 +593,7 @@
   <label class="required">Organization</label>
     <div class="sb-field">   
       <select  formControlName="orgname" class="abcd"  (change)="getRoleName($event)">
-        <option *ngFor="let dataObj of mentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.isRootOrg">{{dataObj.orgName}}</option>  
+        <option *ngFor="let dataObj of mentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.channel+'/'+dataObj.isRootOrg">{{dataObj.orgName}}</option>  
         
       </select>
     </div>
