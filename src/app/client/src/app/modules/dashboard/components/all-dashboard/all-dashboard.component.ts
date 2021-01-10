@@ -35,6 +35,7 @@ export class AllReportsComponent implements OnInit {
   telemetryImpression: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractDownloadEdata: IInteractEventEdata;
+  urlPathValue: string;
   constructor(public configService: ConfigService, private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router, public reportService: ReportService
@@ -47,6 +48,9 @@ export class AllReportsComponent implements OnInit {
     this.setTelemetryImpression();
     this.getEnrolledCourses();
     this.adminDashboard = this.configService.rolesConfig.headerDropdownRoles.adminDashboard;
+
+    this.urlPathValue='';
+    this.urlPathValue=  sessionStorage.getItem("urlPath")
   }
   getEnrolledCourses() {
     this.reportService.getEnrolledCourses().subscribe(response => {

@@ -11,3 +11,14 @@ export * from './all-dashboard/all-dashboard.component';
 export * from './data-table/data-table.component';
 export * from './data-chart/data-chart.component';
 export * from './add-userss/add-userss.component';
+export * from './reports/reports.component';
+export * from './user-report/user-report.component';
+export * from './organization-report/organization-report.component';
+export * from './content-report/content-report.component';
+export * from './content-category-wise/content-category-wise.component';
+export * from './content-leaderboard/content-leaderboard.component';
+
+
+
+
+

@@ -16,7 +16,7 @@ import {
   RendererService, LineChartService, DownloadService, CourseProgressService,
   UsageService
 } from './services';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, DataTableComponent, DataChartComponent } from './components';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, DataTableComponent, DataChartComponent, ContentCategoryWiseComponent, ContentLeaderboardComponent } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
 import { CoreModule, SearchService } from '@sunbird/core';
@@ -33,6 +33,10 @@ import { SlickModule } from 'ngx-slick';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { BatchService } from '../workspace/services';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ReportsComponent } from './components/reports/reports.component';
+import { UserReportComponent } from './components/user-report/user-report.component';
+import { OrganizationReportComponent } from './components/organization-report/organization-report.component';
+import { ContentReportComponent } from './components/content-report/content-report.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -58,7 +62,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, PermissionDirective, AddUserssComponent],
+    DataTableComponent, DataChartComponent, ContentCreationStaticsComponent, CityWiseReportComponent, DeptCityWiseReportComponent, ContentDeptWiseReportComponent, TotalUserComponent, AllReportsComponent, PermissionDirective, AddUserssComponent,ReportsComponent, UserReportComponent, OrganizationReportComponent, ContentReportComponent,ContentLeaderboardComponent,ContentCategoryWiseComponent],
   exports: [CourseProgressComponent, DataTableComponent, PermissionDirective],
   providers: [
     RendererService,

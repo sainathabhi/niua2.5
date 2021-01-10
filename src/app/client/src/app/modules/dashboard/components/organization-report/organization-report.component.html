@@ -1,0 +1,115 @@
+<div class="ui container">
+  <form novalidate >
+      <div class="ui grid stackable top aligned my-0">
+          <div class="twelve wide tablet ten wide computer column mobile-p-0">
+              <div class="ui grid">
+                  <div class="six wide mobile three wide tablet three wide computer column my-10">
+                      <div class="field">
+                          <label>From Date</label>
+                          <div class="mt-10" style="cursor: pointer">
+                              <p-calendar [(ngModel)]="fromDate" [showIcon]=true placeholder="Choose From Date"
+                                   [maxDate]="toDate" [ngModelOptions]="{standalone: true}" [readonlyInput]="true">
+                              </p-calendar>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="six wide mobile three wide tablet three wide computer column my-10">
+                      <div class="field">
+                          <label>To Date</label>
+                          <div class="mt-10" style="cursor: pointer">
+                              <p-calendar [(ngModel)]="toDate" [showIcon]=true placeholder="Choose To Date"
+                                  [minDate]="fromDate" [maxDate]="currentDate" [ngModelOptions]="{standalone: true}"
+                                  [readonlyInput]="true">
+                              </p-calendar>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div
+                  class="twelve wide tablet two wide computer right aligned top aligned column filter-button mar-40">
+                  <label class="computer-only mb-5">&nbsp;</label>
+                  <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"
+                      (click)="getOrgChartDetail();">Submit</button>
+                 
+              </div>
+                 
+              </div>
+          </div>
+      </div>
+  </form>
+  <br><br>
+  <div class="ui grid column-b" *ngIf="showLineChartUserData.length>0">
+        
+    
+    
+    <div class="twelve wide column">
+      <p-table #dtOrg [value]="showLineChartUserData" (onFilter)="onFilterOrg($event, dtOrg)" [columns]="cols" [paginator]="true" [rows]="10" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+          <tr>
+            <td>
+          <div  class="ui small left icon input align-left">
+            <i class="search icon"></i>
+            <input type="text" pInputText size="50" placeholder="Search"
+              (input)="dtOrg.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          </div>
+          </td>
+          </tr>
+
+          
+        </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" pResizableColumn [style.width]="col.width">
+                  {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-showLineChartUserData let-columns="columns">
+
+            <tr>
+              <td *ngFor="let col of columns" class="ui-resizable-column">
+                  {{showLineChartUserData[col.field]}}
+              </td>
+          </tr>
+          </ng-template>
+      </p-table>
+  </div>
+    
+</div>
+
+<sui-modal
+[mustScroll]="true" 
+[isClosable]="false"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal"
+appBodyScroll
+[ngSwitch]="batchStep" 
+#createBatchModel 
+(dismissed)="discardModalFlag = !discardModalFlag"
+*ngIf='sucesErrorPopup'
+>
+<!--Header-->
+<i class="close icon" (click)="closeSucesErrorPopup()"></i>
+<div class="sb-modal-header">
+Message
+</div>
+<!--/Header-->
+
+<!--Content-->
+<div class="font-align">
+<b>{{popupMsg}}</b></div>
+<!--/Content-->
+
+<!--Actions-->
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeSucesErrorPopup()">Close</button>
+</div>
+<!--/Actions-->
+</sui-modal>
+
+<div *ngIf="showLineChartUserData.length==0">
+  <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+</div>

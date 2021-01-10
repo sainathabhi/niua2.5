@@ -3,15 +3,41 @@
         <div class="twelve wide column workspacesegment">
             <sui-tabset>
                 <div class="ui top attached tabular menu">
-                    <a class="item" suiTabHeader="yourLearnings">Your Learnings</a>
-                    <a class="item" suiTabHeader="contentcreation" appPermission [permission]='adminDashboard'>Content
+                    <!-- ---code start  here------------ -->
+                  
+                    <a class="item" suiTabHeader="yourLearnings" *ngIf="urlPathValue=='learningreport'">Your Learnings</a>
+                
+
+                    <a class="item" suiTabHeader="userreport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='userreport'">User Report</a>
+
+                    <a class="item" suiTabHeader="useronboardingreport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='userreport'">User Onboarding Report</a>
+
+                        <a class="item" suiTabHeader="orgreport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='orgreport'">Organization Onboarding Report</a>
+
+                        <a class="item" suiTabHeader="contributionReport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='orgreport'">Contribution Report</a>
+
+                        
+
+                       
+
+                            <a class="item" suiTabHeader="contentreport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='contentreport'">Content Report </a>
+
+                            <a class="item" suiTabHeader="categoryReport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='orgreport'">Category Report</a>
+
+                            <a class="item" suiTabHeader="leadershipReport" appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='orgreport'">Leadership  Report</a>
+                    <!-- //----code end here------------- -->
+                    <a class="item" suiTabHeader="contentcreation"  appPermission [permission]='adminDashboard' *ngIf="urlPathValue=='contentreport'">Content
                         Creation</a>
-                    <a class="item" suiTabHeader="citywisecontentcreation" appPermission
-                        [permission]='adminDashboard'>City Wise Content Creation</a>
-                    <a class="item" suiTabHeader="departmentwisecontentcreation" appPermission
-                        [permission]='adminDashboard'>Department Wise Content Creation</a>
-                    <a class="item" suiTabHeader="contenttypewisecontentcreation" appPermission
-                        [permission]='adminDashboard'>Content Type Wise Content Creation</a>
+                    <a class="item"  suiTabHeader="citywisecontentcreation" appPermission
+                        [permission]='adminDashboard' *ngIf="urlPathValue=='contentreport'">City Wise Content Creation</a>
+
+                    <a class="item"  suiTabHeader="departmentwisecontentcreation" appPermission
+                        [permission]='adminDashboard' *ngIf="urlPathValue=='contentreport'">Department Wise Content Creation</a>
+
+                    <a class="item"  suiTabHeader="contenttypewisecontentcreation" appPermission
+                        [permission]='adminDashboard' *ngIf="urlPathValue=='contentreport'">Content Type Wise Content Creation</a>
+
+                        
                 </div>
                 <div class="ui bottom attached segment" suiTabContent="yourLearnings">
                     <div class="twelve wide column" *ngIf="showTrainingstats && enrolledCourseData.length > 0">
@@ -69,6 +95,43 @@
                         <div class="one wide column"></div>
                     </div>
                 </div>
+                  <!-- //---change code start  here------ -->
+                
+                  <div class="ui bottom attached segment" suiTabContent="userreport">
+                    <app-reports></app-reports>
+                 </div>
+                 <div class="ui bottom attached segment" suiTabContent="useronboardingreport">
+                     <app-user-report></app-user-report>
+                  </div>
+ 
+                 <div class="ui bottom attached segment" suiTabContent="orgreport">
+                   <app-organization-report></app-organization-report>
+                 </div>
+                 <div class="ui bottom attached segment" suiTabContent="contentreport">
+                
+                     <!--<app-content-report></app-content-report>-->
+                 </div>
+
+                 <div class="ui bottom attached segment" suiTabContent="contributionReport">
+                
+                    <app-content-report></app-content-report>
+                 </div>
+
+
+                 <div class="ui bottom attached segment" suiTabContent="leadershipReport">
+                
+                    <app-content-leaderboard></app-content-leaderboard>
+                 </div>
+
+
+                 <div class="ui bottom attached segment" suiTabContent="categoryReport">
+                
+                    <app-content-category-wise></app-content-category-wise>
+                 </div>
+
+                 
+ 
+                 <!-- //----end here-------------------- -->
                 <div class="ui bottom attached segment" suiTabContent="contentcreation">
                     <app-content-creation-statics></app-content-creation-statics>
                 </div>

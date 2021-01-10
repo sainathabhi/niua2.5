@@ -73,6 +73,7 @@ export class MainHeaderComponent implements OnInit {
   userRole: any;
   adminVar: string;
   adminVarLink: string;
+  urlPaths: any;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -148,6 +149,22 @@ export class MainHeaderComponent implements OnInit {
       }
     });
   }
+    urlPathOfDashboard(urlPath:any)
+    {
+      this.urlPaths=window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
+      console.log(urlPath)
+      if(this.urlPaths=='allDashboard')
+      {
+      sessionStorage.setItem("urlPath", urlPath);
+      location.reload()
+      }
+      else{
+      sessionStorage.setItem("urlPath", urlPath);
+      this.router.navigate(["dashBoard/allDashboard"]);
+      }
+      
+    }
+
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
     if (isCachedDataExists) {

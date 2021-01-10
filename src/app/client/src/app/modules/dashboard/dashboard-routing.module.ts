@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, AllReportsComponent, AddUserssComponent } from './components/';
+import { OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent, AllReportsComponent, AddUserssComponent,ReportsComponent, UserReportComponent, OrganizationReportComponent, ContentReportComponent, ContentCategoryWiseComponent } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
 const routes: Routes = [
@@ -22,6 +22,26 @@ const routes: Routes = [
   },
   {
     path: 'addusess', component: AddUserssComponent
+  
+  },
+  {
+    path: 'userreports', component: ReportsComponent
+  
+  },
+  {
+    path: 'reportsdatewise', component: UserReportComponent
+  
+  },
+  {
+    path: 'organization-report', component: OrganizationReportComponent
+  
+  },
+  {
+    path: 'content-report', component: ContentReportComponent
+  
+  },
+  {
+    path: 'category-report', component: ContentCategoryWiseComponent
   
   },
   {

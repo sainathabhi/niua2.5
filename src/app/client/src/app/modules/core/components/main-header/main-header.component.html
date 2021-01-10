@@ -22,6 +22,30 @@
                 <!--/Hamburger Icon-->
                 <!--Main Menu-->
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
+
+
+                <div suiDropdown *ngIf="adminVarLink=='present'"  class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                    DashBoard
+                     <div class="menu" suiDropdownMenu>
+                         
+                        
+                       
+                         <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('userreport')" >
+                             User Report 
+                          </a>
+                          <a *ngIf="adminVarLink=='present'"  (click)="urlPathOfDashboard('orgreport')" class="item" >
+                             Organization Report 
+                          </a>
+                          <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('contentreport')" >
+                             Content Report 
+                          </a>
+                          <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('learningreport')" >
+                             Learning Report 
+                          </a>
+ 
+                     </div>
+                 </div>
+
                 <!--/Main Menu-->
                 <!--Avtar Dropdown-->
                 <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline"
@@ -49,9 +73,14 @@
                         [permission]='adminDashboard' routerLink="orgDashboard">
                         {{resourceService.frmelmnts?.lnk?.dashboard}}
                     </a> -->
-                    <a class="item" routerLink="dashBoard/allDashboard">
+
+
+                     <!--<a class="item" routerLink="dashBoard/allDashboard">
                         {{resourceService.frmelmnts?.lnk?.dashboard}}
-                    </a>
+                    </a>-->
+
+
+                    
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='announcementRole' routerLink="announcement/outbox/1">
                                 {{resourceService.frmelmnts?.lnk?.announcement}}
