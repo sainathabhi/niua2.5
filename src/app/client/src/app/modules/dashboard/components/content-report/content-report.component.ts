@@ -309,7 +309,7 @@ G1_Chart(G1_Name:any,G1_Value:any,G1_Filter:any,G1_Colour:any)
             title:{ display : true,text:"Organization wise Content Dashboard",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
-            xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Channels -------->' } }],
+            xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Organizations -------->' } }],
             yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                     },
          // plugins: {
