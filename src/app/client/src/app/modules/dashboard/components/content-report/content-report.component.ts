@@ -61,6 +61,7 @@ export class ContentReportComponent implements OnInit {
   ngOnInit() {
     this.getContentList();
     this.colsUser = [
+      { field: 'SNo',           header: 'SNo',          width: '50px' },
       { field: 'creator',       header: 'Creator',      width: '150px' },
       { field: 'subject',       header: 'Subject',      width: '150px' },
       { field: 'organisation',  header: 'Organisation', width: '150px' },
@@ -95,14 +96,9 @@ export class ContentReportComponent implements OnInit {
         "framework", "createdOn", "lastPublishedOn"]
     }
     };
-//       "lastUpdatedOn": { ">=": this.datePipe.transform(this.fromDate, 'yyyy-MM-ddTHH:MM'), "<=": this.datePipe.transform(this.toDate, 'yyyy-MM-ddTHH:MM') }
-
-
 
     this.reportService.getContentCreationStaticsReport(data).subscribe((response) =>
     {
-
-      //console.log('Receive data from api-'+JSON.stringify(response));
       if (_.get(response, 'responseCode') === 'OK')
       {
         if (response.result.count > 0)
@@ -171,21 +167,16 @@ export class ContentReportComponent implements OnInit {
       {
 
       }
-      ///////////////////////////////////
-      //console.log( '----C_List---------');
-      //console.log(C_List);
-      //console.log( '----UserList---------');
-      //console.log( this.userList);
-      //console.log( '----cityList----------');
-      //console.log( this.cityList);
-      //console.log("cityList:-"+JSON.stringify(this.cityList));
-      //console.log("userList:-"+JSON.stringify(this.userList));
-      //////////////////////////////////////////////////////////////
       ///////UPDATE USER LIST//////USER-ID-to-SUB-ORG-MAPING////////////////////
       this.userList.forEach(element =>
         {
           this.cityList.forEach(element1 =>
             {
+             //if(element1.identifier==orgId)
+             //{
+             //  this.rootOrgNameUser_new  = element1.orgName
+             //}
+
               if( element.organisations.length>1)
                   {
                     if((element1.identifier==element.organisations[1].organisationId) &&
@@ -201,19 +192,23 @@ export class ContentReportComponent implements OnInit {
                          }else
                          {
                           element.orgNameUser_new  =  element.organisations[0].orgName;
-                          element.orgTypeUser_new =   'Root Organization';
+                          element.orgTypeUser_new =   'Sub Organization';
                          }
-
                   }
                   else if( element.organisations.length==1)
                   {
-                        element.orgNameUser_new =   element1.orgName
-                        element.orgTypeUser_new  =   'Root Organization';
+                        element.orgNameUser_new  = element.organisations[0].orgName;
+                        element.orgTypeUser_new   =   'Root  Organization';
                   }
               });
         });
       //console.log("Updated userList:-"+JSON.stringify(this.userList));
       //console.log(this.userList);
+      //////////////////////////////////////////////////////////////////////////
+      var groupedUserData =   this.userList.reduce(function(rv, x) { // grouping of userdata
+        (rv[x['orgNameUser_new']] = rv[x['orgNameUser_new']] || []).push(x);
+        return rv;
+        }, {});
       /////////////////Camposing comman content data list//////////////////////////
        this.Graph_Data_List=[];
       C_List.forEach(x =>
@@ -229,13 +224,13 @@ export class ContentReportComponent implements OnInit {
           "subject":x.subject,
           "channel":x.channel,
           "organisation":x.organisation,
-          /////////////////////////////////////
+          //////////////Add Processed Column///////////////
           "RootOrgName_new_user":CityTraced["orgName"],
           "rootOrgName_new_city":UserTraced["rootOrgName"],
           "orgNameUser_new":UserTraced["orgNameUser_new"],
           "orgTypeUser_new":UserTraced["orgTypeUser_new"],
           "lastNameUser_new":UserTraced["lastName"],
-          ////////////////////////////////////
+          /////////////////////////////////////////////////
           "createdBy":x.createdBy,
           "medium":x.medium,
           "name":x.name,
@@ -250,8 +245,7 @@ export class ContentReportComponent implements OnInit {
           "status":x.status
         });
       });
-      this.strList=JSON.stringify(this.Graph_Data_List);
-      console.log('Updated Graph_Data_List for json-----'+JSON.stringify(this.Graph_Data_List));
+      //console.log('Updated Graph_Data_List for json-----'+JSON.stringify(this.Graph_Data_List));
       ///////SHORTING//////////////////////////////////////////////////
       this.Graph_Data_List.sort((a, b) =>
       {
@@ -261,7 +255,7 @@ export class ContentReportComponent implements OnInit {
         return 1;
         return 0;
     });
-    this.GeneratingChannelList(this.Graph_Data_List);
+     this.GeneratingChannelList(this.Graph_Data_List);
   }
 ///////////////////////////////////////////
 
@@ -272,31 +266,27 @@ GeneratingChannelList(ResultCN:any)
       var G1_Filter=[]
       var G1_Colour=[]
       //////////////////////////////////////////////////////////
-      this.G1_Root_list = this.groupBy(ResultCN, function(item){ return [item.channel];});
-      this.G1_Root_list.forEach(x =>
-      {
-          //G1_Name.push( x[0].RootOrgName_new_user+','+x[0].rootOrgName_new_city);
-          G1_Name.push( x[0].RootOrgName_new_user);
-          G1_Filter.push(x[0].channel);
-          G1_Value.push(x.length);
-          G1_Colour.push(this.getRandomColorHex());
-      });
-      /////////////////////////////////////////////////////////////////
       this.G1_Group_list=this.groupBy1(ResultCN,"channel");
-      // console.log('---G1_Group_list--');
-      // console.log(this.G1_Group_list);
-      // Object.keys(this.G1_Group_list).forEach( x=>
-      //   {
-      //     G1_Name.push(x);
-      //     G1_Value.push(ResultCN[x].length);
-      //     G1_Filter.push(x);
-      //     G1_Colour.push(this.getRandomColorHex());
-      //   });
+      Object.keys(this.G1_Group_list).forEach( x=>
+        {
+        var xx=this.G1_Group_list[x];
+        G1_Name.push(   xx[0].RootOrgName_new_user);
+        G1_Value.push(  this.G1_Group_list[x].length);
+        G1_Filter.push( xx[0].channel);
+        //G1_Filter.push(x);
+        G1_Colour.push(this.getRandomColorHex());
+        });
+        //console.log("----this.G1_Group_list------")
+        //console.log(this.G1_Group_list);
       this.G1_Chart(G1_Name,G1_Value,G1_Filter,G1_Colour);
 }
 
 G1_Chart(G1_Name:any,G1_Value:any,G1_Filter:any,G1_Colour:any)
 {
+  if ( this.G1_Piechart) // != undefined
+  {
+    this.G1_Piechart.destroy();
+  }
     this.G1_Piechart = new Chart('G1_Canvas',
     {
       type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
@@ -315,25 +305,26 @@ G1_Chart(G1_Name:any,G1_Value:any,G1_Filter:any,G1_Colour:any)
       options:
           {
             tooltips: { mode: 'index'},
-            hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Channel wise Content ",fontSize : 15, fontColor : "#111",},
+            //hover: { mode: 'index', intersect: true  },
+            title:{ display : true,text:"Organization wise Content Dashboard",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Channels -------->' } }],
             yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                     },
-          plugins: {
-            labels: [
-                      { render: 'label', fontColor: '#000', position: 'outside' },
-                      { render:'value',fontColor: '#000'}
-                    ]
-                  },
+         // plugins: {
+         //   labels: [
+         //             { render: 'label', fontColor: '#000', position: 'outside' },
+         //             { render:'value',fontColor: '#000'}
+         //           ]
+         //         },
           }
     });
 }
 
 G1_Chart_showData(evt:any)
 {
+  //G1_Group_list
   this.resetGraph('G1');
   var data = this.G1_Piechart.getElementsAtEvent(evt)
   var activePoint = this.G1_Piechart.getElementAtEvent(evt);
@@ -348,11 +339,11 @@ G1_Chart_showData(evt:any)
     //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
 
     this.G2_Group_list=this.groupBy1(this.G1_Group_list[filter_data],"Category");
-    this.G3_Group_list=this.groupBy1(this.G1_Group_list[filter_data],"orgTypeUser_new");
-    //console.log('------G2_Group_list-----Category filter_list---'+filter_data);
-    //console.log( this.G2_Group_list );
-    //console.log('------G3_Group_list-----orgType filter_list---'+filter_data);
-    //console.log( this.G3_Group_list );
+    this.G3_Group_list=this.groupBy(this.G1_Group_list[filter_data], function(item)
+    {
+      return [item.orgTypeUser_new, item.orgNameUser_new];
+    });
+
     this.GeneratingCategoryChart(this.G2_Group_list);
     this.GeneratingOrg_TypeChart(this.G3_Group_list);
   }
@@ -376,6 +367,10 @@ GeneratingCategoryChart(ResultTT:any)
 
 G2_Chart(G2_Name:any,G2_Value:any,G2_Filter:any,G2_Colour:any)
 {
+  if ( this.G2_Piechart) // != undefined
+  {
+    this.G2_Piechart.destroy();
+  }
     this.G2_Piechart = new Chart('G2_Canvas',
     {
       type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
@@ -394,20 +389,20 @@ G2_Chart(G2_Name:any,G2_Value:any,G2_Filter:any,G2_Colour:any)
       options:
           {
           legend: {display: false},
-          tooltips: { mode: 'index'},
-          hover: { mode: 'index', intersect: true  },
-          title:{ display : true,text:"Category wise Content Created",fontSize : 15, fontColor : "#111",},
+          //tooltips: { mode: 'index'},
+
+          title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
           scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Categories -------->' } }],
             yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                     },
-          plugins: {
-            labels: [
-                      { render: 'label', fontColor: '#000', position: 'outside' },
-                      { render:'value',fontColor: '#000'}
-                    ]
-                  },
-          }
+        // plugins: {
+        //   labels: [
+        //             { render: 'label', fontColor: '#000', position: 'outside' },
+        //             { render:'value',fontColor: '#000'}
+        //           ]
+        //         },
+         }
     });
 }
 
@@ -426,7 +421,7 @@ G2_Chart_showData(evt:any)
     var label = this.G2_Piechart.data.labels[clickedElementindex];
     var value = this.G2_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
     //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-    this.Table_Data_List=this.G2_Group_list[filter_data];
+    this.loadGridView(this.G2_Group_list[filter_data]);
     this.popupTitle="List of Courses Created under '"+ filter_data +"' Category ";
   }
 }
@@ -439,7 +434,10 @@ GeneratingOrg_TypeChart(ResultCC:any)
   var G3_Colour=[];
   Object.keys(ResultCC).forEach( x=>
     {
-    G3_Name.push(x);
+    var Obj=ResultCC[x];
+    G3_Name.push(Obj[0].orgNameUser_new);
+
+    //G3_Name.push(x);
     G3_Value.push(ResultCC[x].length);
     G3_Filter.push(x);
     G3_Colour.push(this.getRandomColorHex());
@@ -449,6 +447,10 @@ GeneratingOrg_TypeChart(ResultCC:any)
 
 G3_Chart(G3_Name:any,G3_Value:any,G3_Filter:any,G3_Colour:any)
 {
+  if ( this.G3_Piechart) // != undefined
+  {
+    this.G3_Piechart.destroy();
+  }
     this.G3_Piechart = new Chart('G3_Canvas',
     {
       type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
@@ -467,19 +469,19 @@ G3_Chart(G3_Name:any,G3_Value:any,G3_Filter:any,G3_Colour:any)
       options:
           {
           legend: {display: false},
-          tooltips: { mode: 'index'},
-          hover: { mode: 'index', intersect: true  },
-          title:{ display : true,text:"Organization wise Content Created",fontSize : 15, fontColor : "#111",},
+          //tooltips: { mode: 'index'},
+          //hover: { mode: 'index', intersect: true  },
+          title:{ display : true,text:"Organization wise Content Created",fontSize : 18, fontColor : "#111",},
           scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: '------Organization -------->' } }],
             yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                     },
-          plugins: {
-            labels: [
-                      { render: 'label', fontColor: '#000', position: 'outside' },
-                      { render:'value',fontColor: '#000'}
-                    ]
-                  },
+       //  plugins: {
+       //    labels: [
+       //              { render: 'label', fontColor: '#000', position: 'outside' },
+       //              { render:'value',fontColor: '#000'}
+       //            ]
+       //          },
           }
     });
 }
@@ -494,12 +496,9 @@ G3_Chart_showData(evt:any)
     var clickedElementindex = activePoint[0]._index;
      //var filter_data         = activePoint[0]._options.borderColor;  //pie
      var filter_data         = activePoint[0]._model.borderSkipped; //bar
-
     var label = this.G3_Piechart.data.labels[clickedElementindex];
     var value = this.G3_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
     //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-    //console.log("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-    //console.log(this.G3_Group_list[filter_data]);
     this.G4_Group_list=this.groupBy1(this.G3_Group_list[filter_data],"Category");
     this.ContentChart(this.G4_Group_list);
   }
@@ -524,6 +523,10 @@ ContentChart(ResultTT:any)
 
 G4_Chart(G4_Name:any,G4_Value:any,G4_Filter:any,G4_Colour:any)
 {
+  if ( this.G4_Piechart) // != undefined
+  {
+    this.G4_Piechart.destroy();
+  }
  this.G4_Piechart = new Chart('G4_Canvas',
  {
    type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
@@ -543,18 +546,18 @@ G4_Chart(G4_Name:any,G4_Value:any,G4_Filter:any,G4_Colour:any)
        {
        legend: {display: false},
        tooltips: { mode: 'index'},
-       hover: { mode: 'index', intersect: true  },
-       title:{ display : true,text:"Category wise Content Created",fontSize : 15, fontColor : "#111",},
+       //hover: { mode: 'index', intersect: true  },
+       title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
        scales: {
         xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Categories -------->' } }],
         yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                 },
-       plugins: {
-         labels: [
-                   { render: 'label', fontColor: '#000', position: 'outside' },
-                   { render:'value',fontColor: '#000'}
-                 ]
-               },
+      // plugins: {
+      //   labels: [
+      //             { render: 'label', fontColor: '#000', position: 'outside' },
+      //             { render:'value',fontColor: '#000'}
+      //           ]
+      //         },
        }
  });
  }
@@ -572,7 +575,7 @@ G4_Chart_showData(evt:any)
       var label = this.G4_Piechart.data.labels[clickedElementindex];
       var value = this.G4_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
       //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-      this.Table_Data_List=this.G4_Group_list[filter_data];
+      this.loadGridView(this.G4_Group_list[filter_data]);
       this.popupTitle="List of Courses Created under '"+ filter_data +"' Category ";
     }
 }
@@ -592,6 +595,18 @@ resetGraph(ngClick:any)
   {
     this.Table_Data_List=[];
   }
+}
+
+
+loadGridView(tableData:any)
+{
+  var SNo=0;
+  tableData.forEach(y =>
+    {
+      SNo++;
+      y.SNo=SNo;
+    });
+    this.Table_Data_List=tableData;
 }
 
  getRandomColorHex()

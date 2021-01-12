@@ -27,7 +27,6 @@ export class ContentCategoryWiseComponent implements OnInit {
     public resourceService: ResourceService,
     ) { }
 
-  ///////////////////////////////
   ////////////Tab///////////////////////
   organizationTab: boolean  = true;
   userTab: boolean = true;
@@ -51,7 +50,8 @@ export class ContentCategoryWiseComponent implements OnInit {
   B2_Root_list=[];
   B1_Piechart:any;
   B2_Piechart:any;
-  // rr=[];
+  /////////////////////////////////
+  ///////////////////////////////////
   strTxt='';
   tooltip='';
   /////////////////////////////////////
@@ -59,6 +59,7 @@ export class ContentCategoryWiseComponent implements OnInit {
     {
       this.getContentList();
       this.colsUser = [
+        { field: 'SNo',           header: 'SNo',          width: '50px' },
         { field: 'Category',      header: 'Category',     width: '150px' },
         { field: 'name',          header: 'Name',         width: '150px' },
         { field: 'subject',       header: 'Subject',      width: '150px' },
@@ -66,6 +67,7 @@ export class ContentCategoryWiseComponent implements OnInit {
         { field: 'copyright',     header: 'Copyright',    width: '150px' },
         { field: 'creator',       header: 'Creator',      width: '150px' },
         { field: 'organisation',  header: 'Organisation', width: '150px' }
+
       ]
     }
 
@@ -89,13 +91,11 @@ export class ContentCategoryWiseComponent implements OnInit {
           "board", "medium", "gradeLevel", "subject",
           "lastUpdatedOn", "status", "createdBy",
           "framework", "createdOn", "lastPublishedOn"]
-      }
+        }
       };
 
       this.reportService.getContentCreationStaticsReport(data).subscribe((response) =>
       {
-
-        //console.log('Receive data from api-'+JSON.stringify(response));
         if (_.get(response, 'responseCode') === 'OK')
         {
           if (response.result.count > 0)
@@ -121,17 +121,25 @@ export class ContentCategoryWiseComponent implements OnInit {
               //console.log( '----UserList---------');
               //console.log( this.userList);
               //////////////////GET CITY/ORG LIST/////////////////////////////
-              const reqPayload = { "request": { "filters": { "id":ChnlIds, "isRootOrg":true} } };
+              const reqPayload = { "request": { "filters": { "id":ChnlIds}, "limit": 1000,"offset": 0 } };
               //const reqPayload = { "request": { "filters": { "id":ChnlIds, "isRootOrg":true, "status":1 } } };
               //const reqPayload = { "request": { "filters": { "isRootOrg":true, "status":1 } } };
               //const reqPayload = { "request": { "filters": { "isRootOrg":true} } };
+              //URLS.ADMIN.ORG_SEARCH,
                 this.reportService.getOrganizationName(reqPayload).subscribe((response) =>
                 {
-                      this.cityList = [];
-                      let cityObj = _.cloneDeep(response.result.response.content);
-                      this.cityList = cityObj;
-                      this.cityList = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
+                      //this.cityList = [];
+                      //let cityObj = _.cloneDeep(response.result.response.content);
+                      //this.cityList = cityObj;
+                      //this.cityList = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
                       //////////////////////////////////////////////////////////////////
+                      response.result.response.content.forEach(c =>
+                        {
+                        this.cityList.push({"id":c.id,"orgName":c.orgName,"identifier":c.identifier});
+                        });
+
+
+                      //////////////////////////////////////////////////////////////
                       this.InitializeGraph(tableData);
                 ////////////////////////////////////////////////////
                 }); //City close
@@ -152,7 +160,6 @@ export class ContentCategoryWiseComponent implements OnInit {
         console.log(err);
         this.toasterService.error(this.resourceService.messages.emsg.m0007);
       }); //Content close
-        ////////////////////////////////////////////////////////////
     }
 
     ///////////////////////////////////////////////////
@@ -164,21 +171,16 @@ export class ContentCategoryWiseComponent implements OnInit {
         {
 
         }
-        ///////////////////////////////////
-        //console.log( '----C_List---------');
-        //console.log(C_List);
-        //console.log( '----UserList---------');
-        //console.log( this.userList);
-        //console.log( '----cityList----------');
-        //console.log( this.cityList);
-        //console.log("cityList:-"+JSON.stringify(this.cityList));
-        //console.log("userList:-"+JSON.stringify(this.userList));
-        //////////////////////////////////////////////////////////////
         ///////UPDATE USER LIST//////USER-ID-to-SUB-ORG-MAPING////////////////////
         this.userList.forEach(element =>
           {
             this.cityList.forEach(element1 =>
               {
+               //if(element1.identifier==orgId)
+               //{
+               //  this.rootOrgNameUser_new  = element1.orgName
+               //}
+
                 if( element.organisations.length>1)
                     {
                       if((element1.identifier==element.organisations[1].organisationId) &&
@@ -194,19 +196,23 @@ export class ContentCategoryWiseComponent implements OnInit {
                            }else
                            {
                             element.orgNameUser_new  =  element.organisations[0].orgName;
-                            element.orgTypeUser_new =   'Root Organization';
+                            element.orgTypeUser_new =   'Sub Organization';
                            }
-
                     }
                     else if( element.organisations.length==1)
                     {
-                          element.orgNameUser_new =   element1.orgName
-                          element.orgTypeUser_new  =   'Root Organization';
+                          element.orgNameUser_new  = element.organisations[0].orgName;
+                          element.orgTypeUser_new   =   'Root  Organization';
                     }
                 });
           });
         //console.log("Updated userList:-"+JSON.stringify(this.userList));
         //console.log(this.userList);
+        //////////////////////////////////////////////////////////////////////////
+        var groupedUserData =   this.userList.reduce(function(rv, x) { // grouping of userdata
+          (rv[x['orgNameUser_new']] = rv[x['orgNameUser_new']] || []).push(x);
+          return rv;
+          }, {});
         /////////////////Camposing comman content data list//////////////////////////
          this.Graph_Data_List=[];
         C_List.forEach(x =>
@@ -222,13 +228,13 @@ export class ContentCategoryWiseComponent implements OnInit {
             "subject":x.subject,
             "channel":x.channel,
             "organisation":x.organisation,
-            /////////////////////////////////////
+            //////////////Add Processed Column///////////////
             "RootOrgName_new_user":CityTraced["orgName"],
             "rootOrgName_new_city":UserTraced["rootOrgName"],
             "orgNameUser_new":UserTraced["orgNameUser_new"],
             "orgTypeUser_new":UserTraced["orgTypeUser_new"],
             "lastNameUser_new":UserTraced["lastName"],
-            ////////////////////////////////////
+            /////////////////////////////////////////////////
             "createdBy":x.createdBy,
             "medium":x.medium,
             "name":x.name,
@@ -243,7 +249,7 @@ export class ContentCategoryWiseComponent implements OnInit {
             "status":x.status
           });
         });
-        this.strList=JSON.stringify(this.Graph_Data_List);
+        //this.strList=JSON.stringify(this.Graph_Data_List);
         //console.log('Updated Graph_Data_List for json-----'+JSON.stringify(this.Graph_Data_List));
         ///////SHORTING//////////////////////////////////////////////////
         this.Graph_Data_List.sort((a, b) =>
@@ -260,13 +266,13 @@ export class ContentCategoryWiseComponent implements OnInit {
 
   GeneratingCategorylChart(ResultCT:any)
   {
-        var B1_Name=[];
-        var B1_Value=[];
-        var B1_Filter=[];
-        var B1_Colour=[];
+      var B1_Name=[];
+      var B1_Value=[];
+      var B1_Filter=[];
+      var B1_Colour=[];
         /////////////////////////////////////////////////////////////////
-        this.B1_Root_list = this.groupBy1(ResultCT,"Category");
-        console.log(this.B1_Root_list);
+        this.B1_Root_list = this.groupByKey(ResultCT,"Category");
+        //console.log(this.B1_Root_list);
         Object.keys(this.B1_Root_list).forEach( x=>
           {
             B1_Name.push(x);
@@ -285,9 +291,14 @@ export class ContentCategoryWiseComponent implements OnInit {
 
   B1_Chart(B1_Name:any,B1_Value:any,B1_Filter:any,B1_Colour:any)
   {
+    //console.log('B1_Name    :-'+JSON.stringify(B1_Name));
+    if ( this.B1_Piechart) // != undefined
+    {
+      this.B1_Piechart.destroy();
+    }
       this.B1_Piechart = new Chart('B1_Canvas1',
       {
-        type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
+        type: 'bar',
         data:
             {
               labels  :             B1_Name,
@@ -303,8 +314,8 @@ export class ContentCategoryWiseComponent implements OnInit {
         options:
             {
             tooltips: { mode: 'index'},
-            hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Category wise Content Created",fontSize : 15, fontColor : "#111",},
+            //hover: { mode: 'index', intersect: true  },
+            title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: '------Content Category -------->' } }],
@@ -324,6 +335,7 @@ export class ContentCategoryWiseComponent implements OnInit {
 
   B1_Chart_showData(evt:any)
   {
+    //alert('enter in b1');
     this.resetGraph('B1');
     var activePoint = this.B1_Piechart.getElementAtEvent(evt);
     if (activePoint.length > 0)
@@ -336,18 +348,24 @@ export class ContentCategoryWiseComponent implements OnInit {
       var label = this.B1_Piechart.data.labels[clickedElementindex];
       var value = this.B1_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
       //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-      //console.log('------B1_Root_list-----orgType filter_list---'+filter_data);
-      //console.log(this.B1_Root_list[filter_data] );
-      this.B2_Root_list=this.groupBy1(this.B1_Root_list[filter_data],"orgTypeUser_new");
-      //console.log('------B2_Root_list---');
-      //console.log(this.B2_Root_list);
+      //////////////////////////////////////////////
+      //this.B2_Root_list=this.groupByKey(this.B1_Root_list[filter_data],"orgNameUser_new");
+      this.B2_Root_list=this.groupBy(this.B1_Root_list[filter_data], function(item)
+          {
+            return [item.orgTypeUser_new, item.orgNameUser_new];
+          });
+
+      //this.strList=JSON.stringify(this.B2_Root_list);
+      //console.log('B2_Root_list group by two:-'+JSON.stringify(this.B2_Root_list));
+      //alert('B2_Root_list group by two:-'+JSON.stringify(this.B2_Root_list));
+      ///////////////////////////////////////////////
       this.popupTitle=this.B1_Root_list[filter_data].length+" Content(s) Created in '"+filter_data+"' Category.";
       this.tooltip=filter_data;
-      this.Table_Data_List=this.B1_Root_list[filter_data];
+      ////////////////////////////////
+      this.loadGridView(this.B1_Root_list[filter_data]);
       this.GeneratingOrg_TypeChart(this.B2_Root_list);
     }
   }
-
 
 
   GeneratingOrg_TypeChart(ResultCO:any)
@@ -358,7 +376,8 @@ export class ContentCategoryWiseComponent implements OnInit {
     var B2_Colour=[];
     Object.keys(ResultCO).forEach( x=>
       {
-      B2_Name.push(x);
+      var Obj=ResultCO[x];
+      B2_Name.push(Obj[0].orgNameUser_new);
       B2_Value.push(ResultCO[x].length);
       B2_Filter.push(x);
       B2_Colour.push(this.getRandomColorHex());
@@ -374,7 +393,11 @@ export class ContentCategoryWiseComponent implements OnInit {
 
   B2_Chart(B2_Name:any,B2_Value:any,B2_Filter:any,B2_Colour:any)
   {
-      this.B2_Piechart = new Chart('B2_Canvas',
+    if ( this.B2_Piechart) // != undefined
+    {
+      this.B2_Piechart.destroy();
+    }
+     this.B2_Piechart = new Chart('B2_Canvas',
       {
         type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
         data:
@@ -392,8 +415,8 @@ export class ContentCategoryWiseComponent implements OnInit {
         options:
             {
             tooltips: { mode: 'index'},
-            hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Orgnization wise Content Created",fontSize : 15, fontColor : "#111",},
+            //hover: { mode: 'index', intersect: true  },
+            title:{ display : true,text:"Orgnization wise Content Created",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
               xAxes: [{ scaleLabel: { display: true, labelString: '------Organization -------->' } }],
@@ -426,8 +449,8 @@ export class ContentCategoryWiseComponent implements OnInit {
       var label = this.B2_Piechart.data.labels[clickedElementindex];
       var value = this.B2_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
       //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-      this.popupTitle=this.B2_Root_list[filter_data].length+" Content(s) of '"+this.tooltip+"' Category are Created in '"+filter_data+"'";
-      this.Table_Data_List=this.B2_Root_list[filter_data];
+      this.popupTitle=this.B2_Root_list[filter_data].length+" Content(s) of '"+this.tooltip+"' Category are Created in'";
+      this.loadGridView(this.B2_Root_list[filter_data]);
     }
   }
 
@@ -450,7 +473,16 @@ export class ContentCategoryWiseComponent implements OnInit {
   }
 
 
-
+  loadGridView(tableData:any)
+  {
+    var SNo=0;
+    tableData.forEach(y =>
+      {
+        SNo++;
+        y.SNo=SNo;
+      });
+      this.Table_Data_List=tableData;
+  }
 
   //////////////////////////////////////
   getRandomColorHex()
@@ -469,6 +501,7 @@ export class ContentCategoryWiseComponent implements OnInit {
     return color[this.i%color.length-1];
   }
 
+  ///MULTIPLE GROUP BY FUNCTION////////
   groupBy( array , f )
   {
     var groups = {};
@@ -483,8 +516,8 @@ export class ContentCategoryWiseComponent implements OnInit {
       return groups[group];
     })
   }
-
-  groupBy1(list, key)
+ ///MULTIPLE GROUP BY FUNCTION////////
+  groupByKey(list, key)
   {
    return list.reduce(function(rv, x)
    {
@@ -492,6 +525,9 @@ export class ContentCategoryWiseComponent implements OnInit {
      return rv;
    }, {});
   };
+
+
+
   //////////////////////////////////////////////////////////////////
 
 

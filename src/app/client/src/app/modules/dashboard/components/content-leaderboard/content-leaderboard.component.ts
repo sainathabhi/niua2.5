@@ -40,12 +40,15 @@ export class ContentLeaderboardComponent implements OnInit {
     ) { }
 
 ////////////Tab///////////////////////
-  selectedCites: Object;
+
   checkoutForm: Object;
   //createOrgForm: FormGroup;
   organizationTab: boolean  = true;
   userTab: boolean = true;
 //////////////////////////////////////
+  selectedCity: string;
+  filters= [];
+  titleCity='';
   cityList1: any = [];
   cityList: any = [];
   userList: any = [];
@@ -54,15 +57,19 @@ export class ContentLeaderboardComponent implements OnInit {
   noResult = true;
   strList="";
   colsUser=[];
+  colsUser2=[];
   ////////popup//////////////////////
   tableData=[];
+
   popupTitle="Content wise Graphical Reports";
   selectedItems = [];
   addUserPopup: boolean = false;
     ////////////extra////////////////
     i=0;
     ////////////////////////////
-
+    hideme = [];
+    Index: any;
+    //////////////////////
     Table_Data_List=[];
     L1_Root_list=[];
     L2_Root_list=[];
@@ -74,24 +81,23 @@ export class ContentLeaderboardComponent implements OnInit {
   ////////////extra////////////////
   ngOnInit()
   {
-    //this.getOrgList();
-    this.getContentCreationStaticsReport();
+    this.getOrgList();
+    this.getContentData();
     this.colsUser = [
 
-      { field: 'User_Name',       header: 'Creator Name',      width: '150px' },
-     // { field: 'organisation',  header: 'Organisation', width: '150px' },
-      { field: 'Root_Organisation',      header: 'Root Organisation',     width: '150px' },
-      { field: 'Sub_Organisation',   header: 'Sub Organisation',  width: '150px' },
-      { field: 'Total_Content',     header: 'Total Content',    width: '150px' },
+      { field: 'Rank',                header: 'Rank',                   width: '50px'  },
+      { field: 'User_Name',           header: 'Creator Name',                          },
+      { field: 'Email',               header: 'Email',                                 },
+      { field: 'Phone',               header: 'Phone',                                 },
+      { field: 'organisation',        header: 'Copyright',                             },
+      { field: 'Root_Organisation',   header: 'Root Organisation',                     },
+      { field: 'Sub_Organisation',    header: 'Sub Organisation',                      },
+      { field: 'Total_Content',       header: 'Total Content',                         },
     ]
-  }
-//User_Name
-  resetFields()
-  {
-    this.selectedCites = null;
-  }
-  /////Load content List////////////////////////////
 
+}
+
+  /////Load content List////////////////////////////
   getOrgList()
   {
     this.cityList = [];
@@ -103,6 +109,7 @@ export class ContentLeaderboardComponent implements OnInit {
         if (response.result.response.count > 0)
         {
           this.cityList = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
+          this.cityList.push({"orgName":"---Select All---","id":0,"rootOrgId":"0"});
           this.cityList.sort((a, b) =>
           {
             if (a.orgName < b.orgName)
@@ -123,27 +130,28 @@ export class ContentLeaderboardComponent implements OnInit {
     });
   }
 
-  getContentCreationStaticsReport()
+  getContentData()
   {
-    //var filters= [];
-    //var xx=this.checkoutForm.controls['selectedCities'].value
-    //if (!_.isEmpty(this.selectedCites))
-    //{
-    //  filters= [{ "status": ["Live"], "framework": ["nulp"], "channel": [_.get(this.selectedCites, 'id')], "contentType": ["Course", 'Resource', 'Collection']}];
-    //}
-    //else
-    //{
-    //filters=[{ "status": ["Live"], "framework": ["nulp"], "contentType": ["Course", 'Resource', 'Collection']}];
-    //}
-    //alert('Selected :-'+JSON.stringify(filters));
+    this.filters=[];
+    this.titleCity="NULP platform."
+    if (!_.isEmpty(this.selectedCity))
+    {
+      this.filters= [_.get(this.selectedCity, 'id')];  //rootOrgId
+      this.titleCity= _.get(this.selectedCity, 'orgName');
+      this.L1_Chart(null,null,null,null,"");
+      this.Table_Data_List=[];
+      if(_.get(this.selectedCity, 'id')==0)
+      {
+        this.filters=[];
+        this.titleCity="NULP platform."
+      }
+    }
+
     const data = {
       "request":
       {
         "query"   : "",
-        "filters" : { "status": ["Live"],
-                      "framework": ["nulp"],
-                      "contentType": ["Course", 'Resource', 'Collection']},
-
+        "filters" : { "status": ["Live"],"framework": ["nulp"],"channel":this.filters,"contentType": ["Course", 'Resource', 'Collection']},
         "limit"   : "1000",
         "sort_by" : { "lastUpdatedOn": "desc" },
         "fields"  :
@@ -154,10 +162,11 @@ export class ContentLeaderboardComponent implements OnInit {
         "framework", "createdOn", "lastPublishedOn"]
     }
     };
-    //alert(JSON.stringify(data));
+    //alert('titleCity'+this.titleCity+ '\n filters'+JSON.stringify(this.filters)+ '\n request :-'+JSON.stringify(data));
+
     this.reportService.getContentCreationStaticsReport(data).subscribe((response) =>
     {
-      console.log('Receive data from api-'+JSON.stringify(response));
+      console.log('leader board data from api-'+JSON.stringify(response));
       if (_.get(response, 'responseCode') === 'OK')
       {
         if (response.result.count > 0)
@@ -194,6 +203,7 @@ export class ContentLeaderboardComponent implements OnInit {
                     this.cityList1 = cityObj;
                     this.cityList1 = _.reject(response.result.response.content,obj=>_.isEmpty(obj.orgName));
                     //////////////////////////////////////////////////////////////////
+
                     this.InitializeGraph(tableData);
               ////////////////////////////////////////////////////
               }); //City close
@@ -215,61 +225,49 @@ export class ContentLeaderboardComponent implements OnInit {
       this.toasterService.error(this.resourceService.messages.emsg.m0007);
     }); //Content close
   ////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////
   }
-  ///////////////////////////////////////////////////
 
   InitializeGraph(C_List:any)
   {
-      //debugger;
-      if (this.cityList1.length > 0)
-      {
-
-      }
-      ///////////////////////////////////
-      //console.log( '----C_List---------');
-      //console.log(C_List);
-      //console.log( '----UserList---------');
-      //console.log( this.userList);
-      //console.log( '----cityList----------');
-      //console.log( this.cityList);
-      //console.log("cityList:-"+JSON.stringify(this.cityList));
-      //console.log("userList:-"+JSON.stringify(this.userList));
-      //////////////////////////////////////////////////////////////
       ///////UPDATE USER LIST//////USER-ID-to-SUB-ORG-MAPING////////////////////
-      this.userList.forEach(element =>
-        {
-          this.cityList1.forEach(element1 =>
-            {
-              if( element.organisations.length>1)
-                  {
-                    if((element1.identifier==element.organisations[1].organisationId) &&
-                        (element.rootOrgId!=element.organisations[1].organisationId))
-                        {
-                          element.orgNameUser_new  =   element1.orgName
-                          element.orgTypeUser_new  =   'Sub Organization';
-                         }
-                         else if(element.rootOrgId==element.organisations[1].organisationId)
-                         {
-                          element.orgNameUser_new  =  element.organisations[0].orgName;
-                          element.orgTypeUser_new =   'Sub Organization';
-                         }else
-                         {
-                          element.orgNameUser_new  =  element.organisations[0].orgName;
-                          element.orgTypeUser_new =   'Root Organization';
-                         }
+     ///////UPDATE USER LIST//////USER-ID-to-SUB-ORG-MAPING////////////////////
+     this.userList.forEach(element =>
+      {
+        this.cityList.forEach(element1 =>
+          {
+           //if(element1.identifier==orgId)
+           //{
+           //  this.rootOrgNameUser_new  = element1.orgName
+           //}
 
-                  }
-                  else if( element.organisations.length==1)
-                  {
-                        element.orgNameUser_new =   element1.orgName
-                        element.orgTypeUser_new  =   'Root Organization';
-                  }
-              });
-        });
-      //console.log("Updated userList:-"+JSON.stringify(this.userList));
-      //console.log(this.userList);
-      /////////////////Camposing comman content data list//////////////////////////
+            if( element.organisations.length>1)
+                {
+                  if((element1.identifier==element.organisations[1].organisationId) &&
+                      (element.rootOrgId!=element.organisations[1].organisationId))
+                      {
+                        element.orgNameUser_new  =   element1.orgName
+                        element.orgTypeUser_new  =   'Sub Organization';
+                       }
+                       else if(element.rootOrgId==element.organisations[1].organisationId)
+                       {
+                        element.orgNameUser_new  =  element.organisations[0].orgName;
+                        element.orgTypeUser_new =   'Sub Organization';
+                       }else
+                       {
+                        element.orgNameUser_new  =  element.organisations[0].orgName;
+                        element.orgTypeUser_new =   'Sub Organization';
+                       }
+                }
+                else if( element.organisations.length==1)
+                {
+                      element.orgNameUser_new  = element.organisations[0].orgName;
+                      element.orgTypeUser_new   =   'Root  Organization';
+                }
+            });
+      });
+    //console.log("Updated userList:-"+JSON.stringify(this.userList));
+    //console.log(this.userList);
+    //////////////////Camposing comman content data list//////////////////////////
        this.Graph_Data_List=[];
       C_List.forEach(x =>
       {
@@ -290,6 +288,8 @@ export class ContentLeaderboardComponent implements OnInit {
           "orgNameUser_new":UserTraced["orgNameUser_new"],
           "orgTypeUser_new":UserTraced["orgTypeUser_new"],
           "lastNameUser_new":UserTraced["lastName"],
+          "email"           :UserTraced["email"],
+          "maskedPhone"     :UserTraced["maskedPhone"],
           ////////////////////////////////////
           "createdBy":x.createdBy,
           "medium":x.medium,
@@ -306,14 +306,13 @@ export class ContentLeaderboardComponent implements OnInit {
         });
       });
       this.strList=JSON.stringify(this.Graph_Data_List);
-      //console.log('Updated Graph_Data_List for json-----'+JSON.stringify(this.Graph_Data_List));
+      //console.log('Leader board Updated Graph_Data_List for json-----'+JSON.stringify(this.Graph_Data_List));
       ///////SHORTING//////////////////////////////////////////////////
       this.CreateLeaderBoardChart(this.Graph_Data_List);
   }
 
   CreateLeaderBoardChart(ResultCT:any)
   {
-        //alert('LOAD');
         var L1_Name=[];
         var L1_Value=[];
         var L1_Filter=[];
@@ -321,55 +320,56 @@ export class ContentLeaderboardComponent implements OnInit {
         /////////////////////////////////////////////////////////////////
         this.L1_Root_list = this.groupBy1(ResultCT,"creator");
         var leader=[];
-        debugger
         Object.keys(this.L1_Root_list).forEach( x=>
           {
-            L1_Name.push(x);
-            L1_Value.push(this.L1_Root_list[x].length);
             var xx=this.L1_Root_list[x];
-            L1_Filter.push(x);
-            L1_Colour.push(this.getRandomColorHex());
             leader.push(
                   {
                     "User_Name"         :x,
-                    "Content_Data"      :this.L1_Root_list[x],
+                    "Email"             :xx[0].email,
+                    "Phone"             :xx[0].maskedPhone,
                     "organisation"      :xx[0].organisation,
-                    "Root_Organisation":xx[0].rootOrgName_new_city,
-                    "Sub_Organisation":xx[0].orgNameUser_new,
-                    "Total_Content":this.L1_Root_list[x].length,
-
+                    "Root_Organisation" :xx[0].rootOrgName_new_city,
+                    "Sub_Organisation"  :xx[0].orgNameUser_new,
+                    "Content_Data"      :this.L1_Root_list[x],
+                    "Total_Content"     :this.L1_Root_list[x].length,
                   })
           });
-          //console.log(leader);
-          console.log('--------------'+JSON.stringify(leader));
-          console.log('---top 10------------');
-          var top10 = leader.sort(function(a, b) { return a.Total_Content < b.Total_Content ? 1 : -1; }).slice(0,10);
- console.log(top10);
- console.log('--------------'+JSON.stringify(top10));
-          // var data = JSON.parse(json);
-        //   leader.sort((a, b) =>
-        //    {
-        //      if (a.Total_Content > b.Total_Content)
-        //      return -1;
-        //      if (a.Total_Content < b.Total_Content)
-        //      return 1;
-        //      return 0;
-        //  });
-
-         //console.log('leader    :-'+JSON.stringify(leader));
-         //alert('leader    :-'+JSON.stringify(leader));
-         //////////////////////////////////////////////////////
-        this.L1_Chart(L1_Name,L1_Value,L1_Filter,L1_Colour);
-        this.popupTitle="Top 10 Content Creators are following";
+        var top10 = leader.sort(function(a, b) { return a.Total_Content < b.Total_Content ? 1 : -1; }).slice(0,10);
+        console.log('-----top 10 list---'+JSON.stringify(top10));
+        ///////////////////////////////////////////////////////////////
+        var Rank=0;
+        top10.forEach(y =>
+          {
+            Rank++;
+            L1_Name.push(y.User_Name);
+            L1_Value.push(y.Total_Content);
+            L1_Filter.push(y.User_Name);
+            L1_Colour.push(this.getRandomColorHex());
+            y.Rank=Rank;
+          });
+          //console.log('L1_Name    :-'+JSON.stringify(L1_Name));
+          //console.log('L1_Value   :-'+JSON.stringify(L1_Value));
+          //console.log('L1_Filter  :-'+JSON.stringify(L1_Filter));
+          //console.log('L1_Colour  :-'+JSON.stringify(L1_Colour));
+        ///////////////////////////////////////////////////////////////
+        console.log("Top 10 list:-"+JSON.stringify(top10))
+        this.popupTitle="List of Top 10 Content Creators in '"+this.titleCity+"'";
+        //alert('event 5'+ this.popupTitle);
+        this.L1_Chart(L1_Name,L1_Value,L1_Filter,L1_Colour,this.popupTitle);
         this.Table_Data_List=top10;
   }
 
 
-  L1_Chart(L1_Name:any,L1_Value:any,L1_Filter:any,L1_Colour:any)
+  L1_Chart(L1_Name:any,L1_Value:any,L1_Filter:any,L1_Colour:any,L1_Title:any)
   {
+    if ( this.L1_Piechart) // != undefined
+    {
+      this.L1_Piechart.destroy();
+    }
       this.L1_Piechart = new Chart('L1_Canvas',
       {
-        type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
+        type: 'bar',
         data:
             {
               labels  :             L1_Name,
@@ -385,11 +385,11 @@ export class ContentLeaderboardComponent implements OnInit {
         options:
             {
             tooltips: { mode: 'index'},
-            hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Category wise Content Created",fontSize : 15, fontColor : "#111",},
+            //hover: { mode: 'index', intersect: true  },
+            title:{ display : true,text:L1_Title,fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
-            xAxes: [{ scaleLabel: { display: true, labelString: '------Content Category -------->' } }],
+            xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Content Contributors -------->' } }],
             yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
                     },
             // plugins: {
@@ -400,34 +400,6 @@ export class ContentLeaderboardComponent implements OnInit {
             //         },
             }
       });
-  }
-
-
-
-  B1_Chart_showData(evt:any)
-  {
-    //this.resetGraph('B1');
-    //var activePoint = this.B1_Piechart.getElementAtEvent(evt);
-    //if (activePoint.length > 0)
-    // {
-    //  var clickedDatasetIndex = activePoint[0]._datasetIndex;
-    //  var clickedElementindex = activePoint[0]._index;
-    //  //var filter_data         = activePoint[0]._options.borderColor;  //pie
-    //  var filter_data           = activePoint[0]._model.borderSkipped;  //bar
-    //  this.strTxt=JSON.stringify(activePoint[0]._model);
-    //  var label = this.B1_Piechart.data.labels[clickedElementindex];
-    //  var value = this.B1_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
-    //  //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-    //  //console.log('------B1_Root_list-----orgType filter_list---'+filter_data);
-    //  //console.log(this.B1_Root_list[filter_data] );
-    //  this.B2_Root_list=this.groupBy1(this.B1_Root_list[filter_data],"orgTypeUser_new");
-    //  //console.log('------B2_Root_list---');
-    //  //console.log(this.B2_Root_list);
-    //  this.popupTitle=this.B1_Root_list[filter_data].length+" Content(s) Created in '"+filter_data+"' Category.";
-    //  this.tooltip=filter_data;
-    //  this.Table_Data_List=this.B1_Root_list[filter_data];
-//
-    //}
   }
 
   //////////////////////////////////////
@@ -455,19 +427,6 @@ export class ContentLeaderboardComponent implements OnInit {
      return rv;
    }, {});
   };
-  resetGraph(ngClick:any)
-  {
-    if(ngClick=="B1")
-     {
-    //  this.B2_Piechart=new Chart("B2_Canvas", { type: "bar", data: {} ,options: {} });
-      //this.Table_Data_List=[];
-      //this.B2_Root_list=[];
-      //alert(88);
-    }
-    else  if(ngClick=="B2")
-    {
-      //this.Table_Data_List=[];
-      //this.B2_Root_list=[];
-    }
-  }
+
+
 }
