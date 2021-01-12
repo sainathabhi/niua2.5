@@ -28,20 +28,21 @@
                     DashBoard
                      <div class="menu" suiDropdownMenu>
                          
-                        
+                        <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('learningreport')" >
+                            Learning Report 
+                         </a>
+                         <a *ngIf="adminVarLink=='present'"  (click)="urlPathOfDashboard('orgreport')" class="item" >
+                            Organization Report 
+                         </a>
                        
                          <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('userreport')" >
                              User Report 
                           </a>
-                          <a *ngIf="adminVarLink=='present'"  (click)="urlPathOfDashboard('orgreport')" class="item" >
-                             Organization Report 
-                          </a>
+                        
                           <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('contentreport')" >
                              Content Report 
                           </a>
-                          <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('learningreport')" >
-                             Learning Report 
-                          </a>
+                          
  
                      </div>
                  </div>

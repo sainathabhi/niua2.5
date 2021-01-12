@@ -133,7 +133,7 @@ export class ContentLeaderboardComponent implements OnInit {
   getContentData()
   {
     this.filters=[];
-    this.titleCity="NULP platform."
+    this.titleCity="NULP platform"
     if (!_.isEmpty(this.selectedCity))
     {
       this.filters= [_.get(this.selectedCity, 'id')];  //rootOrgId
@@ -143,7 +143,7 @@ export class ContentLeaderboardComponent implements OnInit {
       if(_.get(this.selectedCity, 'id')==0)
       {
         this.filters=[];
-        this.titleCity="NULP platform."
+        this.titleCity="NULP platform";
       }
     }
 
@@ -336,7 +336,7 @@ export class ContentLeaderboardComponent implements OnInit {
                   })
           });
         var top10 = leader.sort(function(a, b) { return a.Total_Content < b.Total_Content ? 1 : -1; }).slice(0,10);
-        console.log('-----top 10 list---'+JSON.stringify(top10));
+        //console.log('-----top 10 list---'+JSON.stringify(top10));
         ///////////////////////////////////////////////////////////////
         var Rank=0;
         top10.forEach(y =>
@@ -353,10 +353,10 @@ export class ContentLeaderboardComponent implements OnInit {
           //console.log('L1_Filter  :-'+JSON.stringify(L1_Filter));
           //console.log('L1_Colour  :-'+JSON.stringify(L1_Colour));
         ///////////////////////////////////////////////////////////////
-        console.log("Top 10 list:-"+JSON.stringify(top10))
-        this.popupTitle="List of Top 10 Content Creators in '"+this.titleCity+"'";
+        //console.log("Top 10 list:-"+JSON.stringify(top10))
+        this.popupTitle="List of Top 10 Content Creators in '"+this.titleCity+"'.";
         //alert('event 5'+ this.popupTitle);
-        this.L1_Chart(L1_Name,L1_Value,L1_Filter,L1_Colour,this.popupTitle);
+        this.L1_Chart(L1_Name,L1_Value,L1_Filter,L1_Colour,"");
         this.Table_Data_List=top10;
   }
 
@@ -389,8 +389,8 @@ export class ContentLeaderboardComponent implements OnInit {
             title:{ display : true,text:L1_Title,fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
-            xAxes: [{ scaleLabel: { display: true, labelString: '------Name of Content Contributors -------->' } }],
-            yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
+            xAxes: [{ scaleLabel: { display: true, labelString: 'Content Contributors' } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
                     },
             // plugins: {
             //   labels: [
@@ -416,7 +416,8 @@ export class ContentLeaderboardComponent implements OnInit {
     //var max=color.length-1;
     //var rand= Math.floor(Math.random() * (max - min + 1) + min);
     this.i++;
-    return color[this.i%color.length-1];
+    //return color[this.i%color.length-1];
+    return "blue";
   }
 
   groupBy1(list, key)

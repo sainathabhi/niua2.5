@@ -8,10 +8,10 @@
                   <div class="ui container">
                     <div class="ui stackable grid mt-30">
 
-                    <div class="column"  style="width:50%">
+                    <div class="column"  style="width:50%"  [ngClass]="{'graph-border' : G1_Piechart}">
                       <canvas id="G1_Canvas"  #mychart (click)="G1_Chart_showData($event)">{{ G1_Piechart }}</canvas>
                     </div>
-                    <div class="column" style="width:50%">
+                    <div class="column" style="width:50%" [ngClass]="{'graph-border' : G3_Piechart}">
                       <canvas id="G3_Canvas"  #mychart (click)="G3_Chart_showData($event)">{{ G3_Piechart }} </canvas>
                     </div>
 
@@ -22,10 +22,10 @@
                   <div class="ui container">
                     <div class="ui stackable grid mt-30">
 
-                    <div class="column"  style="width:50%">
+                    <div class="column"  style="width:50%" [ngClass]="{'graph-border' : G2_Piechart}">
                       <canvas id="G2_Canvas"  #mychart (click)="G2_Chart_showData($event)">{{ G2_Piechart }} </canvas>
                       </div>
-                    <div class="column" style="width:50%">
+                    <div class="column" style="width:50%" [ngClass]="{'graph-border' : G4_Piechart}">
                       <canvas id="G4_Canvas"  #mychart (click)="G4_Chart_showData($event)">{{ G4_Piechart }} </canvas>
                     </div>
 

@@ -231,10 +231,10 @@ subOrg:any
         };
         var options =
         {
-          title:  { display : true,text:"Sub Organization Wise Active And InActive",fontSize : 18, fontColor : "#111"},
+          title:  { display : true,text:"Sub Organization Wise Active And InActive User",fontSize : 18, fontColor : "#111"},
           legend: { display : true },
-          scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: false, labelString: 'Y-->' }}],
-                    xAxes: [{ ticks : { min : 0},scaleLabel: { display: false, labelString: 'X-->' }}],
+          scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'User Count' }}],
+                    xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Organization' }}],
                     gridLines:  { color: 'blue' },
                     angleLines: { color: 'blue' }
                   }
@@ -309,6 +309,7 @@ subOrg:any
           this.organizationData.forEach(element => {
             this.orgName.push(element.orgNameVal);     
             this.OrgLength.push(element.length);
+            this.colourList.push(this.getRandomColorHex())
             });
             console.log('otg===================')
             console.log(this.orgName)
@@ -332,9 +333,12 @@ subOrg:any
                       
                   options:
                       {
-                        title:  { display : true,text:"Sub Organizations Wise User Dashboard ",fontSize : 18, fontColor : "#111"},
+                        title:  { display : true,text:"Sub Organization Wise User Dashboard ",fontSize : 18, fontColor : "#111"},
                       legend: {display: true},
-                      scales: { xAxes: [{ display: true }], yAxes: [{  display: true }], }
+                      scales: {
+                        xAxes: [{ scaleLabel: { display: true, labelString: 'Organization' } }],
+                        yAxes: [{ scaleLabel: { display: true, labelString: 'User Count' } }],
+                                },
                     
                       }
                 });
@@ -429,9 +433,13 @@ ChartTest()
             },
         options:
             {
-              title:  { display : true,text:"Organizations Wise User Dashboard ",fontSize : 18, fontColor : "#111"},
+              title:  { display : true,text:"Organization Wise User Dashboard ",fontSize : 18, fontColor : "#111"},
             legend: {display: true},
-            scales: { xAxes: [{ display: true }], yAxes: [{  display: true }], }
+            scales: {
+              xAxes: [{ scaleLabel: { display: true, labelString: 'Organization' } }],
+              yAxes: [{ scaleLabel: { display: true, labelString: 'User Count' } }],
+                      },
+  
             }
       });
 
@@ -477,8 +485,10 @@ var data = {
   {
     title:  { display : true,text:"Organization Wise Active And InActive User",fontSize : 18, fontColor : "#111"},
     legend: { display : true },
-    scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: false, labelString: 'Y-->' }}],
-              xAxes: [{ ticks : { min : 0},scaleLabel: { display: false, labelString: 'X-->' }}],
+    
+    
+    scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'User Count' }}],
+              xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Organization' }}],
               gridLines:  { color: 'blue' },
               angleLines: { color: 'blue' }
             }

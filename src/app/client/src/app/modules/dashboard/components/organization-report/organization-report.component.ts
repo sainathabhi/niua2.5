@@ -28,6 +28,10 @@ export class OrganizationReportComponent implements OnInit {
   noResultMessage:any;
   sucesErrorPopup: boolean= false;
   popupMsg: string;
+  orgTypelListOrg: any[];
+orgTypeOrgArry: any;
+orgTypeListOrgArryData: any[] = new Array();
+
   constructor(private datePipe: DatePipe,private _httpService: AddusserService) { }
   ngOnInit() {
     this.initializeColumnsOrg();
@@ -56,13 +60,13 @@ getOrgChartDetail( )
 {
   if(this.fromDate == null || this.fromDate == undefined)
   {
-    this.popupMsg ="Please Enter a From Date";
+    this.popupMsg ="Please Enter From Date";
     this.sucesErrorPopup=true
   
   }
   else if(this.toDate == null || this.toDate == undefined)
   {
-    this.popupMsg ="Please Enter a To Date";
+    this.popupMsg ="Please Enter To Date";
     this.sucesErrorPopup=true
     
   }
@@ -78,6 +82,7 @@ getOrgChartDetail( )
     this.orgSearchData = res.result.response.content;
     this.countOrgRecord = res.result.response.count;
     this.showOrgData = [];
+    this.orgTypeListOrgArryData = [];
     res.result.response.content.forEach(element => {
 
       if(element.status==1)
@@ -129,6 +134,14 @@ getOrgChartDetail( )
      console.log('Organization data====')
      console.log(this.showLineChartUserData)
      console.log('Organization data====')
+
+     this.orgTypelListOrg = this.showOrgData
+     .map(item => item.orgType)
+     .filter((value, index, self) => self.indexOf(value) === index)
+     this.orgTypeOrgArry  = this.orgTypelListOrg.filter(f => f !== undefined && f !== null) as any;
+     this.orgTypeOrgArry.forEach(element => {
+     this.orgTypeListOrgArryData.push({"label": element,"value":element})
+     });
 
   });
 }

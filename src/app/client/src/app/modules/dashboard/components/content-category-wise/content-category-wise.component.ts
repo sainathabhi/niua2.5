@@ -60,14 +60,13 @@ export class ContentCategoryWiseComponent implements OnInit {
       this.getContentList();
       this.colsUser = [
         { field: 'SNo',           header: 'SNo',          width: '50px' },
+        { field: 'organisation',  header: 'Organisation', width: '150px' },
         { field: 'Category',      header: 'Category',     width: '150px' },
-        { field: 'name',          header: 'Name',         width: '150px' },
-        { field: 'subject',       header: 'Subject',      width: '150px' },
-        { field: 'contentType',   header: 'ContentType',  width: '150px' },
-        { field: 'copyright',     header: 'Copyright',    width: '150px' },
+        { field: 'subject',       header: 'Sub Category',      width: '150px' },
+        { field: 'name',          header: 'Topic',         width: '150px' },
         { field: 'creator',       header: 'Creator',      width: '150px' },
-        { field: 'organisation',  header: 'Organisation', width: '150px' }
-
+        //{ field: 'contentType',   header: 'ContentType',  width: '150px' },
+        //{ field: 'copyright',     header: 'Copyright',    width: '150px' },
       ]
     }
 
@@ -315,11 +314,11 @@ export class ContentCategoryWiseComponent implements OnInit {
             {
             tooltips: { mode: 'index'},
             //hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
+            title:{ display : true,text:"Category wise Content Dashboard",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
-            xAxes: [{ scaleLabel: { display: true, labelString: '------Content Category -------->' } }],
-            yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
+            xAxes: [{ scaleLabel: { display: true, labelString: 'Content Category' } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
                     },
             // plugins: {
             //   labels: [
@@ -419,8 +418,8 @@ export class ContentCategoryWiseComponent implements OnInit {
             title:{ display : true,text:"Orgnization wise Content Created",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
-              xAxes: [{ scaleLabel: { display: true, labelString: '------Organization -------->' } }],
-              yAxes: [{ scaleLabel: { display: true, labelString: '------Number of Content-------->' } }],
+              xAxes: [{ scaleLabel: { display: true, labelString: 'Organization' } }],
+              yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
                   },
             // plugins: {
             //   labels: [
@@ -449,7 +448,8 @@ export class ContentCategoryWiseComponent implements OnInit {
       var label = this.B2_Piechart.data.labels[clickedElementindex];
       var value = this.B2_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
       //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-      this.popupTitle=this.B2_Root_list[filter_data].length+" Content(s) of '"+this.tooltip+"' Category are Created in'";
+      this.popupTitle=this.B2_Root_list[filter_data].length+" Content(s) of '"+this.tooltip+"' Category are Created.";
+      // in '"+filter_data+"'";
       this.loadGridView(this.B2_Root_list[filter_data]);
     }
   }
@@ -498,7 +498,8 @@ export class ContentCategoryWiseComponent implements OnInit {
     //var max=color.length-1;
     //var rand= Math.floor(Math.random() * (max - min + 1) + min);
     this.i++;
-    return color[this.i%color.length-1];
+    //return color[this.i%color.length-1];
+    return "blue";
   }
 
   ///MULTIPLE GROUP BY FUNCTION////////

@@ -339,10 +339,10 @@ export class UserReportComponent implements OnInit {
                   };
                   var options =
                   {
-                    title:  { display : true,text:"Date Wise Sub Organization User",fontSize : 18, fontColor : "#111"},
+                    title:  { display : true,text:"User Onboarded in Sub Organization",fontSize : 18, fontColor : "#111"},
                     legend: { display : true },
-                    scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Number Of Users' }}],
-                              xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Name Of Organization' }}],
+                    scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'User Count' }}],
+                              xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Organization' }}],
                               gridLines:  { color: 'red' },
                               angleLines: { color: 'blue' }
                             }
@@ -380,13 +380,13 @@ export class UserReportComponent implements OnInit {
   //alert(this.toDate);
   if(this.fromDate == null || this.fromDate == undefined)
   {
-    this.popupMsg ="Please Enter a From Date";
+    this.popupMsg ="Please Enter From Date";
     this.sucesErrorPopup=true
   
   }
   else if(this.toDate == null || this.toDate == undefined)
   {
-    this.popupMsg ="Please Enter a To Date";
+    this.popupMsg ="Please Enter  To Date";
     this.sucesErrorPopup=true
     
   }
@@ -503,10 +503,10 @@ this.showLineChartUserData.push(xy)
     };
     var options =
     {
-      title:  { display : true,text:"Date Wise Root User Organization",fontSize : 18, fontColor : "#111"},
+      title:  { display : true,text:"User Onboarded in Root Organization",fontSize : 18, fontColor : "#111"},
       legend: { display : true },
-      scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Number Of Users' }}],
-                xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Name Of Root Organization' }}],
+      scales: { yAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'User Count' }}],
+                xAxes: [{ ticks : { min : 0},scaleLabel: { display: true, labelString: 'Organization' }}],
                 gridLines:  { color: 'red' },
                 angleLines: { color: 'blue' }
               }

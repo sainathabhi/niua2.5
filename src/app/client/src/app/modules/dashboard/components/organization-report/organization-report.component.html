@@ -63,6 +63,13 @@
                   {{col.header}}
               </th>
             </tr>
+
+            <tr>
+              <th  *ngFor="let col of columns" [ngSwitch]="col.field">
+              <p-multiSelect *ngSwitchCase="'orgType'" (onChange)="dtOrg.filter($event.value, col.field, 'in')" [options]="orgTypeListOrgArryData" defaultLabel="All"
+              appendTo="body"></p-multiSelect>
+              </th>
+              </tr>
           </ng-template>
           <ng-template pTemplate="body" let-showLineChartUserData let-columns="columns">
 

@@ -1,3 +1,4 @@
+<div class="border14">
 <div class="ui container">
   <form novalidate >
       <div class="ui grid stackable top aligned my-0">
@@ -37,15 +38,15 @@
           </div>
       </div>
   </form><br><br>
-  <div class="column column-a">
-      <canvas id="canvas12"  #mychart (click)="showData($event)">{{ Linechart12 }}</canvas>
+  <div class="column column-a" [ngClass]="{'graph-border' : Linechart12}">
+      <canvas id="canvas12"  #mychart   (click)="showData($event)">{{ Linechart12 }}</canvas>
     </div>
  
    
   
       
-        <div class="column column-a">
-          <canvas id="canvas13"  #mychart   (click)="showData3($event)"  >{{ Linechart3 }}</canvas>
+        <div class="column column-a" [ngClass]="{'graph-border' : Linechart3}">
+          <canvas id="canvas13"  #mychart     (click)="showData3($event)"  >{{ Linechart3 }}</canvas>
         </div>
         <div class="ui grid column-b" >
 
@@ -143,4 +144,5 @@
   </div>
 </div>
  
+</div>
 </div>
