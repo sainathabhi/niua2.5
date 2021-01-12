@@ -1,4 +1,4 @@
-<div class="ui container" [appTelemetryImpression]="telemetryImpression">
+<div class="ui container">
   <div class="ui stackable grid mt-30">
       <div class="twelve wide column workspacesegment">
 
@@ -12,7 +12,7 @@
                           placeholder="Select a Organization"
                           optionLabel="orgName" [ngModelOptions]="{standalone: true}"
                           (onChange)="getContentData()"></p-dropdown> <br/>
-                        <canvas id="L1_Canvas"   #mychart (click)="L1_Chart_showData($event)">{{ L1_Piechart }}</canvas>
+                        <canvas id="L1_Canvas"   #mychart>{{ L1_Piechart }}</canvas>
 
 
                       </div>
