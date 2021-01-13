@@ -508,7 +508,7 @@ getRandomColorHex()
   //    color += hex[Math.floor(Math.random() * 16)];
   //  }
  var color= ["#0000FF"];
-   return color;
+   return "blue";
  }
   Multi_Bar1()
   {
