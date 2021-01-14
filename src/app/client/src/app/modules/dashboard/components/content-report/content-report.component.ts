@@ -37,26 +37,28 @@ export class ContentReportComponent implements OnInit {
   userList: any = [];
   noResultMessage :any;
   noResult = true;
-  ////////popup//////////////////////
+  ////////popup/////////////////
   popupTitle="Content wise Graphical Reports";
   selectedItems = [];
   addUserPopup: boolean = false;
-  ////////////extra////////////////
+  ////////////extra/////////////
   i=0;
   Graph_Data_List=[];
   Table_Data_List=[];
-  G1_Root_list=[];
+  //////////chart.js data//////
   G1_Piechart:any;
   G2_Piechart:any;
   G3_Piechart:any;
   G4_Piechart:any;
+////////////graph data list////
   G1_Group_list=[];
   G2_Group_list=[];
   G3_Group_list=[];
   G4_Group_list=[];
+  //////////////////////////////
   strList="";
   colsUser=[];
-  ////////////////////////////
+  //////////////////////////////
 
   ngOnInit() {
     this.getContentList();
@@ -295,22 +297,22 @@ G1_Chart(G1_Name:any,G1_Value:any,G1_Filter:any,G1_Colour:any)
             labels  :             G1_Name,
             datasets: [{
                   data:           G1_Value,
-                  borderColor:    G1_Filter,
+                 // borderColor:    G1_Filter,
                   borderSkipped:  G1_Filter,
                   backgroundColor:G1_Colour,
-                  borderWidth: 1, // Specify bar border width
+                  //borderWidth: 1, // Specify bar border width
                   fill: true }
                 ]
           },
       options:
           {
-            tooltips: { mode: 'index'},
+            //tooltips: { mode: 'index'},
             //hover: { mode: 'index', intersect: true  },
             title:{ display : true,text:"Organization wise Content Dashboard ",fontSize : 18, fontColor : "#111",},
             legend: { display :false ,labels: { fontColor: "green", }},
             scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: 'Organization' } }],
-            yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: 'Number of Content' } }],
                     },
          // plugins: {
          //   labels: [
@@ -324,20 +326,12 @@ G1_Chart(G1_Name:any,G1_Value:any,G1_Filter:any,G1_Colour:any)
 
 G1_Chart_showData(evt:any)
 {
-  //G1_Group_list
   this.resetGraph('G1');
-  var data = this.G1_Piechart.getElementsAtEvent(evt)
+  //var data = this.G1_Piechart.getElementsAtEvent(evt)
   var activePoint = this.G1_Piechart.getElementAtEvent(evt);
   if (activePoint.length > 0)
    {
-    var clickedDatasetIndex = activePoint[0]._datasetIndex;
-    var clickedElementindex = activePoint[0]._index;
-    //var filter_data         = activePoint[0]._options.borderColor;  //pie
     var filter_data         = activePoint[0]._model.borderSkipped; //bar
-    var label = this.G1_Piechart.data.labels[clickedElementindex];
-    var value = this.G1_Piechart.data.datasets[clickedDatasetIndex].data[clickedElementindex];
-    //alert("Clicked: label:-" + label + " value- " + value +  " - " + clickedElementindex +' filter-'+filter_data);
-
     this.G2_Group_list=this.groupBy1(this.G1_Group_list[filter_data],"Category");
     this.G3_Group_list=this.groupBy(this.G1_Group_list[filter_data], function(item)
     {
@@ -379,10 +373,10 @@ G2_Chart(G2_Name:any,G2_Value:any,G2_Filter:any,G2_Colour:any)
             labels:                 G2_Name,
             datasets: [{
                   data:             G2_Value,
-                  borderColor:      G2_Filter,
+                  //borderColor:      G2_Filter,
                   borderSkipped:    G2_Filter,
                   backgroundColor:  G2_Colour,
-                  borderWidth: 1, // Specify bar border width // Set this data to a line chart
+                  //borderWidth: 1, // Specify bar border width // Set this data to a line chart
                   fill: true }
                 ]
           },
@@ -391,10 +385,10 @@ G2_Chart(G2_Name:any,G2_Value:any,G2_Filter:any,G2_Colour:any)
           legend: {display: false},
           //tooltips: { mode: 'index'},
 
-          title:{ display : true,text:"Category wise Content Dashboard",fontSize : 18, fontColor : "#111",},
+          title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
           scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: 'Categories' } }],
-            yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: 'Number of Content' } }],
                     },
         // plugins: {
         //   labels: [
@@ -446,8 +440,6 @@ GeneratingOrg_TypeChart(ResultCC:any)
 }
 
 
-
-
 G3_Chart(G3_Name:any,G3_Value:any,G3_Filter:any,G3_Colour:any)
 {
   if ( this.G3_Piechart) // != undefined
@@ -459,35 +451,37 @@ G3_Chart(G3_Name:any,G3_Value:any,G3_Filter:any,G3_Colour:any)
       type: 'bar',//'doughnut',//'pie',//'polarArea','horizontalBar',
       data:
           {
-            labels  :             G3_Name,
+            labels:                 G3_Name,
             datasets: [{
-                  data:           G3_Value,
-                  borderColor:    G3_Filter,
-                  borderSkipped:  G3_Filter,
-                  backgroundColor:G3_Colour,
-                  borderWidth: 1, // Specify bar border width
+                  data:             G3_Value,
+                 // borderColor:      G3_Filter,
+                  borderSkipped:    G3_Filter,
+                  backgroundColor:  G3_Colour,
+                  //borderWidth: 1, // Specify bar border width // Set this data to a line chart
                   fill: true }
                 ]
           },
       options:
           {
-            tooltips: { mode: 'index'},
-            //hover: { mode: 'index', intersect: true  },
-            title:{ display : true,text:"Sub Organization wise Content Dashboard",fontSize : 18, fontColor : "#111",},
-            legend: { display :false ,labels: { fontColor: "green", }},
-            scales: {
+          legend: {display: false},
+          //tooltips: { mode: 'index'},
+          title:{ display : true,text:"Organization wise Content Created",fontSize : 18, fontColor : "#111",},
+          scales: {
             xAxes: [{ scaleLabel: { display: true, labelString: 'Organization' } }],
-            yAxes: [{ scaleLabel: { display: true, labelString: 'Content Count' } }],
+            yAxes: [{ scaleLabel: { display: true, labelString: 'Number of Content' } }],
                     },
-         // plugins: {
-         //   labels: [
-         //             { render: 'label', fontColor: '#000', position: 'outside' },
-         //             { render:'value',fontColor: '#000'}
-         //           ]
-         //         },
-          }
+        // plugins: {
+        //   labels: [
+        //             { render: 'label', fontColor: '#000', position: 'outside' },
+        //             { render:'value',fontColor: '#000'}
+        //           ]
+        //         },
+         }
     });
 }
+
+
+
 
 
 G3_Chart_showData(evt:any)
@@ -539,22 +533,22 @@ G4_Chart(G4_Name:any,G4_Value:any,G4_Filter:any,G4_Colour:any)
          labels:                 G4_Name,
          datasets: [{
                data:             G4_Value,
-               borderColor:      G4_Filter,
+              // borderColor:      G4_Filter,
                borderSkipped:    G4_Filter,
                backgroundColor:  G4_Colour,
-               borderWidth: 1,
+               //borderWidth: 1,
                fill: true }
              ]
        },
    options:
        {
        legend: {display: false},
-       tooltips: { mode: 'index'},
+       //tooltips: { mode: 'index'},
        //hover: { mode: 'index', intersect: true  },
-       title:{ display : true,text:"Sub Category wise Content Dashboard",fontSize : 18, fontColor : "#111",},
+       title:{ display : true,text:"Category wise Content Created",fontSize : 18, fontColor : "#111",},
        scales: {
-        xAxes: [{ scaleLabel: { display: true, labelString: 'Sub Categories' } }],
-        yAxes: [{ scaleLabel: { display: true, labelString: 'Content Content' } }],
+        xAxes: [{ scaleLabel: { display: true, labelString: 'Categories' } }],
+        yAxes: [{ scaleLabel: { display: true, labelString: 'Number of Content' } }],
                 },
       // plugins: {
       //   labels: [
@@ -591,8 +585,12 @@ resetGraph(ngClick:any)
 {
   if(ngClick=="G1")
    {
-    this.G3_Piechart=null;
-    this.G3_Piechart=new Chart("G4_Canvas", { type: "pie", data: {} ,options: {} });
+    //this.G3_Piechart=null;
+    //this.G3_Piechart=new Chart("G4_Canvas", { type: "pie", data: {} ,options: {} });
+    this.Table_Data_List=[];
+  }
+  else  if(ngClick=="G2")
+  {
     this.Table_Data_List=[];
   }
   else  if(ngClick=="G3")
