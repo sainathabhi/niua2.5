@@ -5,6 +5,7 @@
               <div class="ui top attached tabular menu">
                   <a class="item" suiTabHeader="yourLearnings" *ngIf="userTab">User Management</a>
                   <a class="item" suiTabHeader="contentcreation" *ngIf="organizationTab">Organization Management</a>
+                  <!--<a class="item" suiTabHeader="UploadTemplate">Template Upload</a>-->
                   
                  
               </div>
@@ -497,6 +498,15 @@
                 </div>
 
               </div>
+
+
+
+              <!--<div class="ui bottom attached segment" *ngIf="UploadTemplate" suiTabContent="UploadTemplate">
+                <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
+                </div>
+                <app-certificate-temp-upload></app-certificate-temp-upload> -->
+
+             <!-- </div>-->
               
 
           </sui-tabset>
@@ -568,7 +578,7 @@
     [ngClass]="createUserForm.controls['phone'].invalid && createUserForm.controls['phone'].errors.required && !createUserForm.controls['phone'].pristine ? 'error': ''">
     <label class="required">Phone No</label>
     <div class="sb-field">
-      <input type="text" name="phone" formControlName="phone" class="sb-form-control" autofocus>
+      <input type="tel" name="phone" formControlName="phone"  maxlength="10" class="sb-form-control" autofocus>
     </div>
     <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.phone.invalid && createUserForm.controls['phone'].errors.required && !createUserForm.controls['phone'].pristine">
       Enter Phone No
@@ -578,7 +588,7 @@
 
   <div class="sb-field-group" *ngIf="systemVar=='present'">
     <div class="sb-field">
-      <label>Do You Want Creat a  Root Organization</label>     
+      <label>Do you want to create user in Root Organization?</label>     
       <select  formControlName="isrootSub" class="abcd" [(ngModel)]="isrootOrganization" (change)="getSubRootOrganization($event)">
         <option  value="yes">YES</option>  
         <option  value="no">NO</option>
@@ -710,7 +720,18 @@
 
 
 
-<sui-modal  class="sb-modal sb-batch-modal" (dismissed)="modal.deny(); addOrgPopup =false;"  #modal *ngIf='addOrgPopup'>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='addOrgPopup'
+  >
 
   <!--Header-->
   <i class="close icon" (click)="closepopup()"></i>
@@ -730,7 +751,7 @@
           <label>Organization</label>
           
           <select  formControlName="addOrgname" class="abcd" [(ngModel)]="addorgSelectName" (change)="getRoleName($event)">
-            <option *ngFor="let dataObj of mentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.isRootOrg">{{dataObj.orgName}}</option>  
+            <option *ngFor="let dataObj of getOrgMentorList" [value]="dataObj.orgName + '/' + dataObj.id+'/'+dataObj.isRootOrg">{{dataObj.orgName}}</option>  
             
           </select>
         </div>
@@ -980,6 +1001,42 @@
     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="removeOrgSubmit()">Yes</button>
 
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="closepopup()" >No</button>
+  </div>
+  <!--/Actions-->
+</sui-modal>
+
+
+
+
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  [ngSwitch]="batchStep" 
+  #createBatchModel 
+  (dismissed)="discardModalFlag = !discardModalFlag"
+  *ngIf='checkOrgExistsPopup'
+  >
+
+
+  <!--Header-->
+  <i class="close icon" (click)="closeOrgPopup()"></i>
+  <div class="sb-modal-header">
+  Message
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="font-align">
+ <b>This Organization is already exists! </b></div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeOrgPopup()">Close</button>
   </div>
   <!--/Actions-->
 </sui-modal>

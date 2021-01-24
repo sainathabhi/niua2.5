@@ -85,7 +85,7 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
  private userSearchService: UserSearchService;
 
  public selectedMentors: any = [];
-
+ public getOrgMentorList: Array<any> = [];
  public mentorList: Array<any> = [];
  public subMentorList: Array<any> = [];
  public mentorListnew: Array<any> = [];
@@ -207,7 +207,9 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   channel: any;
   userTab: boolean = false;
   organizationTab: boolean  = false;
+  UploadTemplate:boolean  = false;
   onchangeChanelName: any;
+  checkOrgExistsPopup: boolean;
 
 
   
@@ -249,8 +251,8 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.createUserForm = new FormGroup({
-      firstname: new FormControl(null,Validators.required),
-      lastname: new FormControl(null),
+      firstname:  new FormControl("",  [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
+      lastname: new FormControl("",  [Validators.pattern(this._validation.alphabetRegex)]),
       emailid: new FormControl("",  [Validators.required,Validators.pattern(this._validation.emailRegex)]),
       phone: new FormControl("",  [Validators.required,Validators.pattern(this._validation.mobileno)]),
       isrootSub:new FormControl(null),
@@ -536,6 +538,7 @@ else{
           if(this.orgData.length==1)
           {
           this.organizationTab = true;
+          this.UploadTemplate = true;
           }
 
 
@@ -545,10 +548,12 @@ else{
            if(this.orgDataRole.includes("ORG_MANAGEMENT"))
            {
             this.organizationTab = true;
+            this.UploadTemplate = true;
            }
            if(this.orgDataRole.includes("ORG_MODERATOR"))
            {
             this.userTab = true;
+            this.UploadTemplate = true;
            }
         }
        
@@ -810,7 +815,12 @@ else{
     this.onchangeorgId = this.onchangeorgName[1]
     this.onchangeChanelName=this.onchangeorgName[2]
     this.orgRootStatus= this.onchangeorgName[3]
-    console.log(this.onchangeorgName);
+	console.log(this.onchangeorgName);
+	const currentDate = new Date();
+    const timestamp = currentDate.getTime();
+    console.log("time stapppppppppp")
+    console.log(timestamp)
+   
       let tempArray : any
       tempArray = 
     {
@@ -820,7 +830,7 @@ else{
         "lastName": this.createUserForm.value['lastname'],
         "phone":this.createUserForm.value['phone'],
         "channel": this.onchangeChanelName,
-        "userName":"user_"+this.createUserForm.value['phone'],
+        "userName":"username_"+timestamp,
         "phoneVerified": true,
         "emailVerified": true
       }
@@ -1063,7 +1073,7 @@ else{
     }
       this._httpService.getOrgDetail(tempArray).subscribe(res=>{
       this.orgListArr =res.result.response.content;
-      this.mentorList = this.orgListArr.sort(function(a, b) {
+     this.getOrgMentorList = this.orgListArr.sort(function(a, b) {
        return b.isRootOrg - a.isRootOrg
       })
      
@@ -1185,7 +1195,7 @@ console.log( addRoletempArray);
     this.gridOrgUserId=this.addOrgForm.value['gridOrgUserId']
     this.addOrgId=this.addOrgForm.value['addOrgname']
     this.onchangeaddOrgName=this.addOrgId.split("/");
-    this.onchangeaddOrgId = this.onchangeorgName[1]
+    this.onchangeaddOrgId = this.onchangeaddOrgName[1]
     this.selectedItems.forEach(element => {
       this.roleDataArr.push(element.itemName)
        });
@@ -1389,6 +1399,12 @@ console.log( addOrgtempArray);
       };
     });
   }
+  closeOrgPopup()
+  {
+   
+    this.checkOrgExistsPopup= false
+  
+  }
   closepopup()
   {
    
@@ -1460,88 +1476,119 @@ removeOrgSubmit()
 
 createRootOrgFormSubmit()
 {  
-  this.userLoginDataChannel = sessionStorage.getItem("userLoginDataChannel")
-  this.rootOrgId = sessionStorage.getItem("rootOrgId")
-  this.randomNumber = Math.floor(Math.random() * 90000) + 10000
-  
-    let tempArray : any
-    tempArray = 
-  {
-    "request":{
-      "orgName": this.createRootOrgForm.value['orgName'],
-      "description":this.createRootOrgForm.value['description'],
-      "isRootOrg": true,
-      "channel": 'channel_'+this.randomNumber
+  let tempArray1 : any
+  tempArray1= {
+    'request': {
+    'query': '',
+    'filters': {
+    "orgName":this.createRootOrgForm.value['orgName']
     }
+    }
+    }
+    this._httpService.orgSearch(tempArray1).subscribe(res=>{
+    this.countOrgRecord = res.result.response.count;
+    if(this.countOrgRecord>0)
+    {
+      this.checkOrgExistsPopup = true;
+  
+    }
+    else if(this.countOrgRecord==0) {
+      this.checkOrgExistsPopup = false; 
 
-  } 
- // this.showOrgData = [];
-  //this.showOrgData1 = [];
-  //this.showOrgData2 = [];   
-  this._httpService.createRootOrgDetailSave(tempArray).subscribe(res=>{
-    console.log("ts file");
-   // this.getUserProfile();
-   //organisationId
- //  this.rootorganisationId =  res.result['organisationId'];
-   console.log('organisationId1');
-   console.log(res);
-   console.log(res.result);
-   console.log(res.result.organisationId);
-   console.log(res.result['organisationId']);
-  // console.log(this.rootOrgIdCreate);
-   console.log('organisationId1');
-   this.updatePatch(res.result['organisationId'])
-  // this.chkUrl()
-  this.contentPublishFormData(res.result['organisationId'])
-  this.contentPublishFormData(res.result['organisationId'])
-  this.contentRejectFormData(res.result['organisationId'])
-  this.collectionPublishFormData(res.result['organisationId'])
-  this.requestChangeFormCollectionData(res.result['organisationId'])
-  this.collectionReviewFormData(res.result['organisationId'])
-  this.collectionResourceFilterFormData(res.result['organisationId'])
-  this.collectionCreateFormData(res.result['organisationId'])
-  this.collectionSaveFormData(res.result['organisationId'])
-  this.lessonPublishFormData(res.result['organisationId'])
-  this.requestChangeFormLessonPlamData(res.result['organisationId'])
-  this.lessonPlanSaveData(res.result['organisationId'])
-  this.lessonPlanResourceFilterFormData(res.result['organisationId'])
-  this.lessonPlanReviewFormData(res.result['organisationId'])
-  this.lessonPlanCreateFormData(res.result['organisationId'])
-  this.publishFormResourceData(res.result['organisationId'])
-  this.userPrefrenceFormData(res.result['organisationId'])
-  this.requestChangeFormResourceData(res.result['organisationId'])
-  this.resourceCreateFormData(res.result['organisationId'])
-  this.resourceSaveFormData(res.result['organisationId'])
-  this.resourceReviewFormData(res.result['organisationId'])
-  this.courseRejectCopyFormData(res.result['organisationId'])
-  this.publishFormCourseData(res.result['organisationId'])
-  this.courseCreateFormData(res.result['organisationId'])
-  this.courseSaveFormData(res.result['organisationId'])
-  this.courseUnitSaveFormData(res.result['organisationId'])
-  this.courseReviewFormData(res.result['organisationId'])
-  this.courseResourceFilterFormData(res.result['organisationId'])
-  this.courseFilterFormData(res.result['organisationId'])
-  this.questionMetaSearchFormData(res.result['organisationId'])
-  this.questionFilterFormData(res.result['organisationId'])
-  this.almyContentSearchFormData(res.result['organisationId'])
-  this.exploreSearchFormData(res.result['organisationId'])
-  this.exploreCourseFilterFormData(res.result['organisationId'])
-  this.exploreCourseSearchFormData(res.result['organisationId'])
-  this.librarySearchFormData(res.result['organisationId'])
 
-   this.editOrgrPopup=false 
-  this.addRootOrgrPopup=false
-  this.addOrgrPopup=false
-  this.editOrgrStatusPopup=false
-  this.sucesErrorPopup=true 
-  this.popupMsg=res.result.response;
-  this.getUserProfileOrg()
- // location.reload()
-   },err=>{
-   console.log(err)
-   this.popupMsg=err.params.errmsg;
-   this.toasterService.error(this.resourceService.messages.emsg.m0005);
-   })
+      this.userLoginDataChannel = sessionStorage.getItem("userLoginDataChannel")
+      this.rootOrgId = sessionStorage.getItem("rootOrgId")
+      this.randomNumber = Math.floor(Math.random() * 90000) + 10000
+      //this.checkOrgExists(this.createRootOrgForm.value['orgName']);
+  
+        let tempArray : any
+        tempArray = 
+      {
+        "request":{
+          "orgName": this.createRootOrgForm.value['orgName'],
+          "description":this.createRootOrgForm.value['description'],
+          "isRootOrg": true,
+          "channel": 'channel_'+this.randomNumber
+        }
+    
+      } 
+     // this.showOrgData = [];
+      //this.showOrgData1 = [];
+      //this.showOrgData2 = [];   
+      this._httpService.createRootOrgDetailSave(tempArray).subscribe(res=>{
+        console.log("ts file");
+       // this.getUserProfile();
+       //organisationId
+     //  this.rootorganisationId =  res.result['organisationId'];
+       console.log('organisationId1');
+       console.log(res);
+       console.log(res.result);
+       console.log(res.result.organisationId);
+       console.log(res.result['organisationId']);
+      // console.log(this.rootOrgIdCreate);
+       console.log('organisationId1');
+       this.updatePatch(res.result['organisationId'])
+      // this.chkUrl()
+      this.contentPublishFormData(res.result['organisationId'])
+      this.contentPublishFormData(res.result['organisationId'])
+      this.contentRejectFormData(res.result['organisationId'])
+      this.collectionPublishFormData(res.result['organisationId'])
+      this.requestChangeFormCollectionData(res.result['organisationId'])
+      this.collectionReviewFormData(res.result['organisationId'])
+      this.collectionResourceFilterFormData(res.result['organisationId'])
+      this.collectionCreateFormData(res.result['organisationId'])
+      this.collectionSaveFormData(res.result['organisationId'])
+      this.lessonPublishFormData(res.result['organisationId'])
+      this.requestChangeFormLessonPlamData(res.result['organisationId'])
+      this.lessonPlanSaveData(res.result['organisationId'])
+      this.lessonPlanResourceFilterFormData(res.result['organisationId'])
+      this.lessonPlanReviewFormData(res.result['organisationId'])
+      this.lessonPlanCreateFormData(res.result['organisationId'])
+      this.publishFormResourceData(res.result['organisationId'])
+      this.userPrefrenceFormData(res.result['organisationId'])
+      this.requestChangeFormResourceData(res.result['organisationId'])
+      this.resourceCreateFormData(res.result['organisationId'])
+      this.resourceSaveFormData(res.result['organisationId'])
+      this.resourceReviewFormData(res.result['organisationId'])
+      this.courseRejectCopyFormData(res.result['organisationId'])
+      this.publishFormCourseData(res.result['organisationId'])
+      this.courseCreateFormData(res.result['organisationId'])
+      this.courseSaveFormData(res.result['organisationId'])
+      this.courseUnitSaveFormData(res.result['organisationId'])
+      this.courseReviewFormData(res.result['organisationId'])
+      this.courseResourceFilterFormData(res.result['organisationId'])
+      this.courseFilterFormData(res.result['organisationId'])
+      this.questionMetaSearchFormData(res.result['organisationId'])
+      this.questionFilterFormData(res.result['organisationId'])
+      this.almyContentSearchFormData(res.result['organisationId'])
+      this.exploreSearchFormData(res.result['organisationId'])
+      this.exploreCourseFilterFormData(res.result['organisationId'])
+      this.exploreCourseSearchFormData(res.result['organisationId'])
+      this.librarySearchFormData(res.result['organisationId'])
+    
+       this.editOrgrPopup=false 
+      this.addRootOrgrPopup=false
+      this.addOrgrPopup=false
+      this.editOrgrStatusPopup=false
+      this.sucesErrorPopup=true 
+      this.popupMsg=res.result.response;
+      this.getUserProfileOrg()
+     // location.reload()
+       },err=>{
+       console.log(err)
+       this.popupMsg=err.params.errmsg;
+       this.toasterService.error(this.resourceService.messages.emsg.m0005);
+       })
+      
+    }
+    },err=>{
+    console.log(err)
+    
+    })
+
+
+
+ 
 }
 
 
@@ -5037,7 +5084,27 @@ librarySearchFormData(rootOrgIdCreate:any)
 
 createOrgFormSubmit()
 {  
-  this.userLoginDataChannel = sessionStorage.getItem("userLoginDataChannel")
+  let tempArray1:any;
+  tempArray1= {
+    'request': {
+    'query': '',
+    'filters': {
+    "orgName":this.createOrgForm.value['orgName']
+    }
+    }
+    }
+    this._httpService.orgSearch(tempArray1).subscribe(res=>{
+    this.countOrgRecord = res.result.response.count;
+    if(this.countOrgRecord>0)
+        {
+          this.checkOrgExistsPopup = true;
+      
+        }
+      
+        else if(this.countOrgRecord==0) {
+          this.checkOrgExistsPopup = false; 
+
+          this.userLoginDataChannel = sessionStorage.getItem("userLoginDataChannel")
   this.rootOrgId = sessionStorage.getItem("rootOrgId")
   this.onchangeorgName=this.createOrgForm.value['rootOrgName'].split("/");
   this.onchangeorgId = this.onchangeorgName[1]
@@ -5082,6 +5149,13 @@ createOrgFormSubmit()
    console.log(err)
    this.popupMsg=err.params.errmsg;
    })
+        
+        }
+    },err=>{
+    console.log(err)
+    
+    })
+  
 }
 
 editOrgStatusFormSubmit()
