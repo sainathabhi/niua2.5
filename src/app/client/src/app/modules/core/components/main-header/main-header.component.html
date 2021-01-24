@@ -24,11 +24,11 @@
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
 
 
-                <div suiDropdown *ngIf="adminVarLink=='present'"  class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <div suiDropdown  class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                     Dashboard
                      <div class="menu" suiDropdownMenu>
                          
-                        <a *ngIf="adminVarLink=='present'" class="item" (click)="urlPathOfDashboard('learningreport')" >
+                        <a  class="item" (click)="urlPathOfDashboard('learningreport')" >
                             Learning Report 
                          </a>
                          <a *ngIf="adminVarLink=='present'"  (click)="urlPathOfDashboard('orgreport')" class="item" >
