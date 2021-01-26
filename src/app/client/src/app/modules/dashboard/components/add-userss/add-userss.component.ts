@@ -148,6 +148,7 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   statuslistArryOrg: any;
   statuslistArryDataOrg: any[] = new Array();
   rootOrgId: any;
+  subOrgSucesErrorPopup: boolean = false;
   editOrgrPopup: boolean = false;
   subOrgofRoot: boolean = false;
   findePublic: boolean = false;
@@ -820,7 +821,13 @@ else{
     const timestamp = currentDate.getTime();
     console.log("time stapppppppppp")
     console.log(timestamp)
-   
+   if(this.isRootSubCondition=='no' && (this.createUserForm.value['subRootorgname']=='' || this.createUserForm.value['subRootorgname']==null))
+   {
+     this.popupMsg="Please Select  the Sub Organization....";
+    this.subOrgSucesErrorPopup=true  
+    
+   }
+   else{
       let tempArray : any
       tempArray = 
     {
@@ -851,6 +858,7 @@ else{
       this.popupMsg=err.error.params.errmsg;
      
      })
+  }
   }
 /**
    * This method used for add role in user
@@ -1021,9 +1029,24 @@ else{
       this.orgListArr =res.result.response.content;
       console.log("-----org  listt-----")
       console.log(this.orgListArr)
-      this.mentorList = this.orgListArr.sort(function(a, b) {
-       return b.isRootOrg - a.isRootOrg
-      })
+      if(systemVar=='present')
+      { 
+        this.mentorList =this.orgListArr.sort((a,b)=> {
+        var a1 = a.orgName.toLowerCase();
+        var b1 = b.orgName.toLowerCase();
+        return a1<b1 ?-1:a1> b1? 1 :0;
+        })
+        console.log("pppppppepepppp 1111111111")
+       console.log( this.mentorList)
+      }
+      else if(systemVar!='present')
+      {
+        this.mentorList = this.orgListArr.sort(function(a, b) {
+          return b.isRootOrg - a.isRootOrg
+         })
+         console.log("pppppppepep22222222222")
+         console.log( this.mentorList)
+      }
      
      },err=>{
      console.log(err)
@@ -1424,6 +1447,10 @@ console.log( addOrgtempArray);
     this.sucesErrorPopup = false
     //this.populateUserProfile();
 	 window.location.reload();
+  }
+  closesubOrgSucesErrorPopup()
+  {
+    this.subOrgSucesErrorPopup = false;
   }
 
 ///organization component code
