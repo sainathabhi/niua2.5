@@ -317,14 +317,14 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   
   this.createOrgForm = new FormGroup({
      rootOrgName: new FormControl(null,Validators.required),
-    orgName: new FormControl(null,Validators.required),
-    description: new FormControl(null,Validators.required),
+    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
+    description: new FormControl(null,  [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
    })
 
 
    this.createRootOrgForm = new FormGroup({
-    orgName: new FormControl(null,Validators.required),
-    description: new FormControl(null,Validators.required),
+    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
+    description: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
    })
 
    this.editOrgForm = new FormGroup({
