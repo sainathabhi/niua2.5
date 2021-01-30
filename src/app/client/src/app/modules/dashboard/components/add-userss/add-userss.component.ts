@@ -317,19 +317,19 @@ export class AddUserssComponent implements OnInit, OnDestroy, AfterViewInit {
   
   this.createOrgForm = new FormGroup({
      rootOrgName: new FormControl(null,Validators.required),
-    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
-    description: new FormControl(null,  [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
+    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
+    description: new FormControl(null,  [Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
    })
 
 
    this.createRootOrgForm = new FormGroup({
-    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
-    description: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphabetRegex)]),
+    orgName: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
+    description: new FormControl(null, [Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
    })
 
    this.editOrgForm = new FormGroup({
-    orgName: new FormControl(this.getOrgName,Validators.required),
-    description: new FormControl(this.getdescription,Validators.required),
+    orgName: new FormControl(this.getOrgName,[Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
+    description: new FormControl(this.getdescription,[Validators.required,Validators.pattern(this._validation.alphanumericRegex)]),
    })
 
 
@@ -823,7 +823,7 @@ else{
     console.log(timestamp)
    if(this.isRootSubCondition=='no' && (this.createUserForm.value['subRootorgname']=='' || this.createUserForm.value['subRootorgname']==null))
    {
-     this.popupMsg="Please Select  the Sub Organization....";
+     this.popupMsg="Please select  the sub organization....";
     this.subOrgSucesErrorPopup=true  
     
    }
@@ -5135,15 +5135,23 @@ createOrgFormSubmit()
 
           this.userLoginDataChannel = sessionStorage.getItem("userLoginDataChannel")
   this.rootOrgId = sessionStorage.getItem("rootOrgId")
-  this.onchangeorgName=this.createOrgForm.value['rootOrgName'].split("/");
-  this.onchangeorgId = this.onchangeorgName[1]
-  if(this.onchangeorgId !='')
+ // this.onchangeorgName=this.createOrgForm.value['rootOrgName'].split("/");
+  //this.onchangeorgId = this.onchangeorgName[1]
+  //alert(this.onchangeorgName)
+  //alert(this.onchangeorgName[3])
+ // alert(this.onchangeorgId)
+  //alert(this.systemVar)
+  if( this.systemVar=='present')
   {
+    //alert('first');
+    this.onchangeorgName=this.createOrgForm.value['rootOrgName'].split("/");
+    this.onchangeorgId = this.onchangeorgName[1]
     this.onchangeorgId = this.onchangeorgId 
 	 this.channel = this.onchangeorgName[3]
   }
   else
   {
+    //alert('second');
     this.onchangeorgId = this.rootOrgId 
 	this.channel = this.userLoginDataChannel 
   }
@@ -5156,7 +5164,7 @@ createOrgFormSubmit()
       "description":this.createOrgForm.value['description'],
       "isRootOrg": false,
       "rootOrgId": this.onchangeorgId,
-      "channel": this.userLoginDataChannel
+      "channel": this.channel
     }
 
   } 

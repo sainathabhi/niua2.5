@@ -268,8 +268,11 @@
                           <input type="text" name="orgName"   formControlName="orgName" class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createOrgForm.controls.orgName.invalid && createOrgForm.controls['orgName'].errors.required && !createOrgForm.controls['orgName'].pristine">
-                          Enter Sub Organization
+                          Enter organization
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createOrgForm.get('orgName').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                 
                 
@@ -280,8 +283,11 @@
                           <input type="text" name="description" formControlName="description" class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createOrgForm.controls.description.invalid && createOrgForm.controls['description'].errors.required && !createOrgForm.controls['description'].pristine">
-                          Enter Description
+                          Enter description
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createOrgForm.get('description').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                       
                 
@@ -341,8 +347,11 @@
                           <input type="text" name="orgName"   formControlName="orgName" class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createRootOrgForm.controls.orgName.invalid && createRootOrgForm.controls['orgName'].errors.required && !createRootOrgForm.controls['orgName'].pristine">
-                          Enter Organization Name
+                          Enter organization 
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createRootOrgForm.get('orgName').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                 
                 
@@ -353,8 +362,11 @@
                           <input type="text" name="description" formControlName="description" class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createRootOrgForm.controls.description.invalid && createRootOrgForm.controls['description'].errors.required && !createRootOrgForm.controls['description'].pristine">
-                          Enter Description
+                          Enter description
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createRootOrgForm.get('description').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                       
                 
@@ -409,8 +421,11 @@
                           <input type="text" name="orgName" formControlName="orgName" [(ngModel)]="getOrgName"  class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="editOrgForm.controls.orgName.invalid && editOrgForm.controls['orgName'].errors.required && !editOrgForm.controls['orgName'].pristine">
-                          Enter Organization
+                          Enter organization
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="editOrgForm.get('orgName').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                 
                 
@@ -421,8 +436,11 @@
                           <input type="text" name="description" formControlName="description" [(ngModel)]="getdescription"  class="sb-form-control" autofocus>
                         </div>
                         <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="editOrgForm.controls.description.invalid && editOrgForm.controls['description'].errors.required && !editOrgForm.controls['description'].pristine">
-                          Enter Description
+                          Enter description
                         </div>
+                        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="editOrgForm.get('description').hasError('pattern')">
+                          Only alphanumeric is allowed
+                       </div>
                       </div>
                       
                 
@@ -507,12 +525,12 @@
 
 
 
-              <!--<div class="ui bottom attached segment" *ngIf="UploadTemplate" suiTabContent="UploadTemplate">
+             <!---<div class="ui bottom attached segment" *ngIf="UploadTemplate" suiTabContent="UploadTemplate">
                 <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
                 </div> -->
-                <!-- <app-certificate-temp-upload></app-certificate-temp-upload>  -->
+               <!-- <app-certificate-temp-upload></app-certificate-temp-upload>  -->
 
-             <!--</div>-->
+              <!--</div>-->
               
 
           </sui-tabset>
@@ -553,14 +571,21 @@
         <div class="sb-field">
           <input type="text" name="firstname" formControlName="firstname" class="sb-form-control" autofocus>
         </div>
-        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.firstname.invalid && createUserForm.controls['firstname'].errors.required && !createUserForm.controls['firstname'].pristine">
-          Enter First Name
+        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.firstname.invalid && createUserForm.controls['firstname'].errors.required  && !createUserForm.controls['firstname'].pristine">
+          Enter first name
+        </div>
+        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.get('firstname').hasError('pattern')">
+           Only alphabet is allowed
         </div>
       </div>
       <div class="sb-field-group">
         <div class="sb-field">
           <label>Last Name</label>
           <input type="text" name="description" formControlName="lastname" class="sb-form-control">
+          
+        </div>
+        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.get('lastname').hasError('pattern')">
+          Only alphabet is allowed
         </div>
       </div>
 
@@ -573,7 +598,10 @@
         <input type="text" name="emailid" formControlName="emailid" class="sb-form-control" autofocus>
       </div>
       <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.emailid.invalid && createUserForm.controls['emailid'].errors.required && !createUserForm.controls['emailid'].pristine">
-        Enter Email Id
+        Enter email id
+      </div>
+      <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.get('emailid').hasError('pattern')">
+       Enter correct email id
       </div>
     </div>
 
@@ -587,7 +615,10 @@
       <input type="tel" name="phone" formControlName="phone"  maxlength="10" class="sb-form-control" autofocus>
     </div>
     <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.phone.invalid && createUserForm.controls['phone'].errors.required && !createUserForm.controls['phone'].pristine">
-      Enter Phone No
+      Enter phone no
+    </div>
+    <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.get('phone').hasError('pattern')">
+      Enter correct phone no
     </div>
   </div>
 
@@ -614,7 +645,7 @@
       </select>
     </div>
     <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createUserForm.controls.orgname.invalid && createUserForm.controls['orgname'].errors.required && !createUserForm.controls['orgname'].pristine">
-      Enter Organization
+      Enter organization
     </div>
   </div>
 
@@ -1078,7 +1109,7 @@
 
   <!--Content-->
   <div class="font-align">
- <b>This Organization is already exists! </b></div>
+ <b>This organisation already exists </b></div>
   <!--/Content-->
 
   <!--Actions-->
